@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,25 +19,23 @@
     .header {
       padding: 40px 20px;
     }
-<div class="tp-badge">
-  <img src="icons/tp.png" alt="TrackPlanner Logo">
-  <span>TrackPlanner</span>
-</div>
 
+    /* Clean, small badge that fits the header */
     .tp-badge {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       background: #222;
-      padding: 12px 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      font-size: 1.4rem;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 1.1rem;
       font-weight: 600;
+      height: 36px;
+      margin-bottom: 20px;
     }
 
     .tp-badge img {
-      width: 40px;
+      width: 24px;
       height: auto;
     }
 
@@ -68,8 +67,10 @@
 <body>
 
   <div class="header">
+
+    <!-- Badge now correctly placed OUTSIDE the <style> block -->
     <div class="tp-badge">
-      <img src="icons/TP.png" alt="TrackPlanner Badge">
+      <img src="icons/tp.png" alt="TrackPlanner Logo">
       <span>TrackPlanner</span>
     </div>
 
