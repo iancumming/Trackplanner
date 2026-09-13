@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Track Coach</title>
+
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="logo">Track Coach</div>
+  <nav>
+    <button id="navHome">Home</button>
+    <button id="navAthlete">Athlete</button>
+    <button id="navTraining">Training</button>
+    <button id="navDrills">Drills</button>
+    <button id="navStrength">S&C</button>
+    <button id="navCalculator">Calculator</button>
+   <button onclick="window.open('https://scottishathletics.justgo.com/Workbench/i/r/public/EventsAndBookingsPublic/browse/?latlng=55.9501963%7c-3.1875632&date=all&distance=all&category=all&provider=all&price=all&sortBy=date&orderBy=asc&', '_blank')" 
+      class="nav-button">
+      Fixture List
+  
+
+    </button>
+
+
+</button>
+
+    <button id="navCoach">Coach</button>
+    
+
+  </nav>
+</header>
+
+<main>
+<!-- HOME PAGE -->
+<section id="home" class="page active">
+  <h1>Athlete List</h1>
+  <div id="homeAthleteList"></div>
+
+  <h1>Coach List</h1>
+  <div id="homeCoachList"></div>
+</section>
+
+
+
+<!-- ATHLETE PAGE -->
+<section id="athlete" class="page">
+  <h1>Athlete</h1>
+
+  <style>
+  /* PRINT ONLY FOR ATHLETE PAGE */
+  @media print {
+
+    /* Hide navigation, buttons, and anything marked no-print */
+    nav, footer, .no-print, button {
+      display: none !important;
+    }
+
+    /* Clean print layout */
+    body {
+      margin: 0;
+      background: #fff !important;
+      color: #000 !important;
+      font: 11pt/1.5 Georgia, serif;
+    }
+
+    /* Expand main content */
+    main, .page {
+      width: auto;
+      max-width: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Make cards print nicely */
+    .card {
+      border: 1px solid #000;
+      padding: 10px;
+      margin-bottom: 15px;
+      box-shadow: none !important;
+    }
+
+    /* Inputs print as text */
+    input, select {
+      border: none;
+      background: transparent;
+      font-size: 11pt;
+      padding: 0;
+    }
+  }
+  </style>
+
+  <button class="no-print" onclick="window.print()">Print Athlete Page</button>
+
+
+
+
+  <!-- PROFILE -->
+  <div class="card">
+    <h2>Profile</h2>
+
+    <label>Name:
+      <input type="text" id="athleteName">
+    </label>
+
+    <label>Date of Birth:
+      <input type="date" id="athleteDOB">
+    </label>
+
+    <div id="ageGroupDisplay" class="age-group-output"></div>
+
+    <!-- ⭐ Only ONE training days line -->
+    <p>Training Days: <span id="athleteTrainingDays"></span></p>
+
+    <!-- ⭐ Only ONE countdown box (Athlete Page) -->
+    <div id="ageGroupCountdown" class="countdown-box"></div>
+
+    <button id="saveAthleteButton">Save Athlete</button>
+  </div>
+
+  <!-- ATHLETE LIST -->
+  <div class="card">
+    <h2>Athlete List</h2>
+    <div id="athleteList"></div>
+  </div>
+
+  <!-- PERSONAL BESTS -->
+  <div class="card">
+    <h2>Personal Bests</h2>
+    <table class="pb-table">
+      <thead>
+        <tr><th>Event</th><th>Time</th><th>Date</th><th>Venue</th></tr>
+      </thead>
+      <tbody id="pbBody"></tbody>
+    </table>
+    <button id="addPBButton">Add PB</button>
+  </div>
+ <!-- ⭐ COMPETITION RESULTS INPUT + LIST ⭐ -->
+<div class="card">
+  <h2>Competition Results</h2>
+
+  <!-- INPUTS -->
+  <div class="comp-inputs">
+
+    <label>Event:
+      <input type="text" id="compEvent" placeholder="e.g. 800m, 1500m, 5k">
+    </label>
+
+    <label>Date (DD/MM/YYYY):
+      <input type="text" id="compDate" placeholder="e.g. 12/08/2024">
+    </label>
+
+    <label>Time (seconds):
+      <input type="text" id="compTime" placeholder="e.g. 2.13">
+
+    </label>
+
+    <button id="addCompResultButton" onclick="addCompetitionResult()">Add Result</button>
+  </div>
+
+  <!-- LIST OF RESULTS -->
+  <div id="competitionList"></div>
+</div>
+
+<!-- ⭐ COMPETITION YEARLY TRACKER ⭐ -->
+<div class="card">
+  <h2>Competition Yearly Tracker</h2>
+
+  <label>Select Year:</label>
+  <select id="yearSelect"></select>
+
+  <canvas id="competitionTimesChart"></canvas>
+</div>
+
+</section>
+
+
+<!-- PB MODAL -->
+<div class="modal-backdrop" id="pbModalBackdrop">
+  <div class="modal">
+    <h3>Add Personal Best</h3>
+
+    <label>Event</label>
+    <select id="pbEvent">
+      <option value="200m">200m</option>
+      <option value="300m">300m</option>
+      <option value="400m">400m</option>
+      <option value="800m">800m</option>
+      <option value="1500m">1500m</option>
+      <option value="mile">Mile</option>
+      <option value="3k">3K</option>
+      <option value="5k">5K</option>
+    </select>
+
+    <label>Time</label>
+    <input type="text" id="pbTime" placeholder="e.g. 4:32">
+
+    <label>Date</label>
+    <input type="date" id="pbDate">
+
+    <label>Venue</label>
+    <input type="text" id="pbVenue">
+
+    <div class="modal-actions">
+      <button id="pbCancel">Cancel</button>
+      <button id="pbSave" class="primary">Save</button>
+    </div>
+  </div>
+</div>
+  
+<!-- TRAINING PAGE -->
+<section id="training" class="page">
+  <h1>Training</h1>
+
+  <style>
+/* PRINT ONLY FOR TRAINING PAGE */
+@media print {
+
+  /* Hide navigation, buttons, and anything marked no-print */
+  nav, footer, .no-print, button {
+    display: none !important;
+  }
+
+  /* Clean print layout */
+  body {
+    margin: 0;
+    background: #fff !important;
+    color: #000 !important;
+    font: 11pt/1.5 Georgia, serif;
+  }
+
+  /* Expand main content */
+  main, .page {
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Make cards print nicely */
+  .card {
+    border: 1px solid #000;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-shadow: none !important;
+  }
+
+  /* Inputs print as plain text */
+  input, select, textarea {
+    border: none !important;
+    background: transparent !important;
+    font-size: 11pt;
+    padding: 0;
+  }
+
+  /* Training tables print cleanly */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11pt;
+  }
+
+  table th, table td {
+    border: 1px solid #000;
+    padding: 6px;
+    text-align: left;
+  }
+
+  /* Remove colored backgrounds if any */
+  table tr:nth-child(even),
+  table tr:nth-child(odd) {
+    background: transparent !important;
+  }
+}
+</style>
+
+<button class="no-print" onclick="window.print()">Print Training Page</button>
+
+
+
+  <div class="card">
+    <h2>Athlete</h2>
+    <select id="athleteSelect"><option value="">Select athlete</option></select>
+
+    <p>Name: <span id="trainingAthleteName"></span></p>
+    <p>Age: <span id="trainingAthleteAge"></span></p>
+
+    <p>Training Days: <span id="trainingPageDays"></span></p>
+
+    <!-- ⭐ Correct countdown box for Training Page -->
+    <div id="trainingPageCountdown" class="countdown-box"></div>
+  </div>
+
+  <div class="card">
+    <h2>Month Overview</h2>
+    <p>Month: <span id="calendarMonth"></span></p>
+    <div id="monthGrid"></div>
+  </div>
+
+  <div class="card">
+    <h2>Intensity Summary</h2>
+    <p>Rest: <span id="sumRest">0</span></p>
+    <p>Low: <span id="sumLow">0</span></p>
+    <p>Medium: <span id="sumMed">0</span></p>
+    <p>High: <span id="sumHigh">0</span></p>
+    <p>Competition: <span id="sumCompetition">0</span></p>
+
+    <h3>Percentages</h3>
+    <p>Rest: <span id="pctRest">0%</span></p>
+    <p>Low: <span id="pctLow">0%</span></p>
+    <p>Medium: <span id="pctMed">0%</span></p>
+    <p>High: <span id="pctHigh">0%</span></p>
+    <p>Competition: <span id="pctCompetition">0%</span></p>
+  </div>
+
+  <div class="card">
+    <h2>Yearly Intensity Lines</h2>
+    <canvas id="yearIntensityChart"></canvas>
+  </div>
+
+  <div class="card">
+    <label for="monthSelect"><strong>Select Month</strong></label>
+    <select id="monthSelect">
+      <option value="0">January</option>
+      <option value="1">February</option>
+      <option value="2">March</option>
+      <option value="3">April</option>
+      <option value="4">May</option>
+      <option value="5">June</option>
+      <option value="6">July</option>
+      <option value="7">August</option>
+      <option value="8">September</option>
+      <option value="9">October</option>
+      <option value="10">November</option>
+      <option value="11">December</option>
+    </select>
+  </div>
+</section>
+
+  <!-- SESSION MODAL -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <h3>Edit Session</h3>
+
+      <label>Intensity</label>
+      <select id="modalIntensity">
+        <option value="rest">Rest</option>
+        <option value="low">Low</option>
+        <option value="med">Medium</option>
+        <option value="high">High</option>
+        <option value="competition">Competition</option>
+      </select>
+
+      <label>Session</label>
+      <textarea id="modalSession"></textarea>
+
+      <div class="modal-actions">
+        <button id="modalCancel">Cancel</button>
+        <button id="modalClear">Clear</button>
+        <button id="modalSave" class="primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+</section>
+<!-- DRILLS PAGE -->
+<section id="drills" class="page">
+<div class="card">
+  <h2>Sprint Drills</h2>
+  <ul class="drill-list">
+
+    <!-- Ankeling -->
+    <li class="drill-item">
+      <button class="drill-button">Ankeling</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Build ankle stiffness and fast ground contacts.</p>
+        <p><strong>Movement:</strong> Bounce tall with quick, stiff ankle strikes under hips.</p>
+        <p><strong>Cues:</strong> Stiff ankles, tall posture, fast rhythm.</p>
+        <p><strong>Mistakes:</strong> Heel striking, leaning forward.</p>
+        <p><strong>Feel:</strong> Light, fast, elastic bounce.</p>
+      </div>
+    </li>
+
+    <!-- High Knees -->
+    <li class="drill-item">
+      <button class="drill-button">High Knees</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Improve front-side lift and cadence.</p>
+        <p><strong>Movement:</strong> Drive knees to hip height with fast foot turnover.</p>
+        <p><strong>Cues:</strong> Tall torso, fast feet, toe up.</p>
+        <p><strong>Mistakes:</strong> Leaning back, slow rhythm.</p>
+        <p><strong>Feel:</strong> Quick, rhythmic knee lift.</p>
+      </div>
+    </li>
+
+    <!-- Butt Kicks -->
+    <li class="drill-item">
+      <button class="drill-button">Butt Kicks</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Train hamstring recovery mechanics.</p>
+        <p><strong>Movement:</strong> Heel snaps to glute with quick cycle.</p>
+        <p><strong>Cues:</strong> Heel up, quick recovery, tall posture.</p>
+        <p><strong>Mistakes:</strong> Backward lean, slow cycle.</p>
+        <p><strong>Feel:</strong> Fast, elastic heel recovery.</p>
+      </div>
+    </li>
+
+    <!-- Scissors -->
+    <li class="drill-item">
+      <button class="drill-button">Scissors</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Improve alternating leg cycle rhythm.</p>
+        <p><strong>Movement:</strong> Quick switch of legs under hips.</p>
+        <p><strong>Cues:</strong> Fast switch, tall posture.</p>
+        <p><strong>Mistakes:</strong> Overstriding, leaning back.</p>
+        <p><strong>Feel:</strong> Snappy, rhythmic switching.</p>
+      </div>
+    </li>
+
+    <!-- High Knee Skips -->
+    <li class="drill-item">
+      <button class="drill-button">High Knee Skips</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Combine knee lift with bounce.</p>
+        <p><strong>Movement:</strong> Skip tall while driving knee up.</p>
+        <p><strong>Cues:</strong> Punch ground, rise tall.</p>
+        <p><strong>Mistakes:</strong> Heavy landings.</p>
+        <p><strong>Feel:</strong> Light, bouncy lift.</p>
+      </div>
+    </li>
+
+    <!-- Low Skips -->
+    <li class="drill-item">
+      <button class="drill-button">Low Skips</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Build rhythm and coordination.</p>
+        <p><strong>Movement:</strong> Soft, low bounce skips.</p>
+        <p><strong>Cues:</strong> Smooth timing, relaxed arms.</p>
+        <p><strong>Mistakes:</strong> Stiff posture.</p>
+        <p><strong>Feel:</strong> Easy, flowing rhythm.</p>
+      </div>
+    </li>
+
+    <!-- Bounding -->
+    <li class="drill-item">
+      <button class="drill-button">Bounding</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Develop stride power and elasticity.</p>
+        <p><strong>Movement:</strong> Long, powerful strides with stiff contacts.</p>
+        <p><strong>Cues:</strong> Big stride, tall posture.</p>
+        <p><strong>Mistakes:</strong> Collapsing hips.</p>
+        <p><strong>Feel:</strong> Powerful, elastic strides.</p>
+      </div>
+    </li>
+
+    <!-- 1-2 High Knee -->
+    <li class="drill-item">
+      <button class="drill-button">1-2 High Knee</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Rhythm into knee lift.</p>
+        <p><strong>Movement:</strong> Two small steps → big knee drive.</p>
+        <p><strong>Cues:</strong> Quick-quick-lift.</p>
+        <p><strong>Mistakes:</strong> Slow first steps.</p>
+        <p><strong>Feel:</strong> Snappy rhythm into lift.</p>
+      </div>
+    </li>
+
+    <!-- 1-2 Butt Kick -->
+    <li class="drill-item">
+      <button class="drill-button">1-2 Butt Kick</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Rhythm into hamstring recovery.</p>
+        <p><strong>Movement:</strong> Two steps → heel to glute.</p>
+        <p><strong>Cues:</strong> Quick-quick-heel.</p>
+        <p><strong>Mistakes:</strong> Slow cycle.</p>
+        <p><strong>Feel:</strong> Fast rhythm into recovery.</p>
+      </div>
+    </li>
+
+    <!-- Scissors Skip -->
+    <li class="drill-item">
+      <button class="drill-button">Scissors Skip</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Coordination + alternating cycle.</p>
+        <p><strong>Movement:</strong> Skip while switching legs.</p>
+        <p><strong>Cues:</strong> Quick switch, tall posture.</p>
+        <p><strong>Mistakes:</strong> Twisting torso.</p>
+        <p><strong>Feel:</strong> Smooth alternating rhythm.</p>
+      </div>
+    </li>
+
+    <!-- Single-Leg High Knee -->
+    <li class="drill-item">
+      <button class="drill-button">Single-Leg High Knee</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Isolate front-side lift.</p>
+        <p><strong>Movement:</strong> Repeated knee drives on one leg.</p>
+        <p><strong>Cues:</strong> Tall posture, toe up.</p>
+        <p><strong>Mistakes:</strong> Leaning back.</p>
+        <p><strong>Feel:</strong> Strong, isolated lift.</p>
+      </div>
+    </li>
+
+    <!-- 1-2 Heel to Butt -->
+    <li class="drill-item">
+      <button class="drill-button">1-2 Heel to Butt (Anfersen)</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Hip + heel bend together.</p>
+        <p><strong>Movement:</strong> Two steps → heel + hip snap.</p>
+        <p><strong>Cues:</strong> Quick-quick-snap.</p>
+        <p><strong>Mistakes:</strong> Slow hip bend.</p>
+        <p><strong>Feel:</strong> Fast, elastic snap.</p>
+      </div>
+    </li>
+
+    <!-- A-March -->
+    <li class="drill-item">
+      <button class="drill-button">A-March</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Teach posture + knee lift.</p>
+        <p><strong>Movement:</strong> Lift knee to hip height, toe up, step under hips.</p>
+        <p><strong>Cues:</strong> Tall torso, active foot.</p>
+        <p><strong>Mistakes:</strong> Leaning back.</p>
+        <p><strong>Feel:</strong> Controlled marching.</p>
+      </div>
+    </li>
+
+    <!-- B-March -->
+    <li class="drill-item">
+      <button class="drill-button">B-March</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Knee lift + extension + recovery.</p>
+        <p><strong>Movement:</strong> Lift → extend → snap under hips.</p>
+        <p><strong>Cues:</strong> Extend fully, snap fast.</p>
+        <p><strong>Mistakes:</strong> Over-extending.</p>
+        <p><strong>Feel:</strong> Long reach + quick snap.</p>
+      </div>
+    </li>
+
+
+    
+    <!-- Frog Skip -->
+    <li class="drill-item">
+      <button class="drill-button">Frog Skip</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Hip mobility + bounce.</p>
+        <p><strong>Movement:</strong> Skip with knees wide.</p>
+        <p><strong>Cues:</strong> Open hips, bounce tall.</p>
+        <p><strong>Mistakes:</strong> Knees collapsing.</p>
+        <p><strong>Feel:</strong> Open, bouncy rhythm.</p>
+      </div>
+    </li>
+
+    <!-- High Kicks -->
+    <li class="drill-item">
+      <button class="drill-button">High Kicks</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Hamstring mobility.</p>
+        <p><strong>Movement:</strong> Straight leg kicks to opposite hand.</p>
+        <p><strong>Cues:</strong> Straight leg, toe up.</p>
+        <p><strong>Mistakes:</strong> Leaning back.</p>
+        <p><strong>Feel:</strong> Controlled stretch.</p>
+      </div>
+    </li>
+
+    <!-- Cross Overs -->
+    <li class="drill-item">
+      <button class="drill-button">Cross Overs</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Lateral coordination.</p>
+        <p><strong>Movement:</strong> Step across body smoothly.</p>
+        <p><strong>Cues:</strong> Smooth rhythm, tall posture.</p>
+        <p><strong>Mistakes:</strong> Twisting shoulders.</p>
+        <p><strong>Feel:</strong> Controlled lateral flow.</p>
+      </div>
+    </li>
+
+    <!-- Scoops -->
+    <li class="drill-item">
+      <button class="drill-button">Scoops</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Hamstring mobility + coordination.</p>
+        <p><strong>Movement:</strong> Scoop foot forward with straight leg.</p>
+        <p><strong>Cues:</strong> Straight leg, tall torso.</p>
+        <p><strong>Mistakes:</strong> Rounding back.</p>
+        <p><strong>Feel:</strong> Light stretch + smooth motion.</p>
+      </div>
+    </li>
+
+    <!-- Side Skip -->
+    <li class="drill-item">
+      <button class="drill-button">Side Skip</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Lateral rhythm + coordination.</p>
+        <p><strong>Movement:</strong> Skip sideways with bounce.</p>
+        <p><strong>Cues:</strong> Hips level, tall posture.</p>
+        <p><strong>Mistakes:</strong> Leaning sideways.</p>
+        <p><strong>Feel:</strong> Light, rhythmic lateral movement.</p>
+      </div>
+    </li>
+
+    <!-- Open Gate -->
+    <li class="drill-item">
+      <button class="drill-button">Open Gate</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Hip opening mobility.</p>
+        <p><strong>Movement:</strong> Lift knee → rotate outward.</p>
+        <p><strong>Cues:</strong> Lift first, rotate second.</p>
+        <p><strong>Mistakes:</strong> Rotating too early.</p>
+        <p><strong>Feel:</strong> Smooth hip opening.</p>
+      </div>
+    </li>
+
+    <!-- Shut Gate -->
+    <li class="drill-item">
+      <button class="drill-button">Shut Gate</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Hip closing mobility.</p>
+        <p><strong>Movement:</strong> Lift knee → rotate inward.</p>
+        <p><strong>Cues:</strong> Controlled inward rotation.</p>
+        <p><strong>Mistakes:</strong> Dropping knee.</p>
+        <p><strong>Feel:</strong> Smooth hip closing.</p>
+      </div>
+    </li>
+
+        <!-- A-Skip -->
+    <li class="drill-item">
+      <button class="drill-button">A‑Skip</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Build front‑side mechanics and rhythm.</p>
+        <p><strong>Movement:</strong> Skip with alternating high knee lift.</p>
+        <p><strong>Cues:</strong> Tall posture, toe up, punch the ground.</p>
+        <p><strong>Mistakes:</strong> Leaning back, slow rhythm.</p>
+        <p><strong>Feel:</strong> Light, bouncy, rhythmic knee lift.</p>
+      </div>
+    </li>
+
+    <!-- B-Skip -->
+    <li class="drill-item">
+      <button class="drill-button">B‑Skip</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Teach leg extension and recovery mechanics.</p>
+        <p><strong>Movement:</strong> A‑Skip first → extend leg → snap foot back under hips.</p>
+        <p><strong>Cues:</strong> Lift, extend, snap.</p>
+        <p><strong>Mistakes:</strong> Over‑extending, collapsing posture.</p>
+        <p><strong>Feel:</strong> Long reach with quick recovery.</p>
+      </div>
+    </li>
+
+    <!-- C-Skip -->
+    <li class="drill-item">
+      <button class="drill-button">C‑Skip</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Improve hip rotation and coordination.</p>
+        <p><strong>Movement:</strong> A‑Skip rhythm → on alternate skips rotate knee outward.</p>
+        <p><strong>Cues:</strong> Lift first, then open the knee.</p>
+        <p><strong>Mistakes:</strong> Rotating too early, losing posture.</p>
+        <p><strong>Feel:</strong> Smooth A‑Skip with controlled hip opening.</p>
+      </div>
+    </li>
+
+    <!-- Lunges -->
+    <li class="drill-item">
+      <button class="drill-button">Lunges</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Build leg strength, balance, and hip mobility.</p>
+        <p><strong>Movement:</strong> Step forward, lower both knees, push back up, alternate legs.</p>
+        <p><strong>Cues:</strong> Tall torso, front knee above ankle.</p>
+        <p><strong>Mistakes:</strong> Leaning forward, collapsing hips.</p>
+        <p><strong>Feel:</strong> Strong, controlled step and rise.</p>
+      </div>
+    </li>
+
+    <!-- Walking Lunges -->
+    <li class="drill-item">
+      <button class="drill-button">Walking Lunges</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Strength + mobility while moving forward.</p>
+        <p><strong>Movement:</strong> Lunge → push up → step forward into next lunge.</p>
+        <p><strong>Cues:</strong> Step, drop, walk tall.</p>
+        <p><strong>Mistakes:</strong> Short steps, leaning back.</p>
+        <p><strong>Feel:</strong> Smooth forward flow with strong legs.</p>
+      </div>
+    </li>
+
+    <!-- Walking Lunges with Rotation -->
+    <li class="drill-item">
+      <button class="drill-button">Walking Lunges with Rotation</button>
+      <div class="drill-details">
+        <p><strong>Purpose:</strong> Add core strength + hip mobility.</p>
+        <p><strong>Movement:</strong> Lunge → rotate torso toward front leg → return → step forward.</p>
+        <p><strong>Cues:</strong> Twist toward front leg, hips stay forward.</p>
+        <p><strong>Mistakes:</strong> Twisting hips instead of torso.</p>
+        <p><strong>Feel:</strong> Strong core rotation with controlled lunge.</p>
+      </div>
+    </li>
+
+
+  </ul>
+</div>
+
+</section>
+
+<!-- CALCULATOR PAGE -->
+<section id="calculator" class="page">
+  <h1>Calculator</h1>
+
+  <div class="card">
+    <h2>Pace Calculator</h2>
+
+    <label>Event:
+      <select id="calcEvent">
+        <option value="5k">5K</option>
+        <option value="1500m">1500m</option>
+        <option value="800m">800m</option>
+        <option value="400m">400m</option>
+      </select>
+    </label>
+
+    <label>PB Time:
+      <input type="text" id="calcPB" placeholder="e.g. 17:50">
+    </label>
+
+   <label>Pace Type:
+  <select id="paceType">
+    <option value="">Select pace type…</option>
+  </select>
+</label>
+
+<button id="calcButton">Calculate</button>
+  </div>
+
+  <div id="paceDescription" class="pace-desc"></div>
+
+
+  <!-- ⭐ ALL SPLIT CARDS NOW INSIDE CALCULATOR PAGE ⭐ -->
+
+ <!-- 5K Card -->
+<div class="card">
+  <div class="card-header" onclick="toggleCard(this)">
+    5K Pace Zones
+    <span class="arrow">▶</span>
+  </div>
+  <div class="card-content">
+    <div id="zones-5k">
+
+      <!-- ⭐ NEW: Race Pace -->
+      <div class="zone-block" data-pace="rp">
+        Race Pace: 
+        <span id="rp5k_km"></span> / 
+        <span id="rp5k_400"></span>
+      </div>
+
+      <div class="zone-block" data-pace="recovery">
+        Recovery: <span id="z1km"></span> / <span id="z1_400"></span>
+      </div>
+
+      <div class="zone-block" data-pace="easy">
+        Easy: <span id="z2km"></span> / <span id="z2_400"></span>
+      </div>
+
+      <div class="zone-block" data-pace="tempo">
+        Tempo: <span id="z3km"></span> / <span id="z3_400"></span>
+      </div>
+
+      <div class="zone-block" data-pace="threshold">
+        Threshold: <span id="z4km"></span> / <span id="z4_400"></span>
+      </div>
+
+      <div class="zone-block" data-pace="vo2">
+        VO₂ Max: <span id="z5km"></span> / <span id="z5_400"></span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 5K Splits -->
+<div class="card">
+  <div class="card-header" onclick="toggleCard(this)">
+    5K Splits
+    <span class="arrow">▶</span>
+  </div>
+  <div class="card-content">
+    <div id="splits-5k">
+      <div class="zone-block" data-pace="rp">400m: <span id="split_400"></span></div>
+      <div class="zone-block" data-pace="rp">800m: <span id="split_800"></span></div>
+      <div class="zone-block" data-pace="rp">1000m: <span id="split_1000"></span></div>
+      <div class="zone-block" data-pace="rp">2000m: <span id="split_2000"></span></div>
+      <div class="zone-block" data-pace="rp">3000m: <span id="split_3000"></span></div>
+      <div class="zone-block" data-pace="rp">4000m: <span id="split_4000"></span></div>
+    </div>
+  </div>
+</div>
+
+  <!-- 1500m Card -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      1500m Splits
+      <span class="arrow">▶</span>
+    </div>
+    <div class="card-content">
+      <div id="zones-1500">
+        <!-- Race Pace -->
+        <div class="zone-block" data-pace="rp">
+  Race Pace:
+  <div>300m: <span id="rp_300"></span></div>
+  <div>400m: <span id="rp_400"></span></div>
+  <div>500m: <span id="rp_500"></span></div>
+  <div>600m: <span id="rp_600"></span></div>
+  <div>800m: <span id="rp_800"></span></div>
+  <div>1000m: <span id="rp_1000"></span></div>
+  <div>1200m: <span id="rp_1200"></span></div>
+</div>
+
+
+        <!-- Speed Endurance -->
+        <div class="zone-block" data-pace="se">
+          Speed Endurance:
+          150m: <span id="se_150"></span>,
+          200m: <span id="se_200"></span>,
+          300m: <span id="se_300"></span>,
+          400m: <span id="se_400"></span>,
+          500m: <span id="se_500"></span>,
+          600m: <span id="se_600"></span>
+        </div>
+
+        <!-- Aerobic Support -->
+        <div class="zone-block" data-pace="as">
+          Aerobic Support:
+          400m: <span id="as_400"></span>,
+          500m: <span id="as_500"></span>,
+          600m: <span id="as_600"></span>,
+          800m: <span id="as_800"></span>,
+          1000m: <span id="as_1000"></span>,
+          1200m: <span id="as_1200"></span>,
+          1600m: <span id="as_1600"></span>
+        </div>
+
+        <!-- Reps -->
+        <div class="zone-block" data-pace="reps">
+          Reps:
+          100m: <span id="reps_100"></span>,
+          200m: <span id="reps_200"></span>,
+          300m: <span id="reps_300"></span>,
+          400m: <span id="reps_400"></span>,
+          500m: <span id="reps_500"></span>
+        </div>
+
+        <!-- Intervals -->
+        <div class="zone-block" data-pace="int">
+          Intervals:
+          400m: <span id="int_400"></span>,
+          500m: <span id="int_500"></span>,
+          600m: <span id="int_600"></span>,
+          800m: <span id="int_800"></span>,
+          1000m: <span id="int_1000"></span>
+        </div>
+
+        <!-- VO₂ Max -->
+        <div class="zone-block" data-pace="vo2">
+          VO₂ Max:
+          400m: <span id="vo2_400"></span>,
+          500m: <span id="vo2_500"></span>,
+          600m: <span id="vo2_600"></span>,
+          800m: <span id="vo2_800"></span>,
+          1000m: <span id="vo2_1000"></span>,
+          1200m: <span id="vo2_1200"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 800m Card -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      800m Splits
+      <span class="arrow">▶</span>
+    </div>
+    <div class="card-content">
+      <div id="zones-800">
+       <div class="zone-block" data-pace="rp">
+  Race Pace:
+  <div>200m: <span id="rp800_200"></span></div>
+  <div>300m: <span id="rp800_300"></span></div>
+  <div>400m: <span id="rp800_400"></span></div>
+  <div>500m: <span id="rp800_500"></span></div>
+  <div>600m: <span id="rp800_600"></span></div>
+</div>
+
+
+        <div class="zone-block" data-pace="se">
+          Speed Endurance:
+          <span id="se800_200"></span>,
+          <span id="se800_300"></span>,
+          <span id="se800_400"></span>,
+          <span id="se800_500"></span>,
+          <span id="se800_600"></span>
+        </div>
+
+        <div class="zone-block" data-pace="reps">
+          Reps:
+          <span id="reps800_100"></span>,
+          <span id="reps800_150"></span>,
+          <span id="reps800_200"></span>,
+          <span id="reps800_250"></span>,
+          <span id="reps800_300"></span>,
+          <span id="reps800_400"></span>
+        </div>
+
+        <div class="zone-block" data-pace="int">
+          Intervals:
+          <span id="int800_200"></span>,
+          <span id="int800_300"></span>,
+          <span id="int800_400"></span>,
+          <span id="int800_500"></span>,
+          <span id="int800_600"></span>,
+          <span id="int800_800"></span>
+        </div>
+
+        <div class="zone-block" data-pace="vo2">
+          VO₂ Max:
+          <span id="vo2800_400"></span>,
+          <span id="vo2800_500"></span>,
+          <span id="vo2800_600"></span>,
+          <span id="vo2800_800"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 400m Card -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      400m Sprint Profile
+      <span class="arrow">▶</span>
+    </div>
+    <div class="card-content">
+      <div id="zones-400">
+        <div class="zone-block" data-pace="rp">
+  Race Pace:
+  <div>100m: <span id="rp400_100"></span></div>
+  <div>200m: <span id="rp400_200"></span></div>
+  <div>300m: <span id="rp400_300"></span></div>
+</div>
+
+
+        <div class="zone-block" data-pace="alactic">
+          <h3>Alactic</h3>
+          <div>30m: <span id="al400_30"></span></div>
+          <div>60m: <span id="al400_60"></span></div>
+          <div>100m: <span id="al400_100"></span></div>
+          <div>150m: <span id="al400_150"></span></div>
+        </div>
+
+        <div class="zone-block" data-pace="se">
+          <h3>Speed Endurance</h3>
+          <div>150m SE: <span id="se400_150"></span></div>
+          <div>200m SE: <span id="se400_200"></span></div>
+          <div>300m SE: <span id="se400_300"></span></div>
+          <div>400m SE: <span id="se400_400"></span></div>
+        </div>
+
+        <div class="zone-block" data-pace="lt">
+          <h3>Lactic Tolerance</h3>
+          <div>100m LT: <span id="lt400_100"></span></div>
+          <div>150m LT: <span id="lt400_150"></span></div>
+          <div>200m LT: <span id="lt400_200"></span></div>
+          <div>300m LT: <span id="lt400_300"></span></div>
+        </div>
+
+        <div class="zone-block" data-pace="intervals">
+          <h3>Intervals</h3>
+          <div>200m INT: <span id="int400_200"></span></div>
+          <div>300m INT: <span id="int400_300"></span></div>
+          <div>400m INT: <span id="int400_400"></span></div>
+          <div>600m INT: <span id="int400_600"></span></div>
+        </div>
+
+        <div class="zone-block" data-pace="vo2">
+          <h3>VO₂ Max</h3>
+          <div>300m VO₂: <span id="vo2400_300"></span></div>
+          <div>400m VO₂: <span id="vo2400_400"></span></div>
+          <div>600m VO₂: <span id="vo2400_600"></span></div>
+          <div>800m VO₂: <span id="vo2400_800"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ⭐ COACH PAGE ⭐ -->
+<section id="coach" class="page">
+  <h1>Add Coach</h1>
+
+  <label>Name:
+    <input type="text" id="coachName">
+  </label>
+
+  <label>Email:
+    <input type="text" id="coachEmail">
+  </label>
+
+  <label>Phone:
+    <input type="text" id="coachPhone">
+  </label>
+
+  <label>Discipline:
+    <select id="coachDiscipline">
+      <option value="">Select discipline</option>
+      <option>Endurance</option>
+      <option>Sprints</option>
+      <option>Hurdles</option>
+      <option>Throws</option>
+      <option>Jumps</option>
+      <option>Multi-Event</option>
+    </select>
+  </label>
+
+  <textarea id="coachNotes" placeholder="Write your notes here..."></textarea>
+
+  <button id="generateNotesButton">Generate Notes</button>
+  <button id="saveCoachButton">Save Coach</button>
+  <button id="deleteCoachButton">Delete Coach</button>
+</section>
+
+<!-- S&C Page -->
+<section id="strength" class="page">
+  <h1>Strength & Conditioning</h1>
+
+  <div class="card">
+    <h2>Overview</h2>
+    <p>
+      Strength & Conditioning supports your running performance by improving power,
+      stability, mobility, and injury resilience. Use this page to track sessions,
+      view recommended exercises, and build weekly structure.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Key Areas</h2>
+    <ul>
+      <li>Lower Body Strength (squats, lunges, deadlifts)</li>
+      <li>Core Stability (planks, rotations, bracing)</li>
+      <li>Hip Mobility (openers, band work)</li>
+      <li>Plyometrics (bounds, hops, jumps)</li>
+      <li>Posterior Chain (hamstrings, glutes, back)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Weekly Structure</h2>
+    <p>Suggested weekly layout:</p>
+    <ul>
+      <li>2× Strength Sessions</li>
+      <li>1× Mobility Session</li>
+      <li>1× Plyometric Session</li>
+      <li>Optional: Conditioning Circuits</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Session Builder</h2>
+    <p>S&C TRAINING NOTICE. Athletes are encouraged to work within their own ability and inform the coach of any injury , illness or concerns before participating.
+      All exercises should be completed safely and as instructed. FAILURE TO DO SO MAY INCREASE RISK OF INDURY. ATHLETES PARTICIPATE AT THEIR OWN RISK.
+    </p>
+    <!-- LEVEL BUTTONS -->
+<!-- FOUNDATION -->
+<!-- FOUNDATION -->
+<button class="level-button foundation">
+  <span class="level-dot dot-foundation"></span> Foundation Level
+</button>
+
+<div class="level-details">
+
+  <!-- Lower Body Strength -->
+  <button class="exercise-button">Glute Bridge</button>
+  <div class="exercise-details">Lie on your back, feet flat, lift hips by squeezing glutes. Keep ribs down.</div>
+
+  <button class="exercise-button">Wall Sit</button>
+  <div class="exercise-details">Slide down the wall until knees are at 90°, hold while keeping core tight.</div>
+
+  <button class="exercise-button">Calf Raises</button>
+  <div class="exercise-details">Rise onto toes, pause at top, lower slowly to strengthen calves.</div>
+
+  <button class="exercise-button">Bodyweight Squat</button>
+  <div class="exercise-details">Sit hips back and down, keep chest tall, push through heels to stand.</div>
+
+  <button class="exercise-button">FloorSquat Thrusts</button>
+  <div class="exercise-details">Drop to plank, jump feet in, stand tall. Builds conditioning and mobility.</div>
+
+  <button class="exercise-button">Step-Ups</button>
+  <div class="exercise-details">Step onto a box, push through heel, stand tall, step down under control.</div>
+
+  <button class="exercise-button">Med Ball Lunges (Light)</button>
+  <div class="exercise-details">Step forward, lower under control, rotate lightly with the ball.</div>
+
+  
+
+
+  <!-- Band Work -->
+  <div class="band-label"><span class="level-dot dot-foundation"></span> Band Work</div>
+
+  <button class="exercise-button">Band Front Kick (Left)</button>
+  <div class="exercise-details">Drive knee upward against band tension to activate hip flexors.</div>
+
+  <button class="exercise-button">Band Front Kick (Right)</button>
+  <div class="exercise-details">Repeat on opposite side to build balanced hip strength.</div>
+
+  <button class="exercise-button">Band Back Kick (Left)</button>
+  <div class="exercise-details">Extend leg backward to activate glutes and hip extension.</div>
+
+  <button class="exercise-button">Band Back Kick (Right)</button>
+  <div class="exercise-details">Repeat on opposite side to improve running power.</div>
+
+  <button class="exercise-button">Band Side Walk (Left)</button>
+  <div class="exercise-details">Step sideways under band tension to activate glute med.</div>
+
+  <button class="exercise-button">Band Side Walk (Right)</button>
+  <div class="exercise-details">Strengthens lateral hip stability and control.</div>
+
+  <button class="exercise-button">Band Knee Drive (Left)</button>
+  <div class="exercise-details">Drive knee upward to strengthen hip flexors and stride mechanics.</div>
+
+  <button class="exercise-button">Band Knee Drive (Right)</button>
+  <div class="exercise-details">Repeat on opposite side for balanced hip function.</div>
+
+
+  <!-- Core Stability -->
+  <div class="band-label"><span class="level-dot dot-foundation"></span> Core Stability</div>
+
+  <button class="exercise-button">Front Plank</button>
+  <div class="exercise-details">Hold a straight line from shoulders to heels while bracing your core.</div>
+
+  <button class="exercise-button">Side Plank</button>
+  <div class="exercise-details">Lift hips and hold, keeping body straight to engage obliques.</div>
+
+   <button class="exercise-button">Press-Ups</button>
+  <div class="exercise-details">Keep a straight body line, lower chest toward floor, press back up while bracing core.</div>
+
+  <button class="exercise-button">Dead Bug</button>
+  <div class="exercise-details">Extend opposite arm and leg while keeping lower back pressed into the floor.</div>
+
+  <button class="exercise-button">Bird Dog</button>
+  <div class="exercise-details">Extend opposite arm and leg while keeping hips level and stable.</div>
+
+  <button class="exercise-button">Standing Bracing</button>
+  <div class="exercise-details">Stand tall, brace core by tightening midsection without holding breath.</div>
+
+
+  <!-- Hip Mobility -->
+  <div class="band-label"><span class="level-dot dot-foundation"></span> Hip Mobility</div>
+
+  <button class="exercise-button">Leg Swings (Front/Side)</button>
+  <div class="exercise-details">Swing leg forward/back or side-to-side to open hips and improve range.</div>
+
+  <button class="exercise-button">Hip Circles</button>
+  <div class="exercise-details">Move hips in slow circles to warm up the joint and increase mobility.</div>
+
+  <button class="exercise-button">Kneeling Hip Flexor Stretch</button>
+  <div class="exercise-details">Lean forward from kneeling position to stretch hip flexors and quads.</div>
+
+  <button class="exercise-button">90/90 Hip Switches</button>
+  <div class="exercise-details">Rotate knees side to side to improve hip rotation and control.</div>
+
+  <button class="exercise-button">Band Side Walk (Light)</button>
+  <div class="exercise-details">Use a light band to activate glutes and improve hip stability.</div>
+
+
+  <!-- Posterior Chain -->
+  <div class="band-label"><span class="level-dot dot-foundation"></span> Posterior Chain</div>
+
+  <button class="exercise-button">Hamstring Walkouts</button>
+  <div class="exercise-details">Bridge hips up, walk feet out slowly to load hamstrings, walk back in.</div>
+
+  <button class="exercise-button">Hip Hinge Drill</button>
+  <div class="exercise-details">Practice hinge pattern keeping spine neutral and pushing hips back.</div>
+
+  <button class="exercise-button">Swiss Ball Leg Curl (Easy)</button>
+  <div class="exercise-details">Bridge hips, curl ball toward you, extend slowly to strengthen hamstrings.</div>
+
+  <button class="exercise-button">Glute Bridge March</button>
+  <div class="exercise-details">Hold bridge position and lift one knee at a time to challenge stability.</div>
+
+
+  <!-- Plyometrics -->
+  <div class="band-label"><span class="level-dot dot-foundation"></span> Plyometrics</div>
+
+  <button class="exercise-button">Line Hops (Front/Back)</button>
+  <div class="exercise-details">Hop lightly over a line, focusing on rhythm and soft landings.</div>
+
+  <button class="exercise-button">Small Lateral Hops</button>
+  <div class="exercise-details">Hop side-to-side with control to build stability and coordination.</div>
+
+  <button class="exercise-button">Speed Skips</button>
+  <div class="exercise-details">Skip forward with quick ground contact to develop lower-leg elasticity.</div>
+
+  <button class="exercise-button">Low Box Step-Off → Stick Landing</button>
+  <div class="exercise-details">Step off a low box and hold the landing to train balance and deceleration.</div>
+
+  <button class="exercise-button">Mini Bounds</button>
+  <div class="exercise-details">Short, gentle bounds focusing on posture and soft landings.</div>
+
+  <button class="exercise-button">Ankle Pops</button>
+  <div class="exercise-details">Small jumps using only the ankles to build stiffness and reactive strength.</div>
+
+</div>
+
+
+  <!-- INTERMEDIATE -->
+ <!-- INTERMEDIATE -->
+<button class="level-button intermediate">
+  <span class="level-dot dot-intermediate"></span> Intermediate Level
+</button>
+
+<div class="level-details">
+
+  <!-- Lower Body Strength -->
+  <button class="exercise-button">Split Squat</button>
+  <div class="exercise-details">Lower straight down, keep torso tall, push through front heel.</div>
+
+ <button class="exercise-button">FloorSquat Thrusts</button>
+  <div class="exercise-details">Drop to plank, jump feet in, stand tall. Builds conditioning and mobility.</div>
+
+  <button class="exercise-button">Kettlebell Deadlift</button>
+  <div class="exercise-details">Hinge hips back, keep spine long, stand tall by driving through glutes.</div>
+
+  <button class="exercise-button">Side Lunges</button>
+  <div class="exercise-details">Step sideways, sit hips back, push off strongly to return.</div>
+
+  <button class="exercise-button">Full Squat</button>
+  <div class="exercise-details">Squat to full comfortable depth while keeping chest up.</div>
+
+  <button class="exercise-button">Goblet Squat</button>
+  <div class="exercise-details">Hold weight at chest, squat down keeping elbows inside knees.</div>
+
+  <button class="exercise-button">Reverse Lunge</button>
+  <div class="exercise-details">Step back, lower under control, push through front leg.</div>
+
+  <button class="exercise-button">Romanian Deadlift</button>
+  <div class="exercise-details">Push hips back, slight knee bend, feel stretch in hamstrings.</div>
+
+  <button class="exercise-button">Hip Thrust</button>
+  <div class="exercise-details">Drive hips upward by squeezing glutes, keep chin tucked.</div>
+
+ 
+
+
+  <!-- Band Work -->
+  <div class="band-label"><span class="level-dot dot-intermediate"></span> Band Work</div>
+
+  <button class="exercise-button">Band Side Walk (Long Distance)</button>
+  <div class="exercise-details">Increase steps to build time under tension for hip stability.</div>
+
+  <button class="exercise-button">Band Knee Drive (Strong Band)</button>
+  <div class="exercise-details">Drive knee upward against stronger resistance for stride power.</div>
+
+  <button class="exercise-button">Band Front/Back Kick (Strong Band)</button>
+  <div class="exercise-details">Higher resistance builds hip strength and control.</div>
+
+  <button class="exercise-button">Band Hip Activation Flow</button>
+  <div class="exercise-details">Continuous band sequence targeting flexors, extensors, and abductors.</div>
+
+
+  <!-- Core Stability -->
+  <div class="band-label"><span class="level-dot dot-intermediate"></span> Core Stability</div>
+
+  <button class="exercise-button">Plank with Reach</button>
+  <div class="exercise-details">Reach one arm forward while keeping hips stable.</div>
+
+  <button class="exercise-button">Side Plank with Hip Lift</button>
+  <div class="exercise-details">Lift hips up and down to strengthen obliques and lateral core.</div>
+
+   <button class="exercise-button">Press-Ups (Tempo)</button>
+  <div class="exercise-details">Lower for 3 seconds, pause briefly, press up powerfully.</div>
+
+
+  <button class="exercise-button">Pallof Press</button>
+  <div class="exercise-details">Press band or cable forward resisting rotation.</div>
+
+  <button class="exercise-button">Anti-Rotation Hold</button>
+  <div class="exercise-details">Hold band at chest height resisting sideways pull.</div>
+
+  <button class="exercise-button">Stir-the-Pot</button>
+  <div class="exercise-details">Circle forearms on a Swiss ball while maintaining plank position.</div>
+
+
+  <!-- Hip Mobility -->
+  <div class="band-label"><span class="level-dot dot-intermediate"></span> Hip Mobility</div>
+
+  <button class="exercise-button">World’s Greatest Stretch</button>
+  <div class="exercise-details">Lunge forward, rotate torso, stretch hips and thoracic spine.</div>
+
+  <button class="exercise-button">Pigeon Stretch</button>
+  <div class="exercise-details">Fold forward over bent leg to stretch glutes and external rotation.</div>
+
+  <button class="exercise-button">Band Knee Drive (Medium Band)</button>
+  <div class="exercise-details">Drive knee upward with moderate resistance to improve hip flexion.</div>
+
+  <button class="exercise-button">Band Back Kick (Medium Band)</button>
+  <div class="exercise-details">Extend leg backward under band tension to strengthen glutes.</div>
+
+  <button class="exercise-button">Hip Openers Flow</button>
+  <div class="exercise-details">Dynamic sequence to open hips in multiple directions.</div>
+
+
+  <!-- Posterior Chain -->
+  <div class="band-label"><span class="level-dot dot-intermediate"></span> Posterior Chain</div>
+
+  <button class="exercise-button">Romanian Deadlift (Moderate Load)</button>
+  <div class="exercise-details">Increase load while maintaining hinge form.</div>
+
+  <button class="exercise-button">Hamstring Curl (Swiss Ball)</button>
+  <div class="exercise-details">Bridge hips, curl ball toward you, extend slowly.</div>
+
+  <button class="exercise-button">Glute Bridge March</button>
+  <div class="exercise-details">Lift one knee at a time while holding bridge position.</div>
+
+  <button class="exercise-button">Back Extensions</button>
+  <div class="exercise-details">Lift torso from hip hinge position to strengthen lower back.</div>
+
+  <button class="exercise-button">Good Mornings (Light Load)</button>
+  <div class="exercise-details">Hinge forward with light weight to train posterior chain.</div>
+
+
+  <!-- Plyometrics -->
+  <div class="band-label"><span class="level-dot dot-intermediate"></span> Plyometrics</div>
+
+  <button class="exercise-button">Vertical Jumps</button>
+  <div class="exercise-details">Jump straight up, land softly, reset between reps.</div>
+
+  <button class="exercise-button">Broad Jumps</button>
+  <div class="exercise-details">Jump forward explosively, stick the landing.</div>
+
+  <button class="exercise-button">Lateral Bounds</button>
+  <div class="exercise-details">Jump sideways from one leg to the other with control.</div>
+
+  <button class="exercise-button">Single-Leg Hops</button>
+  <div class="exercise-details">Hop on one leg focusing on balance and soft landings.</div>
+
+  <button class="exercise-button">Box Jumps (Low Box)</button>
+  <div class="exercise-details">Jump onto a low box, step down under control.</div>
+
+</div>
+
+<!-- ADVANCED -->
+<!-- ADVANCED -->
+<button class="level-button advanced">
+  <span class="level-dot dot-advanced"></span> Advanced Level
+</button>
+
+<div class="level-details">
+
+  <!-- Lower Body Strength -->
+  <button class="exercise-button">Box Jumps</button>
+  <div class="exercise-details">Explosive jump onto box, land softly, step down.</div>
+
+   <button class="exercise-button">FloorSquat Thrusts</button>
+  <div class="exercise-details">Drop to plank, jump feet in, stand tall. Builds conditioning and mobility.</div>
+
+
+  <button class="exercise-button">Barbell Hip Thrust</button>
+  <div class="exercise-details">Drive hips upward with heavy load, squeeze glutes hard.</div>
+
+  <button class="exercise-button">Single-Leg Deadlift</button>
+  <div class="exercise-details">Balance on one leg, hinge forward, keep hips square.</div>
+
+  <button class="exercise-button">Back Squat</button>
+  <div class="exercise-details">High-load squat keeping chest up and knees tracking.</div>
+
+  <button class="exercise-button">Front Squat</button>
+  <div class="exercise-details">Hold bar on shoulders, elbows high, squat upright.</div>
+
+  <button class="exercise-button">Bulgarian Split Squat</button>
+  <div class="exercise-details">Rear foot elevated, lower straight down, drive through front leg.</div>
+
+  <button class="exercise-button">Deadlift</button>
+  <div class="exercise-details">Lift bar from floor using strong hinge and full-body tension.</div>
+
+  <button class="exercise-button">Power Step-Ups</button>
+  <div class="exercise-details">Explosive step onto box, drive knee upward.</div>
+
+ 
+
+
+  <!-- Band Work -->
+  <div class="band-label"><span class="level-dot dot-advanced"></span> Band Work</div>
+
+  <button class="exercise-button">Explosive Knee Drive (Band)</button>
+  <div class="exercise-details">Drive knee upward rapidly against strong band tension.</div>
+
+  <button class="exercise-button">Heavy Band Lateral Walk</button>
+  <div class="exercise-details">Use heavy band to challenge hip stability and strength.</div>
+
+  <button class="exercise-button">High-Speed Front/Back Kicks</button>
+  <div class="exercise-details">Fast band kicks to build explosive hip control.</div>
+
+  <button class="exercise-button">Sprint-Specific Band Hip Work</button>
+  <div class="exercise-details">Advanced band sequence targeting sprint mechanics.</div>
+
+
+  <!-- Core Stability -->
+  <div class="band-label"><span class="level-dot dot-advanced"></span> Core Stability</div>
+
+  <button class="exercise-button">Hollow Hold</button>
+  <div class="exercise-details">Hold curved body position keeping lower back pressed into floor.</div>
+
+  
+
+   <button class="exercise-button">Explosive Press-Ups</button>
+  <div class="exercise-details">Lower under control, press up explosively lifting hands briefly.</div>
+
+  <button class="exercise-button">Hanging Knee Raise</button>
+  <div class="exercise-details">Hang from bar, lift knees toward chest with control.</div>
+
+  <button class="exercise-button">Anti-Rotation Press with Step</button>
+  <div class="exercise-details">Press band forward while stepping sideways to increase challenge.</div>
+
+  <button class="exercise-button">KB Rack Carry</button>
+  <div class="exercise-details">Carry kettlebell in rack position to challenge posture and core.</div>
+
+  <button class="exercise-button">Suitcase Carry (Heavy)</button>
+  <div class="exercise-details">Walk holding weight on one side resisting lateral bend.</div>
+
+
+  <!-- Hip Mobility -->
+  <div class="band-label"><span class="level-dot dot-advanced"></span> Hip Mobility</div>
+
+  <button class="exercise-button">Band Knee Drive (Strong Band)</button>
+  <div class="exercise-details">Drive knee upward with strong resistance for sprint power.</div>
+
+  <button class="exercise-button">Band Back Kick (Strong Band)</button>
+  <div class="exercise-details">Extend leg backward under heavy tension for glute strength.</div>
+
+  <button class="exercise-button">High-Speed Hip Opener Flow</button>
+  <div class="exercise-details">Fast mobility sequence targeting hip rotation and extension.</div>
+
+  <button class="exercise-button">Deep 90/90 Rotational Work</button>
+  <div class="exercise-details">Hold deep positions and rotate torso to increase hip mobility.</div>
+
+  <button class="exercise-button">Sprint-Specific Hip Mobility</button>
+  <div class="exercise-details">Advanced mobility drills targeting sprint stride positions.</div>
+
+
+  <!-- Posterior Chain -->
+  <div class="band-label"><span class="level-dot dot-advanced"></span> Posterior Chain</div>
+
+  <button class="exercise-button">Nordic Hamstring Curl</button>
+  <div class="exercise-details">Lower forward slowly using hamstrings, push back up lightly.</div>
+
+  <button class="exercise-button">Barbell Hip Thrust (Heavy)</button>
+  <div class="exercise-details">Lift heavy load with strong glute contraction at top.</div>
+
+  <button class="exercise-button">Reverse Hyper</button>
+  <div class="exercise-details">Lift legs behind you to strengthen glutes and lower back.</div>
+
+  <button class="exercise-button">Deadlift (Heavy)</button>
+  <div class="exercise-details">Lift heavy bar with strong hinge and full-body tension.</div>
+
+  <button class="exercise-button">Single-Leg Glute Bridge (Weighted)</button>
+  <div class="exercise-details">Lift hips on one leg while holding weight on hips.</div>
+
+
+  <!-- Plyometrics -->
+  <div class="band-label"><span class="level-dot dot-advanced"></span> Plyometrics</div>
+
+  <button class="exercise-button">Tuck Jumps</button>
+  <div class="exercise-details">Jump high, pull knees up, land softly.</div>
+
+  <button class="exercise-button">Single-Leg Bounds</button>
+  <div class="exercise-details">Bound forward on one leg focusing on power and control.</div>
+
+  <button class="exercise-button">Multi-Directional Hops</button>
+  <div class="exercise-details">Hop in different directions to build reactive strength.</div>
+
+  <button class="exercise-button">Depth Jumps</button>
+  <div class="exercise-details">Step off box, land, immediately jump upward.</div>
+
+  <button class="exercise-button">High Box Jumps</button>
+  <div class="exercise-details">Jump onto higher box focusing on explosive power.</div>
+
+  <button class="exercise-button">Sprint Bounds</button>
+  <div class="exercise-details">Long, powerful bounds mimicking sprint stride mechanics.</div>
+
+</div>
+
+    <h3>Level Guide</h3>
+    <ul>
+      <li><span class="level-dot dot-foundation"></span> Foundation — FOR ATHLETES NEW TO S&C OR DEVELOPING BASIC MOVEMENT SKILLS. 
+      FOCUS- Learning correct technique , control , stability , movement patterns. Exercises use mainly bodyweight or light resistance.</li>
+      <li><span class="level-dot dot-intermediate"></span> Intermediate — FOR ATHLETES WITH GOOD FOUNDATION SKILLS AND S&C EXPERIENCE.
+      Focus- Increasing strength and power while introducing greater resistance and more demanding exercises.</li>
+      <li><span class="level-dot dot-advanced"></span> Advanced — FOR EXPERIENCED ATHETES WITH EXCELLENT TECHNIQUE AND MOVMENT CONTROL.
+      Focus- Developing maximum strength , elasiticity and athletic performance . Exercises are more complex and require greater control and training experience.</li>
+    </ul>
+
+
+  <!-- AI SESSION GENERATOR -->
+  <button class="level-button foundation" onclick="generateSession('foundation')">
+    <span class="level-dot dot-foundation"></span> 
+    AI Build My Session — Foundation - AI IS NOT A COACH. IT IS A TOOL TO HELP YOU BUILD A SESSION.
+  </button>
+  <div class="level-details" id="foundation-session"></div>
+
+  <button class="level-button intermediate" onclick="generateSession('intermediate')">
+    <span class="level-dot dot-intermediate"></span> 
+    AI Build My Session — Intermediate - AI IS NOT A COACH. IT IS A TOOL TO HELP YOU BUILD A SESSION.
+  </button>
+  <div class="level-details" id="intermediate-session"></div>
+
+  <button class="level-button advanced" onclick="generateSession('advanced')">
+    <span class="level-dot dot-advanced"></span> 
+    AI Build My Session — Advanced - AI IS NOT A COACH. IT IS A TOOL TO HELP YOU BUILD A SESSION.
+  </button>
+  <div class="level-details" id="advanced-session"></div>
+
+</section>
+
+
+
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="app.js" defer></script>
+
+<script>
+document.querySelectorAll('.drill-button').forEach(button => {
+  button.addEventListener('click', () => {
+    const details = button.nextElementSibling;
+
+    document.querySelectorAll('.drill-details').forEach(box => {
+      if (box !== details) box.style.display = 'none';
+    });
+
+    details.style.display = details.style.display === 'block' ? 'none' : 'block';
+  });
+});
+</script>
+
+<script>
+// LEVEL BUTTON TOGGLE
+document.querySelectorAll('.level-button').forEach(button => {
+  button.addEventListener('click', () => {
+    const details = button.nextElementSibling;
+
+    // Close all other level dropdowns
+    document.querySelectorAll('.level-details').forEach(box => {
+      if (box !== details) box.style.display = 'none';
+    });
+
+    // Toggle this one
+    details.style.display = details.style.display === 'block' ? 'none' : 'block';
+  });
+});
+
+// EXERCISE BUTTON TOGGLE
+document.querySelectorAll('.exercise-button').forEach(button => {
+  button.addEventListener('click', () => {
+    const details = button.nextElementSibling;
+
+    // Close other exercise descriptions inside the same level
+    const parent = button.closest('.level-details');
+    parent.querySelectorAll('.exercise-details').forEach(box => {
+      if (box !== details) box.style.display = 'none';
+    });
+
+    // Toggle this one
+    details.style.display = details.style.display === 'block' ? 'none' : 'block';
+  });
+});
+</script>
+<script>
+const exercises = {
+  foundation: {
+    warmup: [
+      "Leg Swings (Front/Side)",
+      "Hip Circles",
+      "Band Side Walk (Light)",
+      "90/90 Hip Switches"
+    ],
+    strength: [
+      "Bodyweight Squat",
+      "Step-Ups",
+      "Glute Bridge",
+      "Press-Ups",
+      "Wall Sit",
+      "Calf Raises"
+    ],
+    core: [
+      "Front Plank",
+      "Side Plank",
+      "Dead Bug",
+      "Bird Dog",
+      "Standing Bracing"
+    ],
+    mobility: [
+      "Kneeling Hip Flexor Stretch",
+      "Band Side Walk (Light)",
+      "90/90 Rotations",
+      "Hip Circles"
+    ],
+    posterior: [
+      "Hamstring Walkouts",
+      "Swiss Ball Leg Curl (Easy)",
+      "Hip Hinge Drill",
+      "Glute Bridge March"
+    ],
+    plyo: [
+      "Line Hops",
+      "Small Lateral Hops",
+      "Speed Skips",
+      "Mini Bounds",
+      "Ankle Pops"
+    ]
+  },
+
+  intermediate: {
+    warmup: [
+      "World’s Greatest Stretch",
+      "Pigeon Stretch",
+      "Band Knee Drive (Medium)",
+      "Hip Openers Flow"
+    ],
+    strength: [
+      "Goblet Squat",
+      "Romanian Deadlift",
+      "Split Squat",
+      "Reverse Lunge",
+      "Hip Thrust",
+      "Tempo Press-Ups"
+    ],
+    core: [
+      "Plank with Reach",
+      "Side Plank with Hip Lift",
+      "Pallof Press",
+      "Anti-Rotation Hold",
+      "Stir-the-Pot"
+    ],
+    mobility: [
+      "Band Back Kick (Medium)",
+      "Hip Openers Flow",
+      "Pigeon Stretch (Deep)"
+    ],
+    posterior: [
+      "Hamstring Curl (Swiss Ball)",
+      "Back Extensions",
+      "Good Mornings (Light)",
+      "Glute Bridge March"
+    ],
+    plyo: [
+      "Vertical Jumps",
+      "Broad Jumps",
+      "Lateral Bounds",
+      "Single-Leg Hops",
+      "Box Jumps (Low)"
+    ]
+  },
+
+  advanced: {
+    warmup: [
+      "High-Speed Hip Opener Flow",
+      "Deep 90/90 Rotations",
+      "Band Knee Drive (Strong)",
+      "Sprint-Specific Mobility"
+    ],
+    strength: [
+      "Back Squat",
+      "Barbell Hip Thrust",
+      "Bulgarian Split Squat",
+      "Deadlift",
+      "Power Step-Ups",
+      "Explosive Press-Ups"
+    ],
+    core: [
+      "Hollow Hold",
+      "Hanging Knee Raise",
+      "Anti-Rotation Press with Step",
+      "KB Rack Carry",
+      "Suitcase Carry (Heavy)"
+    ],
+    mobility: [
+      "Band Back Kick (Strong)",
+      "Sprint-Specific Hip Mobility",
+      "High-Speed Hip Flow"
+    ],
+    posterior: [
+      "Nordic Hamstring Curl",
+      "Reverse Hyper",
+      "Deadlift (Heavy)",
+      "Single-Leg Glute Bridge (Weighted)"
+    ],
+    plyo: [
+      "Tuck Jumps",
+      "Single-Leg Bounds",
+      "Multi-Directional Hops",
+      "Depth Jumps",
+      "High Box Jumps",
+      "Sprint Bounds"
+    ]
+  }
+};
+
+function pickRandom(list, count) {
+  return list.sort(() => Math.random() - 0.5).slice(0, count);
+}
+
+function generateSession(level) {
+  const data = exercises[level];
+
+  const warmup = pickRandom(data.warmup, 3);
+  const strength = pickRandom(data.strength, 3);
+  const core = pickRandom(data.core, 2);
+  const mobility = pickRandom(data.mobility, 2);
+  const posterior = pickRandom(data.posterior, 2);
+  const plyo = pickRandom(data.plyo, 2);
+
+  const html = `
+    <button class="exercise-button">Warm-Up</button>
+    <div class="exercise-details">${warmup.join("<br>")}</div>
+
+    <button class="exercise-button">Strength Block</button>
+    <div class="exercise-details">${strength.join("<br>")}</div>
+
+    <button class="exercise-button">Core Block</button>
+    <div class="exercise-details">${core.join("<br>")}</div>
+
+    <button class="exercise-button">Hip Mobility</button>
+    <div class="exercise-details">${mobility.join("<br>")}</div>
+
+    <button class="exercise-button">Posterior Chain</button>
+    <div class="exercise-details">${posterior.join("<br>")}</div>
+
+    <button class="exercise-button">Plyometrics</button>
+    <div class="exercise-details">${plyo.join("<br>")}</div>
+  `;
+
+  document.getElementById(level + "-session").innerHTML = html;
+}
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".level-details").forEach(section => {
+    section.style.display = "none";
+  });
+});
+</script>
+
+<script>
+window.addEventListener("load", () => {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("coach").classList.add("active");
+});
+</script>
+
+
+</body>
+</html>
+
+

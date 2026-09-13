@@ -1,0 +1,786 @@
+/* GLOBAL SPORT THEME */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0d0f1a;
+  color: #fff;
+}
+
+h1, h2, h3 { margin-top: 0; font-weight: 600; }
+
+label { display: block; margin: 8px 0; }
+
+input, select, textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  margin-top: 4px;
+  background: #1b1f33;
+  color: #fff;
+}
+
+button {
+  background: #ff4f4f;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover { background: #ff6b6b; }
+
+/* NAVBAR */
+.navbar {
+  background: #111428;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #ff4f4f;
+}
+
+.navbar .logo { font-size: 22px; font-weight: bold; color: #ff4f4f; }
+
+.navbar nav button { background: #1b1f33; margin-left: 10px; }
+.navbar nav button:hover { background: #2a2f4d; }
+
+/* PAGE SYSTEM */
+.page { display: none; padding: 20px; }
+.page.active { display: block; }
+
+/* COACH PAGE — DARK NAVBAR THEME */
+#coach {
+  background: #111428;   /* same as navbar */
+  color: #fff;           /* readable text */
+  min-height: 80vh;
+  padding: 20px;
+}
+
+/* Coach cards styled to match global card theme */
+#coach .card {
+  background: #1b1f33;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border-left: 5px solid #ff4f4f;
+  color: #fff;
+}
+
+/* Inputs + textareas readable on dark background */
+#coach input,
+#coach select,
+#coach textarea {
+  background: #1b1f33;
+  color: #fff;
+  border: 1px solid #2a2f4d;
+}
+
+/* Buttons — Save Coach, General Notes, etc */
+#coach button {
+  background: #ff4f4f;   /* bright red */
+  color: #fff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#coach button:hover {
+  background: #ff6b6b;   /* lighter red hover */
+}
+
+/* Delete Coach Button — darker red */
+#deleteCoachButton {
+  background: #cc0000;
+}
+
+#deleteCoachButton:hover {
+  background: #990000;
+}
+
+
+/* TABLES */
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th, td { padding: 10px; border-bottom: 1px solid #2a2f4d; }
+th { background: #111428; }
+
+/* ATHLETE LIST */
+.athlete-item {
+  background: #2a2f4d;
+
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.athlete-item:hover { background: #2a2f4d; }
+
+/* PACE ZONE COLOURS */
+.pace-card { padding: 15px; border-radius: 10px; margin-bottom: 15px; color: #fff; }
+.pace-rp { background: #ff4f4f; }
+.pace-vo2 { background: #ff9f1c; }
+.pace-intervals { background: #2ec4b6; }
+.pace-reps { background: #3a86ff; }
+/* Tempo */
+.pace-tempo {
+  background: #8e44ad;   /* purple */
+  color: white;
+}
+
+/* Threshold */
+.pace-threshold {
+  background: #c0392b;   /* deep red */
+  color: white;
+}
+/* NEW BOX CALENDAR */
+#calendarControls {
+  margin-bottom: 10px;
+}
+
+.view-btn {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #374151;
+  background: #111827;
+  color: #fff;
+  cursor: pointer;
+}
+
+.view-btn.active {
+  background: #2563eb;
+}
+
+#monthGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.day-box {
+  border-radius: 12px;
+  padding: 8px;
+  min-height: 90px;
+  cursor: pointer;
+  color: #111827;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.day-box.rest { background: #2ecc71; }
+.day-box.low { background: #f1c40f; }
+.day-box.med { background: #e67e22; }
+.day-box.high { background: #e74c3c; }
+
+.day-number {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.day-intensity {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.day-session {
+  font-size: 12px;
+}
+
+/* MODAL */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: #111827;
+  padding: 16px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid #374151;
+}
+
+.modal-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.modal-label {
+  color: #9ca3af;
+  margin-bottom: 4px;
+}
+
+.modal-select,
+.modal-textarea {
+  width: 100%;
+  background: #1f2937;
+  border: 1px solid #374151;
+  color: #fff;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.modal-textarea {
+  min-height: 80px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #374151;
+  background: #1f2937;
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn.primary { background: #2563eb; }
+.btn.danger { background: #b91c1c; }
+/* ============================
+   HOME PAGE RUNNING THEME
+============================ */
+
+/* Welcome Banner */
+.welcome-banner {
+  background: linear-gradient(135deg, #007bff, #00c3ff);
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.welcome-banner h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+.welcome-subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* Athlete Cards with Running Icon */
+.card-list .athlete-card {
+  background: #f7f7f7;
+  border-left: 5px solid #007bff;
+  padding: 12px;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.card-list .athlete-card::before {
+  content: "🏃‍♂️";
+  font-size: 1.4rem;
+}
+
+/* Footer Quote */
+.home-footer {
+  margin-top: 40px;
+  text-align: center;
+  padding: 15px;
+  font-style: italic;
+  color: #444;
+  border-top: 1px solid #ddd;
+}
+/* Gender colour coding */
+.athlete-boy {
+  color: #007bff;   /* Blue */
+  font-weight: 600;
+}
+
+.athlete-girl {
+  color: #e63946;   /* Red */
+  font-weight: 600;
+}
+.banner-logo {
+  width: 120px;
+  height: auto;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.7));
+}
+/* Banner layout with logos on both sides */
+.banner-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}
+
+.banner-text {
+  text-align: center;
+}
+
+.banner-logo {
+  width: 90px;
+  height: auto;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.7));
+}
+/* TRAINING CALENDAR — CLEAN VERSION */
+#monthGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.day-box {
+  position: relative;
+  padding: 8px;
+  min-height: 90px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  background: #f2f2f2;
+}
+
+/* =========================================================
+   TRAINING CALENDAR COLOURS + LEGEND
+========================================================= */
+
+#monthGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.day-box {
+  padding: 10px;
+  background: #f2f2f2;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+/* Intensity colours */
+.intensity-rest { background: #b6fcb6 !important; }
+.intensity-low { background: #fff7a1 !important; }
+.intensity-med { background: #ffd27f !important; }
+.intensity-high { background: #ff8b8b !important; }
+.intensity-event { background: #9ec5ff !important; }
+
+/* Legend */
+.intensity-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.legend-box {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+/* =========================================================
+   TRAINING CALENDAR COLOURS + LEGEND
+========================================================= */
+
+#monthGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.day-box {
+  padding: 10px;
+  background: #f2f2f2;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+/* Intensity colours */
+.intensity-rest { background: #b6fcb6 !important; }
+.intensity-low { background: #fff7a1 !important; }
+.intensity-med { background: #ffd27f !important; }
+.intensity-high { background: #ff8b8b !important; }
+.intensity-event { background: #9ec5ff !important; }
+
+/* Legend */
+.intensity-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.legend-box {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+.intensity-rest { background: #b6fcb6 !important; }
+.intensity-low { background: #fff7a1 !important; }
+.intensity-med { background: #ffd27f !important; }
+.intensity-high { background: #ff8b8b !important; }
+.intensity-event { background: #9ec5ff !important; }
+.day-text {
+  font-size: 10px;
+  margin-top: 4px;
+  text-align: left;
+}
+
+.intensity-rest { background: #b6fcb6 !important; }
+.intensity-low { background: #fff7a1 !important; }
+.intensity-med { background: #ffd27f !important; }
+.intensity-high { background: #ff8b8b !important; }
+.intensity-event { background: #9ec5ff !important; }
+.intensity-summary {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.summary-row {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.summary-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+/* Matching colours */
+.summary-box.intensity-rest { background: #b6fcb6; }
+.summary-box.intensity-low { background: #fff7a1; }
+.summary-box.intensity-med { background: #ffd27f; }
+.summary-box.intensity-high { background: #ff8b8b; }
+.summary-box.intensity-event { background: #9ec5ff; }
+.intensity-percent {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.intensity-percent h3 {
+  margin-bottom: 10px;
+}
+.intensity-guide {
+  margin-top: 10px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.guide-dot {
+  font-size: 20px;
+  margin-right: 6px;
+}
+/* Light blue competition day box */
+.intensity-competition {
+  background-color: #cce6ff; /* light blue */
+  color: #003366; /* dark blue text for contrast */
+}
+/* Small flag icon inside competition day box */
+.comp-flag {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 16px;
+}
+.day-box {
+  position: relative;
+}
+/* Light blue competition day box */
+.intensity-competition {
+  background-color: #cce6ff;
+  color: #003366;
+}
+
+/* Small flag icon */
+.comp-flag {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 16px;
+}
+
+.day-box {
+  position: relative;
+}
+.intensity-competition {
+  background-color: #cce6ff;
+  border: 2px solid #0077cc;
+}
+
+.comp-flag {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 18px;
+}
+
+.day-box {
+  position: relative;
+}
+/* REST */
+.intensity-rest {
+  background-color: #d9d9d9; /* light grey */
+}
+
+/* LOW */
+.intensity-low {
+  background-color: #b3e6b3; /* soft green */
+}
+
+/* MEDIUM */
+.intensity-med {
+  background-color: #ffe680; /* soft yellow */
+}
+
+/* HIGH */
+.intensity-high {
+  background-color: #ff9999; /* soft red */
+}
+
+/* COMPETITION */
+.intensity-competition {
+  background-color: #80b3ff; /* soft blue */
+}
+#modalIntensity option[value="rest"] {
+  background-color: #d9d9d9;
+}
+
+#modalIntensity option[value="low"] {
+  background-color: #b3e6b3;
+}
+
+#modalIntensity option[value="med"] {
+  background-color: #ffe680;
+}
+
+#modalIntensity option[value="high"] {
+  background-color: #ff9999;
+}
+
+#modalIntensity option[value="competition"] {
+  background-color: #80b3ff;
+}
+#competitionTimesChart {
+  width: 100%;
+  height: 300px;
+}
+#paceCard {
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+#paceCard.show {
+  opacity: 1;
+}
+#zones-5k,
+#zones-1500,
+#zones-800,
+#zones-400 {
+  display: none;
+}
+.pace-desc {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: #444;
+  padding: 8px;
+  background: #f5f5f5;
+  border-radius: 6px;
+  display: none;
+}
+.zone-block {
+  display: none;
+}
+
+/* Drill list becomes a grid */
+.drill-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 32px;
+  padding: 0;
+  list-style: none;
+}
+
+/* Drill button */
+.drill-button {
+  display: inline-block;
+  background: #2a2f4d;
+
+  color: #ffffff;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.2s ease;
+}
+
+
+
+
+/* Dropdown description box */
+.drill-details {
+  display: none;
+  background: #fff4d6;
+  color: #333;
+  padding: 14px;
+  border-radius: 6px;
+  width: 100%;
+  margin-top: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  border: 1px solid #e0c27a;
+}
+
+/* Extra spacing */
+.drill-item {
+  position: relative;
+  padding-bottom: 20px;
+}
+
+
+
+
+/* Level dots */
+.level-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.dot-foundation { background: #2ecc71; }   /* Green */
+.dot-intermediate { background: #f1c40f; } /* Yellow */
+.dot-advanced { background: #e74c3c; }     /* Red */
+
+/* Main level buttons */
+.level-button {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* FULL COLOUR LEVEL BUTTONS */
+.level-button.foundation {
+  background: #2ecc71;      /* green */
+  color: #ffffff;
+}
+
+.level-button.intermediate {
+  background: #f1c40f;      /* yellow */
+  color: #000000;
+}
+
+.level-button.advanced {
+  background: #e74c3c;      /* red */
+  color: #ffffff;
+}
+
+
+/* Exercise buttons */
+.exercise-button {
+  width: 100%;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin: 8px 0;
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+  color: #222;
+}
+
+/* Dropdown boxes */
+.level-details,
+.exercise-details {
+  color: #000;              /* make text visible */
+  background: #f7f7f7;      /* light grey box */
+  padding: 14px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+
+/* Extra spacing */
+.drill-item {
+  position: relative;
+  padding-bottom: 20px;
+}
+
+
+.page.active {
+  display: block;
+}
+.countdown-box {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #111428;
+  color: #fff;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+
+/* Hide card headers on home page */
+.card-header {
+  display: none;
+}
+
+/* Show header when card is opened */
+.card.open .card-header {
+  display: block;
+}
+
+
+
+
+
+
+
