@@ -778,6 +778,23 @@ th { background: #111428; }
   display: block;
 }
 
+.tp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #222;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  height: 36px;
+  margin-bottom: 20px;
+}
+
+.tp-badge img {
+  width: 24px;
+  height: auto;
+}
 
 
 
