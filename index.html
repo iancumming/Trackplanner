@@ -1,3 +1,16 @@
+<script>
+  function login() {
+    const u = document.getElementById("user").value;
+    const p = document.getElementById("pass").value;
+
+    if (u === "sue" && p === "trackplanner") {
+      localStorage.setItem("loggedIn", "yes");
+      window.location.href = "track.html";
+    } else {
+      alert("Incorrect login");
+    }
+  }
+</script>
 
 <!DOCTYPE html>
 <html lang="en">
