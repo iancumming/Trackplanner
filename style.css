@@ -781,20 +781,21 @@ th { background: #111428; }
 .tp-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: #222;
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  height: 36px;
-  margin-bottom: 20px;
+  padding: 6px 12px;     /* same feel as your buttons */
+  border-radius: 10px;   /* matches button radius */
+  font-size: 1.2rem;     /* same as .open-btn */
+  font-weight: bold;
+  height: 40px;          /* same height as button */
+  line-height: 40px;
 }
 
 .tp-badge img {
-  width: 24px;
+  width: 20px;           /* scaled to fit button height */
   height: auto;
 }
+
 
 
 
