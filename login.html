@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding-top: 80px;
+      margin: 0;
+    }
+
+    .login-box {
+      background: #222;
+      padding: 30px;
+      width: 300px;
+      margin: auto;
+      border-radius: 10px;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background: #007bff;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #005fcc;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-box">
+    <h2>TrackPlanner Login</h2>
+
+    <input id="user" type="text" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+  </div>
+
+  <script>
+    function login() {
+      const u = document.getElementById("user").value;
+      const p = document.getElementById("pass").value;
+
+      if (u === "sue" && p === "trackplanner") {
+        localStorage.setItem("loggedIn", "yes");
+        window.location.href = "track.html";
+      } else {
+        alert("Incorrect login");
+      }
+    }
+  </script>
+
+</body>
+</html>
