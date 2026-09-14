@@ -612,11 +612,11 @@ function addCompetitionResult() {
     venue
   });
 
+  // ⭐ THIS is the missing piece — save updated athlete to storage
+  saveData();
+
   updatePBFromCompetitionResults(selectedAthlete);
-
-  // ⭐ THIS WAS MISSING — now yearly tracker updates automatically
   updateCompetitionYearlyTracker(selectedAthlete);
-
   selectAthlete(selectedAthlete.id);
 
   document.getElementById("compEvent").value = "";
