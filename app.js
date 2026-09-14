@@ -645,6 +645,15 @@ function selectAthlete(id) {
   document.getElementById("ageGroupDisplay").innerText = selectedAthlete.ageGroup;
   document.getElementById("athleteDOB").value = selectedAthlete.dob;
 
+  // ⭐ NEXT AGE GROUP (1 Oct)
+  document.getElementById("nextAgeGroup").innerText =
+    getNextAgeGroup(selectedAthlete.dob);
+
+  // ⭐ MOVEMENT (Stays / Moves Up)
+  document.getElementById("ageGroupMovement").innerText =
+    getAgeGroupMovement(selectedAthlete);
+
+  // TRAINING DAYS
   updateTrainingDaysDisplay(selectedAthlete.dob);
 
   updatePBTable();
@@ -664,7 +673,6 @@ function selectAthlete(id) {
   // ⭐ Training Page countdown
   updateTrainingPageCountdown();
 }
-
 
 /* =========================================================
    COMPETITION LIST + DELETE BUTTONS
