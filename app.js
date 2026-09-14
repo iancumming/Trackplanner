@@ -833,11 +833,9 @@ function getScottishAthleticsAgeGroup(dob) {
 
   const birthYear = parseInt(dob.split("-")[0], 10);
 
-  // Competition year = next summer season
+  // Competition year = current year, but minimum 2026
   const today = new Date();
   let compYear = today.getFullYear();
-
-  // Scottish Athletics new rules apply from 2026 onwards
   if (compYear < 2026) compYear = 2026;
 
   // Track & Field age = competition year - birth year
@@ -852,24 +850,27 @@ function getScottishAthleticsAgeGroup(dob) {
   return "SEN";
 }
 
-
 /* =========================================================
    NEXT AGE GROUP (NEXT COMPETITION YEAR)
 ========================================================= */
 function getNextAgeGroup(dob) {
-  // Next competition year = current year + 1
-  const today = new Date();
-  const nextCompYear = today.getFullYear() + 1;
-
-  // Convert DOB if needed
+  // Convert DD/MM/YYYY → YYYY-MM-DD if needed
   if (dob.includes("/")) {
     const [d, m, y] = dob.split("/");
     dob = `${y}-${m}-${d}`;
   }
 
   const birthYear = parseInt(dob.split("-")[0], 10);
+
+  // Next competition year (minimum 2026)
+  const today = new Date();
+  let nextCompYear = today.getFullYear() + 1;
+  if (nextCompYear < 2026) nextCompYear = 2026;
+
+  // Track & Field age next year
   const tfAgeNext = nextCompYear - birthYear;
 
+  // U-even Scottish Athletics groups (2026 system)
   if (tfAgeNext <= 11) return "U12";
   if (tfAgeNext <= 12) return "U14";
   if (tfAgeNext <= 14) return "U16";
@@ -877,7 +878,6 @@ function getNextAgeGroup(dob) {
   if (tfAgeNext <= 18) return "U20";
   return "SEN";
 }
-
 
 /* =========================================================
    MOVEMENT (STAYS OR MOVES UP)
@@ -890,9 +890,9 @@ function getAgeGroupMovement(athlete) {
 
   if (current === next) {
     return `Stays in ${current}`;
-  } else {
-    return `Moves from ${current} → ${next}`;
   }
+
+  return `Moves from ${current} → ${next}`;
 }
 
 
@@ -907,19 +907,24 @@ function getTrainingDaysByAge(dob) {
   }
 
   const birthYear = parseInt(dob.split("-")[0], 10);
+
+  // Competition year (minimum 2026)
   const today = new Date();
-  const compYear = today.getFullYear() < 2026 ? 2026 : today.getFullYear();
+  let compYear = today.getFullYear();
+  if (compYear < 2026) compYear = 2026;
+
+  // Track & Field age
   const tfAge = compYear - birthYear;
 
-  if (tfAge >= 11 && tfAge <= 12) return ["Mon", "Wed"];
-  if (tfAge >= 13 && tfAge <= 14) return ["Mon", "Wed", "Sat"];
-  if (tfAge >= 15 && tfAge <= 16) return ["Mon", "Wed", "Sat", "Sun"];
-  if (tfAge >= 17 && tfAge <= 18) return ["Mon", "Wed", "Thu", "Sat", "Sun"];
-  if (tfAge >= 19 && tfAge <= 20) return ["Mon", "Tue", "Wed", "Thu", "Sat", "Sun"];
+  // Training bands (aligned with U-even groups)
+  if (tfAge >= 11 && tfAge <= 12) return ["Mon", "Wed"];                     // U14
+  if (tfAge >= 13 && tfAge <= 14) return ["Mon", "Wed", "Sat"];              // U16
+  if (tfAge >= 15 && tfAge <= 16) return ["Mon", "Wed", "Sat", "Sun"];       // U18
+  if (tfAge >= 17 && tfAge <= 18) return ["Mon", "Wed", "Thu", "Sat", "Sun"]; // U20
+  if (tfAge >= 19 && tfAge <= 20) return ["Mon", "Tue", "Wed", "Thu", "Sat", "Sun"]; // SEN
 
   return [];
 }
-
 
 /* =========================================================
    COUNTDOWN TO NEXT COMPETITION YEAR (1 OCT)
@@ -953,10 +958,11 @@ function updateAgeGroupCountdown() {
 }
 
 /* =========================================================
-   TRAINING DAYS DISPLAY
+   TRAINING DAYS DISPLAY — FINAL 2026 SA VERSION
 ========================================================= */
 function updateTrainingDaysDisplay(dob) {
   const days = getTrainingDaysByAge(dob);
+
   document.getElementById("athleteTrainingDays").innerText =
     days.length ? days.join(", ") : "N/A";
 }
@@ -968,12 +974,12 @@ function updateTrainingDaysDisplay(dob) {
 function updateTrainingPageCountdown() {
   const days = getDaysUntilAgeGroupChange();
   const el = document.getElementById("trainingPageCountdown");
-
   if (!el) return;
 
-  el.innerText = days === 0
-    ? "Age group changes today!"
-    : `${days} days until age group change`;
+  el.innerText =
+    days === 0
+      ? "Age group changes today!"
+      : `${days} days until age group change`;
 }
 
 function updateTrainingPageNextAgeGroup(athlete) {
@@ -990,7 +996,10 @@ function updateTrainingPageNextAgeGroup(athlete) {
 function updateHomeTrainingDays(athlete) {
   const days = getTrainingDaysByAge(athlete.dob);
   const el = document.querySelector(`.homeTrainingDays[data-id="${athlete.id}"]`);
-  if (el) el.innerText = days.length ? days.join(", ") : "N/A";
+
+  if (el) {
+    el.innerText = days.length ? days.join(", ") : "N/A";
+  }
 }
 
 
@@ -1000,12 +1009,12 @@ function updateHomeTrainingDays(athlete) {
 function updateHomeAgeGroupCountdown(athlete) {
   const days = getDaysUntilAgeGroupChange();
   const el = document.querySelector(`.homeAgeGroupCountdown[data-id="${athlete.id}"]`);
-
   if (!el) return;
 
-  el.innerText = days === 0
-    ? "Changes today!"
-    : `${days} days until age group change`;
+  el.innerText =
+    days === 0
+      ? "Changes today!"
+      : `${days} days until age group change`;
 }
 
 function updateHomeNextAgeGroup(athlete) {
@@ -1014,7 +1023,6 @@ function updateHomeNextAgeGroup(athlete) {
 
   el.innerText = getNextAgeGroup(athlete.dob);
 }
-
 
 /* =========================================================
    AUTO-DETECT PB FROM COMPETITION RESULTS
@@ -1082,11 +1090,11 @@ function saveNewPB() {
 
 
 /* =========================================================
-   SAVE ATHLETE (NEW ATHLETE)
+   SAVE ATHLETE (NEW ATHLETE) — FINAL 2026 SA VERSION
 ========================================================= */
 document.getElementById("saveAthleteButton").onclick = () => {
   const name = document.getElementById("athleteName").value.trim();
-  const rawDob = document.getElementById("athleteDOB").value.trim();
+  const rawDob = document.getElementById("athleteDOB").value.trim(); // YYYY-MM-DD
 
   if (!name) {
     alert("Enter a name");
@@ -1098,16 +1106,16 @@ document.getElementById("saveAthleteButton").onclick = () => {
     return;
   }
 
-  // ⭐ Convert YYYY-MM-DD → DD/MM/YYYY
+  // ⭐ Convert YYYY-MM-DD → DD/MM/YYYY for storage + SA rules
   const dob = convertDOBToUKFormat(rawDob);
 
-  // ⭐ Correct age group calculation
+  // ⭐ Scottish Athletics age group (YEAR-OF-BIRTH system)
   const ageGroup = getScottishAthleticsAgeGroup(dob);
 
   const athlete = {
     id: Date.now(),
     name,
-    dob,              // ⭐ stored in UK format
+    dob,               // stored in UK format
     ageGroup,
     emergency: "",
     relationship: "",
@@ -1133,8 +1141,9 @@ document.getElementById("saveAthleteButton").onclick = () => {
   document.getElementById("athleteDOB").value = "";
   document.getElementById("ageGroupDisplay").innerText = "";
 };
+
 /* =========================================================
-   SAVE ATHLETE EDITS (HOME PAGE)
+   SAVE ATHLETE EDITS (HOME PAGE) — FINAL 2026 SA VERSION
 ========================================================= */
 function saveAthleteEdits(id) {
   const athlete = athletes.find(a => a.id === id);
@@ -1145,12 +1154,12 @@ function saveAthleteEdits(id) {
   athlete.relationship = document.getElementById(`editRelationship-${id}`).value;
 
   // Raw DOB from input (always YYYY-MM-DD)
-  let rawDob = document.getElementById(`editDob-${id}`).value;
+  const rawDob = document.getElementById(`editDob-${id}`).value;
 
-  // ⭐ Convert YYYY-MM-DD → DD/MM/YYYY
+  // ⭐ Convert YYYY-MM-DD → DD/MM/YYYY for storage + SA rules
   athlete.dob = convertDOBToUKFormat(rawDob);
 
-  // ⭐ Recalculate age group
+  // ⭐ Recalculate age group using YEAR-OF-BIRTH system
   athlete.ageGroup = getScottishAthleticsAgeGroup(athlete.dob);
 
   // Save + refresh UI
@@ -1160,6 +1169,7 @@ function saveAthleteEdits(id) {
   updateTrainingDropdown();
   updatePBTable();
 }
+
 
 /* =========================================================
    DELETE ATHLETE (PROFILE CARD)
