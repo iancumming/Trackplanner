@@ -958,8 +958,10 @@ function updateAgeGroupCountdown() {
 ========================================================= */
 function updateTrainingDaysDisplay(dob) {
   const days = getTrainingDaysByAge(dob);
-  document.getElementById("athleteTrainingDays").innerText =
-    days.length ? days.join(", ") : "N/A";
+  const el = document.getElementById("athleteTrainingDays");
+  if (!el) return;
+
+  el.innerText = days.length ? days.join(", ") : "N/A";
 }
 
 
@@ -991,10 +993,9 @@ function updateTrainingPageNextAgeGroup(athlete) {
 function updateHomeTrainingDays(athlete) {
   const days = getTrainingDaysByAge(athlete.dob);
   const el = document.querySelector(`.homeTrainingDays[data-id="${athlete.id}"]`);
+  if (!el) return;
 
-  if (el) {
-    el.innerText = days.length ? days.join(", ") : "N/A";
-  }
+  el.innerText = days.length ? days.join(", ") : "N/A";
 }
 
 
