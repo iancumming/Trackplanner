@@ -805,12 +805,12 @@ document.getElementById("athleteSelect").onchange = () => {
 
 
 /* =========================================================
-   AGE ON NEXT 1 OCTOBER (SCOTTISH ATHLETICS RULE)
+   AGE ON NEXT 1 OCTOBER (SCOTTISH ATHLETICS RULE) – FIXED
 ========================================================= */
 function getAgeOnNextOct1(dob) {
   if (!dob) return null;
 
-  // Convert DD/MM/YYYY → YYYY-MM-DD
+  // Convert DD/MM/YYYY → YYYY-MM-DD if needed
   if (dob.includes("/")) {
     const [d, m, y] = dob.split("/");
     dob = `${y}-${m}-${d}`;
@@ -821,19 +821,19 @@ function getAgeOnNextOct1(dob) {
 
   const today = new Date();
 
-  // Determine competition year
-  let compYear = today.getFullYear();
-  const oct1 = new Date(compYear, 9, 1); // 1 Oct
+  // Next 1 October (the change date)
+  const nextOct1 = getNextOct1Date(); // uses your existing function
 
-  // If today is ON or AFTER 1 Oct → next competition year
-  if (today >= oct1) {
-    compYear += 1;
+  let age = nextOct1.getFullYear() - birthDate.getFullYear();
+
+  // If birthday is AFTER next 1 Oct → subtract 1 year
+  const birthdayThisYear = new Date(nextOct1.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+  if (birthdayThisYear > nextOct1) {
+    age--;
   }
 
-  // Age on 1 October of the competition year
-  return compYear - birthDate.getFullYear();
+  return age;
 }
-
 
 /* =========================================================
    AGE GROUP BASED ON AGE (U12, U14, U16, U18, U20, SEN)
