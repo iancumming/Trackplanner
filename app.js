@@ -832,16 +832,16 @@ function getScottishAthleticsAgeGroup(dob) {
   }
 
   const birthYear = parseInt(dob.split("-")[0], 10);
-
-  // Competition year = current year, but minimum 2026
   const today = new Date();
-  let compYear = today.getFullYear();
-  if (compYear < 2026) compYear = 2026;
+  const year = today.getFullYear();
 
-  // Track & Field age = competition year - birth year
+  // Determine current competition year (based on 1 Oct)
+  const thisOct1 = new Date(year, 9, 1);
+  const compYear = today < thisOct1 ? year : year + 1;
+
+  // TF age for current competition year
   const tfAge = compYear - birthYear;
 
-  // U-even Scottish Athletics groups (2026 system)
   if (tfAge <= 11) return "U12";
   if (tfAge <= 12) return "U14";
   if (tfAge <= 14) return "U16";
@@ -851,26 +851,25 @@ function getScottishAthleticsAgeGroup(dob) {
 }
 
 /* =========================================================
-   NEXT AGE GROUP (NEXT COMPETITION YEAR)
+   NEXT AGE GROUP (ON NEXT 1 OCTOBER)
 ========================================================= */
 function getNextAgeGroup(dob) {
-  // Convert DD/MM/YYYY → YYYY-MM-DD if needed
   if (dob.includes("/")) {
     const [d, m, y] = dob.split("/");
     dob = `${y}-${m}-${d}`;
   }
 
   const birthYear = parseInt(dob.split("-")[0], 10);
-
-  // Next competition year (minimum 2026)
   const today = new Date();
-  let nextCompYear = today.getFullYear() + 1;
-  if (nextCompYear < 2026) nextCompYear = 2026;
+  const year = today.getFullYear();
 
-  // Track & Field age next year
-  const tfAgeNext = nextCompYear - birthYear;
+  // Find next 1 Oct
+  const thisOct1 = new Date(year, 9, 1);
+  const nextOct1Year = today < thisOct1 ? year : year + 1;
 
-  // U-even Scottish Athletics groups (2026 system)
+  // TF age on next 1 Oct
+  const tfAgeNext = nextOct1Year - birthYear;
+
   if (tfAgeNext <= 11) return "U12";
   if (tfAgeNext <= 12) return "U14";
   if (tfAgeNext <= 14) return "U16";
@@ -883,10 +882,8 @@ function getNextAgeGroup(dob) {
    MOVEMENT (STAYS OR MOVES UP)
 ========================================================= */
 function getAgeGroupMovement(athlete) {
-  const current = athlete.ageGroup;
+  const current = getScottishAthleticsAgeGroup(athlete.dob);
   const next = getNextAgeGroup(athlete.dob);
-
-  if (!current || !next) return "N/A";
 
   if (current === next) {
     return `Stays in ${current}`;
@@ -900,23 +897,21 @@ function getAgeGroupMovement(athlete) {
    TRAINING DAYS BASED ON TF AGE (YEAR-OF-BIRTH)
 ========================================================= */
 function getTrainingDaysByAge(dob) {
-  // Convert DOB if needed
   if (dob.includes("/")) {
     const [d, m, y] = dob.split("/");
     dob = `${y}-${m}-${d}`;
   }
 
   const birthYear = parseInt(dob.split("-")[0], 10);
-
-  // Competition year (minimum 2026)
   const today = new Date();
-  let compYear = today.getFullYear();
-  if (compYear < 2026) compYear = 2026;
+  const year = today.getFullYear();
 
-  // Track & Field age
+  // Current competition year
+  const thisOct1 = new Date(year, 9, 1);
+  const compYear = today < thisOct1 ? year : year + 1;
+
   const tfAge = compYear - birthYear;
 
-  // Training bands (aligned with U-even groups)
   if (tfAge >= 11 && tfAge <= 12) return ["Mon", "Wed"];                     // U14
   if (tfAge >= 13 && tfAge <= 14) return ["Mon", "Wed", "Sat"];              // U16
   if (tfAge >= 15 && tfAge <= 16) return ["Mon", "Wed", "Sat", "Sun"];       // U18
@@ -931,13 +926,12 @@ function getTrainingDaysByAge(dob) {
 ========================================================= */
 function getNextOct1Date() {
   const today = new Date();
-  let year = today.getFullYear();
+  const year = today.getFullYear();
 
-  const oct1 = new Date(year, 9, 1);
+  const thisOct1 = new Date(year, 9, 1);
+  const nextOct1 = today < thisOct1 ? thisOct1 : new Date(year + 1, 9, 1);
 
-  if (today >= oct1) year += 1;
-
-  return new Date(year, 9, 1);
+  return nextOct1;
 }
 
 function getDaysUntilAgeGroupChange() {
@@ -952,24 +946,25 @@ function updateAgeGroupCountdown() {
   const el = document.getElementById("ageGroupCountdown");
   if (!el) return;
 
-  el.innerText = days === 0
-    ? "Age group changes today!"
-    : `${days} days until age group change`;
+  el.innerText =
+    days === 0
+      ? "Age group changes today!"
+      : `${days} days until age group change`;
 }
 
+
 /* =========================================================
-   TRAINING DAYS DISPLAY — FINAL 2026 SA VERSION
+   TRAINING DAYS DISPLAY
 ========================================================= */
 function updateTrainingDaysDisplay(dob) {
   const days = getTrainingDaysByAge(dob);
-
   document.getElementById("athleteTrainingDays").innerText =
     days.length ? days.join(", ") : "N/A";
 }
 
 
 /* =========================================================
-   TRAINING PAGE – AGE GROUP COUNTDOWN + NEXT AGE GROUP
+   TRAINING PAGE – COUNTDOWN + NEXT AGE GROUP
 ========================================================= */
 function updateTrainingPageCountdown() {
   const days = getDaysUntilAgeGroupChange();
@@ -1004,7 +999,7 @@ function updateHomeTrainingDays(athlete) {
 
 
 /* =========================================================
-   HOME PAGE – AGE GROUP COUNTDOWN + NEXT AGE GROUP
+   HOME PAGE – COUNTDOWN + NEXT AGE GROUP
 ========================================================= */
 function updateHomeAgeGroupCountdown(athlete) {
   const days = getDaysUntilAgeGroupChange();
