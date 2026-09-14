@@ -805,62 +805,82 @@ document.getElementById("athleteSelect").onchange = () => {
 
 
 /* =========================================================
-   AGE ON NEXT 1 OCTOBER (SCOTTISH ATHLETICS RULE) – FIXED
+   DOB FORMAT HELPERS
 ========================================================= */
-function getAgeOnNextOct1(dob) {
-  if (!dob) return null;
+function convertDOBToISO(raw) {
+  if (!raw || !raw.includes("/")) return raw;
+  const [d, m, y] = raw.split("/");
+  return `${y}-${m}-${d}`;
+}
 
+function convertDOBToUKFormat(raw) {
+  if (!raw || !raw.includes("-")) return raw;
+  const [y, m, d] = raw.split("-");
+  return `${d}/${m}/${y}`;
+}
+
+
+/* =========================================================
+   SCOTTISH ATHLETICS AGE GROUP (YEAR-OF-BIRTH SYSTEM)
+   Effective 1 January 2026
+========================================================= */
+function getScottishAthleticsAgeGroup(dob) {
   // Convert DD/MM/YYYY → YYYY-MM-DD if needed
   if (dob.includes("/")) {
     const [d, m, y] = dob.split("/");
     dob = `${y}-${m}-${d}`;
   }
 
-  const birthDate = new Date(dob);
-  if (isNaN(birthDate)) return null;
+  const birthYear = parseInt(dob.split("-")[0], 10);
 
+  // Competition year = next summer season
   const today = new Date();
+  let compYear = today.getFullYear();
 
-  // Next 1 October (the change date)
-  const nextOct1 = getNextOct1Date(); // uses your existing function
+  // Scottish Athletics new rules apply from 2026 onwards
+  if (compYear < 2026) compYear = 2026;
 
-  let age = nextOct1.getFullYear() - birthDate.getFullYear();
+  // Track & Field age = competition year - birth year
+  const tfAge = compYear - birthYear;
 
-  // If birthday is AFTER next 1 Oct → subtract 1 year
-  const birthdayThisYear = new Date(nextOct1.getFullYear(), birthDate.getMonth(), birthDate.getDate());
-  if (birthdayThisYear > nextOct1) {
-    age--;
-  }
-
-  return age;
-}
-
-/* =========================================================
-   AGE GROUP BASED ON AGE (U12, U14, U16, U18, U20, SEN)
-========================================================= */
-function getAgeGroupByAge(age) {
-  if (age <= 12) return "U12";
-  if (age <= 14) return "U14";
-  if (age <= 16) return "U16";
-  if (age <= 18) return "U18";
-  if (age <= 20) return "U20";
+  // U-even Scottish Athletics groups (2026 system)
+  if (tfAge <= 11) return "U12";
+  if (tfAge <= 12) return "U14";
+  if (tfAge <= 14) return "U16";
+  if (tfAge <= 16) return "U18";
+  if (tfAge <= 18) return "U20";
   return "SEN";
 }
 
 
 /* =========================================================
-   NEXT AGE GROUP ON 1 OCTOBER
+   NEXT AGE GROUP (NEXT COMPETITION YEAR)
 ========================================================= */
 function getNextAgeGroup(dob) {
-  const ageNextOct = getAgeOnNextOct1(dob);
-  if (ageNextOct === null) return "N/A";
+  // Next competition year = current year + 1
+  const today = new Date();
+  const nextCompYear = today.getFullYear() + 1;
 
-  return getAgeGroupByAge(ageNextOct);
+  // Convert DOB if needed
+  if (dob.includes("/")) {
+    const [d, m, y] = dob.split("/");
+    dob = `${y}-${m}-${d}`;
+  }
+
+  const birthYear = parseInt(dob.split("-")[0], 10);
+  const tfAgeNext = nextCompYear - birthYear;
+
+  if (tfAgeNext <= 11) return "U12";
+  if (tfAgeNext <= 12) return "U14";
+  if (tfAgeNext <= 14) return "U16";
+  if (tfAgeNext <= 16) return "U18";
+  if (tfAgeNext <= 18) return "U20";
+  return "SEN";
 }
 
 
 /* =========================================================
-   WILL ATHLETE MOVE AGE GROUP?
+   MOVEMENT (STAYS OR MOVES UP)
 ========================================================= */
 function getAgeGroupMovement(athlete) {
   const current = athlete.ageGroup;
@@ -877,34 +897,40 @@ function getAgeGroupMovement(athlete) {
 
 
 /* =========================================================
-   TRAINING DAYS BASED ON AGE (NOT AGE GROUP)
+   TRAINING DAYS BASED ON TF AGE (YEAR-OF-BIRTH)
 ========================================================= */
 function getTrainingDaysByAge(dob) {
-  const age = getAgeOnNextOct1(dob);
-  if (age === null) return [];
+  // Convert DOB if needed
+  if (dob.includes("/")) {
+    const [d, m, y] = dob.split("/");
+    dob = `${y}-${m}-${d}`;
+  }
 
-  if (age >= 11 && age <= 12) return ["Mon", "Wed"];
-  if (age >= 13 && age <= 14) return ["Mon", "Wed", "Sat"];
-  if (age >= 15 && age <= 16) return ["Mon", "Wed", "Sat", "Sun"];
-  if (age >= 17 && age <= 18) return ["Mon", "Wed", "Thu", "Sat", "Sun"];
-  if (age >= 19 && age <= 20) return ["Mon", "Tue", "Wed", "Thu", "Sat", "Sun"];
+  const birthYear = parseInt(dob.split("-")[0], 10);
+  const today = new Date();
+  const compYear = today.getFullYear() < 2026 ? 2026 : today.getFullYear();
+  const tfAge = compYear - birthYear;
 
-  return []; // Outside defined ranges
+  if (tfAge >= 11 && tfAge <= 12) return ["Mon", "Wed"];
+  if (tfAge >= 13 && tfAge <= 14) return ["Mon", "Wed", "Sat"];
+  if (tfAge >= 15 && tfAge <= 16) return ["Mon", "Wed", "Sat", "Sun"];
+  if (tfAge >= 17 && tfAge <= 18) return ["Mon", "Wed", "Thu", "Sat", "Sun"];
+  if (tfAge >= 19 && tfAge <= 20) return ["Mon", "Tue", "Wed", "Thu", "Sat", "Sun"];
+
+  return [];
 }
 
 
 /* =========================================================
-   NEXT OCT 1 DATE + COUNTDOWN
+   COUNTDOWN TO NEXT COMPETITION YEAR (1 OCT)
 ========================================================= */
 function getNextOct1Date() {
   const today = new Date();
   let year = today.getFullYear();
 
-  const oct1 = new Date(year, 9, 1); // 1 Oct (month 9)
+  const oct1 = new Date(year, 9, 1);
 
-  if (today >= oct1) {
-    year += 1;
-  }
+  if (today >= oct1) year += 1;
 
   return new Date(year, 9, 1);
 }
@@ -912,7 +938,6 @@ function getNextOct1Date() {
 function getDaysUntilAgeGroupChange() {
   const today = new Date();
   const nextOct1 = getNextOct1Date();
-
   const diffMs = nextOct1 - today;
   return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 }
@@ -920,14 +945,12 @@ function getDaysUntilAgeGroupChange() {
 function updateAgeGroupCountdown() {
   const days = getDaysUntilAgeGroupChange();
   const el = document.getElementById("ageGroupCountdown");
-
   if (!el) return;
 
   el.innerText = days === 0
     ? "Age group changes today!"
     : `${days} days until age group change`;
 }
-
 
 /* =========================================================
    TRAINING DAYS DISPLAY
