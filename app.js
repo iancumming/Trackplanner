@@ -492,12 +492,20 @@ function updateCompetitionYearlyTracker(a) {
   const ctx = document.getElementById("competitionTimesChart").getContext("2d");
   const selectedYear = document.getElementById("yearSelect").value;
 
- const results = a.competitionResults
+const results = a.competitionResults
   .filter(r => {
-    const year = new Date(r.date).getFullYear();
+    const parts = r.date.split("/");   // dd/mm/yyyy
+    const year = parts[2];             // yyyy
+
     return !selectedYear || year == selectedYear;
   })
-  .sort((a, b) => new Date(a.date) - new Date(b.date));
+  .sort((a, b) => {
+    // Convert dd/mm/yyyy → yyyy-mm-dd for sorting
+    const [dA, mA, yA] = a.date.split("/");
+    const [dB, mB, yB] = b.date.split("/");
+    return new Date(`${yA}-${mA}-${dA}`) - new Date(`${yB}-${mB}-${dB}`);
+  });
+
 
   // Group results by event
   const grouped = {};
