@@ -106,28 +106,35 @@
 
 
 
-  <!-- PROFILE -->
-  <div class="card">
-    <h2>Profile</h2>
+ <!-- PROFILE -->
+<div class="card">
+  <h2>Profile</h2>
 
-    <label>Name:
-      <input type="text" id="athleteName">
-    </label>
+  <label>Name:
+    <input type="text" id="athleteName">
+  </label>
 
-    <label>Date of Birth:
-      <input type="date" id="athleteDOB">
-    </label>
+  <label>Date of Birth:
+    <input type="date" id="athleteDOB">
+  </label>
 
-    <div id="ageGroupDisplay" class="age-group-output"></div>
+  <!-- CURRENT AGE GROUP -->
+  <div id="ageGroupDisplay" class="age-group-output"></div>
 
-    <!-- ⭐ Only ONE training days line -->
-    <p>Training Days: <span id="athleteTrainingDays"></span></p>
+  <!-- NEXT AGE GROUP -->
+  <p>Next Age Group (1 Oct): <span id="nextAgeGroup">N/A</span></p>
 
-    <!-- ⭐ Only ONE countdown box (Athlete Page) -->
-    <div id="ageGroupCountdown" class="countdown-box"></div>
+  <!-- MOVEMENT (stay or move) -->
+  <p>Movement: <span id="ageGroupMovement">N/A</span></p>
 
-    <button id="saveAthleteButton">Save Athlete</button>
-  </div>
+  <!-- TRAINING DAYS -->
+  <p>Training Days: <span id="athleteTrainingDays"></span></p>
+
+  <!-- COUNTDOWN -->
+  <div id="ageGroupCountdown" class="countdown-box"></div>
+
+  <button id="saveAthleteButton">Save Athlete</button>
+</div>
 
   <!-- ATHLETE LIST -->
   <div class="card">
