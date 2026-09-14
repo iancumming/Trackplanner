@@ -633,17 +633,43 @@ function addCompetitionResult() {
 }
 
 /* =========================================================
+   DATE FORMAT HELPERS
+========================================================= */
+function convertDOBToISO(raw) {
+  // Converts DD/MM/YYYY → YYYY-MM-DD for <input type="date">
+  if (!raw || !raw.includes("/")) return raw;
+  const [d, m, y] = raw.split("/");
+  return `${y}-${m}-${d}`;
+}
+
+function convertDOBToUKFormat(raw) {
+  // Converts YYYY-MM-DD → DD/MM/YYYY for storage + age calculations
+  if (!raw || !raw.includes("-")) return raw;
+  const [y, m, d] = raw.split("-");
+  return `${d}/${m}/${y}`;
+}
+
+
+/* =========================================================
    SELECT ATHLETE
 ========================================================= */
 function selectAthlete(id) {
   selectedAthlete = athletes.find(a => a.id === id);
-
   selectedAthlete.competitionResults ||= [];
 
+  // Set dropdown
   document.getElementById("athleteSelect").value = id;
+
+  // Name
   document.getElementById("athleteName").value = selectedAthlete.name;
-  document.getElementById("ageGroupDisplay").innerText = selectedAthlete.ageGroup;
-  document.getElementById("athleteDOB").value = selectedAthlete.dob;
+
+  // DOB → convert to ISO for date picker
+  document.getElementById("athleteDOB").value =
+    convertDOBToISO(selectedAthlete.dob);
+
+  // Current age group
+  document.getElementById("ageGroupDisplay").innerText =
+    selectedAthlete.ageGroup;
 
   // ⭐ NEXT AGE GROUP (1 Oct)
   document.getElementById("nextAgeGroup").innerText =
@@ -653,13 +679,15 @@ function selectAthlete(id) {
   document.getElementById("ageGroupMovement").innerText =
     getAgeGroupMovement(selectedAthlete);
 
-  // TRAINING DAYS
+  // Training days
   updateTrainingDaysDisplay(selectedAthlete.dob);
 
+  // PB + competition updates
   updatePBTable();
   updateCompetitionYearlyTracker(selectedAthlete);
   updatePBFromCompetitionResults(selectedAthlete);
 
+  // Age on next Oct 1 (training page)
   document.getElementById("trainingAthleteAge").innerText =
     getAgeOnNextOct1(selectedAthlete.dob);
 
@@ -667,10 +695,8 @@ function selectAthlete(id) {
 
   updateAthleteCompetitionList(selectedAthlete);
 
-  // ⭐ Athlete Page countdown
+  // Countdowns
   updateAgeGroupCountdown();
-
-  // ⭐ Training Page countdown
   updateTrainingPageCountdown();
 }
 
@@ -1037,17 +1063,20 @@ function saveNewPB() {
 ========================================================= */
 document.getElementById("saveAthleteButton").onclick = () => {
   const name = document.getElementById("athleteName").value.trim();
-  const dob = document.getElementById("athleteDOB").value.trim();
+  const rawDob = document.getElementById("athleteDOB").value.trim();
 
   if (!name) {
     alert("Enter a name");
     return;
   }
 
-  if (!dob) {
+  if (!rawDob) {
     alert("Enter date of birth");
     return;
   }
+
+  // ⭐ Convert YYYY-MM-DD → DD/MM/YYYY
+  const dob = convertDOBToUKFormat(rawDob);
 
   // ⭐ Correct age group calculation
   const ageGroup = getScottishAthleticsAgeGroup(dob);
@@ -1055,7 +1084,7 @@ document.getElementById("saveAthleteButton").onclick = () => {
   const athlete = {
     id: Date.now(),
     name,
-    dob,
+    dob,              // ⭐ stored in UK format
     ageGroup,
     emergency: "",
     relationship: "",
@@ -1081,9 +1110,6 @@ document.getElementById("saveAthleteButton").onclick = () => {
   document.getElementById("athleteDOB").value = "";
   document.getElementById("ageGroupDisplay").innerText = "";
 };
-
-
-
 /* =========================================================
    SAVE ATHLETE EDITS (HOME PAGE)
 ========================================================= */
@@ -1095,18 +1121,13 @@ function saveAthleteEdits(id) {
   athlete.emergency = document.getElementById(`editEmergency-${id}`).value;
   athlete.relationship = document.getElementById(`editRelationship-${id}`).value;
 
-  // Raw DOB from input
+  // Raw DOB from input (always YYYY-MM-DD)
   let rawDob = document.getElementById(`editDob-${id}`).value;
 
-  // Convert DD/MM/YYYY → YYYY-MM-DD if needed
-  if (rawDob.includes("/")) {
-    const [day, month, year] = rawDob.split("/");
-    athlete.dob = `${year}-${month}-${day}`;
-  } else {
-    athlete.dob = rawDob; // already ISO
-  }
+  // ⭐ Convert YYYY-MM-DD → DD/MM/YYYY
+  athlete.dob = convertDOBToUKFormat(rawDob);
 
-  // Recalculate age group
+  // ⭐ Recalculate age group
   athlete.ageGroup = getScottishAthleticsAgeGroup(athlete.dob);
 
   // Save + refresh UI
@@ -1116,8 +1137,6 @@ function saveAthleteEdits(id) {
   updateTrainingDropdown();
   updatePBTable();
 }
-
-
 
 /* =========================================================
    DELETE ATHLETE (PROFILE CARD)
