@@ -583,6 +583,15 @@ const results = a.competitionResults
     }
   });
 }
+
+/* =========================================================
+   DATE CONVERSION (GLOBAL)
+========================================================= */
+function convertDate(rawDate) {
+  const [dd, mm, yyyy] = rawDate.split("/");
+  return `${dd}/${mm}/${yyyy}`;  // keep UK format
+}
+
 /* =========================================================
    ADD COMPETITION RESULT
 ========================================================= */
@@ -612,9 +621,7 @@ function addCompetitionResult() {
     venue
   });
 
-  // ⭐ THIS IS THE FIX — save updated athlete to storage
   saveData();
-
   updatePBFromCompetitionResults(selectedAthlete);
   updateCompetitionYearlyTracker(selectedAthlete);
   selectAthlete(selectedAthlete.id);
