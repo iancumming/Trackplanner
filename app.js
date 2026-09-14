@@ -802,6 +802,47 @@ function getAgeOnNextOct1(dob) {
 
 
 /* =========================================================
+   AGE GROUP BASED ON AGE (U12, U14, U16, U18, U20, SEN)
+========================================================= */
+function getAgeGroupByAge(age) {
+  if (age <= 12) return "U12";
+  if (age <= 14) return "U14";
+  if (age <= 16) return "U16";
+  if (age <= 18) return "U18";
+  if (age <= 20) return "U20";
+  return "SEN";
+}
+
+
+/* =========================================================
+   NEXT AGE GROUP ON 1 OCTOBER
+========================================================= */
+function getNextAgeGroup(dob) {
+  const ageNextOct = getAgeOnNextOct1(dob);
+  if (ageNextOct === null) return "N/A";
+
+  return getAgeGroupByAge(ageNextOct);
+}
+
+
+/* =========================================================
+   WILL ATHLETE MOVE AGE GROUP?
+========================================================= */
+function getAgeGroupMovement(athlete) {
+  const current = athlete.ageGroup;
+  const next = getNextAgeGroup(athlete.dob);
+
+  if (!current || !next) return "N/A";
+
+  if (current === next) {
+    return `Stays in ${current}`;
+  } else {
+    return `Moves from ${current} → ${next}`;
+  }
+}
+
+
+/* =========================================================
    TRAINING DAYS BASED ON AGE (NOT AGE GROUP)
 ========================================================= */
 function getTrainingDaysByAge(dob) {
@@ -816,39 +857,41 @@ function getTrainingDaysByAge(dob) {
 
   return []; // Outside defined ranges
 }
+
+
+/* =========================================================
+   NEXT OCT 1 DATE + COUNTDOWN
+========================================================= */
 function getNextOct1Date() {
   const today = new Date();
   let year = today.getFullYear();
 
   const oct1 = new Date(year, 9, 1); // 1 Oct (month 9)
 
-  // If today is ON or AFTER 1 Oct → next year's Oct 1
   if (today >= oct1) {
     year += 1;
   }
 
   return new Date(year, 9, 1);
 }
+
 function getDaysUntilAgeGroupChange() {
   const today = new Date();
   const nextOct1 = getNextOct1Date();
 
   const diffMs = nextOct1 - today;
-  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-
-  return diffDays;
+  return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 }
+
 function updateAgeGroupCountdown() {
   const days = getDaysUntilAgeGroupChange();
   const el = document.getElementById("ageGroupCountdown");
 
   if (!el) return;
 
-  if (days === 0) {
-    el.innerText = "Age group changes today!";
-  } else {
-    el.innerText = `${days} days until age group change`;
-  }
+  el.innerText = days === 0
+    ? "Age group changes today!"
+    : `${days} days until age group change`;
 }
 
 
@@ -861,8 +904,9 @@ function updateTrainingDaysDisplay(dob) {
     days.length ? days.join(", ") : "N/A";
 }
 
+
 /* =========================================================
-   TRAINING PAGE – AGE GROUP COUNTDOWN
+   TRAINING PAGE – AGE GROUP COUNTDOWN + NEXT AGE GROUP
 ========================================================= */
 function updateTrainingPageCountdown() {
   const days = getDaysUntilAgeGroupChange();
@@ -875,6 +919,14 @@ function updateTrainingPageCountdown() {
     : `${days} days until age group change`;
 }
 
+function updateTrainingPageNextAgeGroup(athlete) {
+  const el = document.getElementById("trainingNextAgeGroup");
+  if (!el) return;
+
+  el.innerText = getNextAgeGroup(athlete.dob);
+}
+
+
 /* =========================================================
    HOME PAGE – TRAINING DAYS DISPLAY
 ========================================================= */
@@ -884,8 +936,9 @@ function updateHomeTrainingDays(athlete) {
   if (el) el.innerText = days.length ? days.join(", ") : "N/A";
 }
 
+
 /* =========================================================
-   HOME PAGE – AGE GROUP COUNTDOWN
+   HOME PAGE – AGE GROUP COUNTDOWN + NEXT AGE GROUP
 ========================================================= */
 function updateHomeAgeGroupCountdown(athlete) {
   const days = getDaysUntilAgeGroupChange();
@@ -898,6 +951,12 @@ function updateHomeAgeGroupCountdown(athlete) {
     : `${days} days until age group change`;
 }
 
+function updateHomeNextAgeGroup(athlete) {
+  const el = document.querySelector(`.homeNextAgeGroup[data-id="${athlete.id}"]`);
+  if (!el) return;
+
+  el.innerText = getNextAgeGroup(athlete.dob);
+}
 
 
 /* =========================================================
