@@ -584,7 +584,7 @@ function addCompetitionResult() {
   const event = document.getElementById("compEvent").value.trim();
   const rawDate = document.getElementById("compDate").value;
   const timeStr = String(document.getElementById("compTime").value).trim();
-  const venue = document.getElementById("compVenue").value.trim();   // ⭐ NEW
+  const venue = document.getElementById("compVenue").value.trim();
 
   if (!event || !rawDate || !timeStr || !venue) {
     alert("Please enter event, date, time and venue.");
@@ -592,24 +592,26 @@ function addCompetitionResult() {
   }
 
   const date = convertDate(rawDate);
-
-  // ⭐ Use global formatter
   const formattedTime = formatTimeDisplay(timeStr);
 
   selectedAthlete.competitionResults.push({
     event,
     date,
     time: formattedTime,
-    venue   // ⭐ NEW
+    venue
   });
 
   updatePBFromCompetitionResults(selectedAthlete);
+
+  // ⭐ THIS WAS MISSING — now yearly tracker updates automatically
+  updateCompetitionYearlyTracker(selectedAthlete);
+
   selectAthlete(selectedAthlete.id);
 
   document.getElementById("compEvent").value = "";
   document.getElementById("compDate").value = "";
   document.getElementById("compTime").value = "";
-  document.getElementById("compVenue").value = "";   // ⭐ NEW
+  document.getElementById("compVenue").value = "";
 }
 
 /* =========================================================
