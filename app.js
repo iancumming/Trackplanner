@@ -822,7 +822,7 @@ function convertDOBToUKFormat(raw) {
 
 /* =========================================================
    SCOTTISH ATHLETICS AGE GROUP SYSTEM (NEW FROM 1 OCT 2026)
-   World Athletics aligned – age on 31 Dec of competition year
+   Age groups based on age on 1 January of the competition year
 ========================================================= */
 
 // Convert DD/MM/YYYY → YYYY-MM-DD
@@ -850,14 +850,14 @@ function getNextCompetitionYear() {
 }
 
 /* =========================================================
-   CURRENT AGE GROUP (age on 31 Dec of competition year)
+   CURRENT AGE GROUP (age on 1 Jan of competition year)
 ========================================================= */
 function getScottishAthleticsAgeGroup(dob) {
   dob = normaliseDob(dob);
   const birthYear = parseInt(dob.split("-")[0], 10);
 
   const compYear = getCompetitionYear();
-  const tfAge = compYear - birthYear; // age on 31 Dec of compYear
+  const tfAge = compYear + 1 - birthYear; // age on 1 Jan of compYear
 
   if (tfAge <= 11) return "U12";
   if (tfAge <= 12) return "U14";
@@ -868,14 +868,14 @@ function getScottishAthleticsAgeGroup(dob) {
 }
 
 /* =========================================================
-   NEXT AGE GROUP (age on 31 Dec of next competition year)
+   NEXT AGE GROUP (age on 1 Jan of next competition year)
 ========================================================= */
 function getNextAgeGroup(dob) {
   dob = normaliseDob(dob);
   const birthYear = parseInt(dob.split("-")[0], 10);
 
   const nextCompYear = getNextCompetitionYear();
-  const tfAgeNext = nextCompYear - birthYear;
+  const tfAgeNext = nextCompYear + 1 - birthYear;
 
   if (tfAgeNext <= 11) return "U12";
   if (tfAgeNext <= 12) return "U14";
@@ -906,7 +906,7 @@ function getTrainingDaysByAge(dob) {
   const birthYear = parseInt(dob.split("-")[0], 10);
 
   const compYear = getCompetitionYear();
-  const tfAge = compYear - birthYear;
+  const tfAge = compYear + 1 - birthYear;
 
   if (tfAge >= 11 && tfAge <= 12) return ["Mon", "Wed"];                     // U14
   if (tfAge >= 13 && tfAge <= 14) return ["Mon", "Wed", "Sat"];              // U16
@@ -947,7 +947,8 @@ function updateTrainingPageCountdown() {
   const days = getDaysUntilAgeGroupChange();
   const el = document.getElementById("trainingPageCountdown");
   if (!el) return;
-  el.innerText = days === 0 ? "Age group changes today!" : `${days} days until age group change`;
+  el.innerText =
+    days === 0 ? "Age group changes today!" : `${days} days until age group change`;
 }
 
 function updateTrainingPageNextAgeGroup(athlete) {
@@ -970,7 +971,8 @@ function updateHomeAgeGroupCountdown(athlete) {
   const days = getDaysUntilAgeGroupChange();
   const el = document.querySelector(`.homeAgeGroupCountdown[data-id="${athlete.id}"]`);
   if (!el) return;
-  el.innerText = days === 0 ? "Changes today!" : `${days} days until age group change`;
+  el.innerText =
+    days === 0 ? "Changes today!" : `${days} days until age group change`;
 }
 
 function updateHomeNextAgeGroup(athlete) {
