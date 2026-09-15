@@ -137,13 +137,12 @@ document.getElementById("deleteCoachButton").addEventListener("click", () => {
 
 function updateHomePage() {
 
-  /* ---------------------------
-     ATHLETE LIST (EXPAND/COLLAPSE)
-  ---------------------------- */
   const athleteList = document.getElementById("homeAthleteList");
   athleteList.innerHTML = "";   // clear existing
 
-  // FIRST: create the collapsed cards
+  /* ---------------------------
+     BUILD COLLAPSED CARDS
+  ---------------------------- */
   athletes.forEach(athlete => {
     const card = document.createElement("div");
     card.className = "card home-athlete";
@@ -156,7 +155,9 @@ function updateHomePage() {
     athleteList.appendChild(card);
   });
 
-  // SECOND: attach expand/collapse behaviour
+  /* ---------------------------
+     EXPAND / COLLAPSE BEHAVIOUR
+  ---------------------------- */
   document.querySelectorAll(".home-athlete").forEach(card => {
     const header = card.querySelector(".home-header");
 
@@ -164,6 +165,7 @@ function updateHomePage() {
       const id = Number(card.dataset.id);
       const athlete = athletes.find(a => a.id === id);
 
+      // collapse if already expanded
       if (card.classList.contains("expanded")) {
         collapseCard(card, athlete);
         return;
@@ -171,6 +173,7 @@ function updateHomePage() {
 
       card.classList.add("expanded");
 
+      // ALWAYS convert DOB → UK → normalise
       const dobUK = convertDOBToUKFormat(athlete.dob);
       const dobNorm = normaliseDob(dobUK);
 
@@ -199,14 +202,35 @@ function updateHomePage() {
           <span class="homeAgeGroupCountdown"></span>
         </p>
 
+        <p><strong>Next Age Group:</strong>
+          <span class="homeNextAgeGroup"></span>
+        </p>
+
         <button onclick="saveAthleteEdits(${athlete.id})">Save Changes</button>
         <button onclick="collapseCard(card, athlete)">Close</button>
       `;
 
-      updateHomeTrainingDays(athlete);
-      updateHomeAgeGroupCountdown(athlete);
+      // LIVE UPDATES
+      const trainingDays = getTrainingDaysByAge(dobNorm);
+      card.querySelector(".homeTrainingDays").innerText =
+        trainingDays.length ? trainingDays.join(", ") : "N/A";
+
+      const countdown = getDaysUntilAgeGroupChange();
+      card.querySelector(".homeAgeGroupCountdown").innerText =
+        countdown === 0 ? "Changes today!" : `${countdown} days`;
+
+      card.querySelector(".homeNextAgeGroup").innerText =
+        getNextAgeGroup(dobNorm);
     };
   });
+
+}   // ⭐ THIS closes updateHomePage properly
+
+  /* ---------------------------
+     COACH LIST
+  ---------------------------- */
+  updateCoachList();
+}
 
   /* ---------------------------
      COACH LIST
