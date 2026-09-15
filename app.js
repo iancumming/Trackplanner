@@ -1073,11 +1073,11 @@ function saveAthleteEdits(id) {
   // Save + refresh UI
   saveData();
   updateHomePage();
+  renderHomeAthleteList();   // ⭐ THIS LINE FIXES YOUR HOME PAGE
   loadAthleteList();
   updateTrainingDropdown();
   updatePBTable();
 }
-
 
 /* =========================================================
    DELETE ATHLETE (PROFILE CARD)
@@ -1095,11 +1095,53 @@ deleteProfileBtn.onclick = () => {
 
   saveData();
   updateHomePage();
+  renderHomeAthleteList();   // ⭐ REQUIRED FIX
   loadAthleteList();
   updateTrainingDropdown();
   updatePBTable();
 };
 
+
+/* =========================================================
+   RENDER HOME ATHLETE LIST — SHOW TRAINING DAYS + AGE GROUP CHANGE
+========================================================= */
+function renderHomeAthleteList() {
+  const list = document.getElementById("homeAthleteList");
+  list.innerHTML = ""; // clear existing
+
+  athletes.forEach(athlete => {
+    const card = document.createElement("div");
+    card.className = "athleteCard";
+    card.dataset.id = athlete.id;
+
+    card.innerHTML = `
+      <h3 class="athleteName">${athlete.name}</h3>
+
+      <p>Date of Birth: ${athlete.dob}</p>
+      <p>Age Group: ${getScottishAthleticsAgeGroup(athlete.dob)}</p>
+
+      <p>Training Days: <span class="homeTrainingDays"></span></p>
+      <p>Age Group Change: <span class="homeAgeGroupCountdown"></span></p>
+      <p>Next Age Group: <span class="homeNextAgeGroup"></span></p>
+    `;
+
+    list.appendChild(card);
+
+    // Fill in training days
+    const trainingDays = getTrainingDaysByAge(athlete.dob);
+    card.querySelector(".homeTrainingDays").innerText =
+      trainingDays.length ? trainingDays.join(", ") : "N/A";
+
+    // Fill in countdown
+    const countdown = getDaysUntilAgeGroupChange();
+    card.querySelector(".homeAgeGroupCountdown").innerText =
+      countdown === 0 ? "Changes today!" : `${countdown} days`;
+
+    // Fill in next age group
+    card.querySelector(".homeNextAgeGroup").innerText =
+      getNextAgeGroup(athlete.dob);
+  });
+}
 
 /* =========================================================
    PB SYSTEM (MODAL)
