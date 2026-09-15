@@ -141,13 +141,13 @@ function updateHomePage() {
 }
 
 
- /* ---------------------------
+/* ---------------------------
    ATHLETE LIST (EXPAND/COLLAPSE)
 ---------------------------- */
 const athleteList = document.getElementById("homeAthleteList");
 athleteList.innerHTML = "";   // clear existing
 
-// Create collapsed cards
+// ⭐ FIRST: create the collapsed cards
 athletes.forEach(athlete => {
   const card = document.createElement("div");
   card.className = "card home-athlete";
@@ -160,7 +160,7 @@ athletes.forEach(athlete => {
   athleteList.appendChild(card);
 });
 
-// Expand/collapse behaviour
+// ⭐ SECOND: attach expand/collapse behaviour
 document.querySelectorAll(".home-athlete").forEach(card => {
   const header = card.querySelector(".home-header");
 
@@ -176,7 +176,8 @@ document.querySelectorAll(".home-athlete").forEach(card => {
     card.classList.add("expanded");
 
     // ⭐ ALWAYS convert DOB → UK → normalise
-    const dobNorm = normaliseDob(convertDOBToUKFormat(athlete.dob));
+    const dobUK = convertDOBToUKFormat(athlete.dob);
+    const dobNorm = normaliseDob(dobUK);
 
     card.innerHTML = `
       <div class="home-header">${athlete.name}</div>
