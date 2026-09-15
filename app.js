@@ -165,7 +165,6 @@ function updateHomePage() {
       const id = Number(card.dataset.id);
       const athlete = athletes.find(a => a.id === id);
 
-      // collapse if already expanded
       if (card.classList.contains("expanded")) {
         collapseCard(card, athlete);
         return;
@@ -173,7 +172,6 @@ function updateHomePage() {
 
       card.classList.add("expanded");
 
-      // ALWAYS convert DOB → UK → normalise
       const dobUK = convertDOBToUKFormat(athlete.dob);
       const dobNorm = normaliseDob(dobUK);
 
@@ -210,7 +208,6 @@ function updateHomePage() {
         <button onclick="collapseCard(card, athlete)">Close</button>
       `;
 
-      // LIVE UPDATES
       const trainingDays = getTrainingDaysByAge(dobNorm);
       card.querySelector(".homeTrainingDays").innerText =
         trainingDays.length ? trainingDays.join(", ") : "N/A";
@@ -224,27 +221,13 @@ function updateHomePage() {
     };
   });
 
-}   // ⭐ THIS closes updateHomePage properly
-
   /* ---------------------------
      COACH LIST
   ---------------------------- */
-  updateCoachList();
-}
-
-  /* ---------------------------
-     COACH LIST
-  ---------------------------- */
-  updateCoachList();   // ⭐ Correct location
+  updateCoachList();   // ⭐ Correct location INSIDE updateHomePage
 
 }   // ⭐ THIS closes updateHomePage properly
 
-
-  /* ---------------------------
-     COACH LIST
-  ---------------------------- */
-  updateCoachList();   // ⭐ Correct location
-}
 
 function collapseCard(card, athlete) {
   card.classList.remove("expanded");
