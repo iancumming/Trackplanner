@@ -695,6 +695,9 @@ function selectAthlete(id) {
   // Countdowns
   updateAgeGroupCountdown();
   updateTrainingPageCountdown();
+
+  // ⭐ FIX HOME PAGE TRAINING DAYS + AGE GROUP CHANGE
+  renderHomeAthleteList();
 }
 
 /* =========================================================
