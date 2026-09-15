@@ -653,6 +653,9 @@ function selectAthlete(id) {
   selectedAthlete = athletes.find(a => a.id === id);
   selectedAthlete.competitionResults ||= [];
 
+  // ⭐ Normalise DOB once
+  const dobNorm = normaliseDob(selectedAthlete.dob);
+
   // Set dropdown
   document.getElementById("athleteSelect").value = id;
 
@@ -665,18 +668,18 @@ function selectAthlete(id) {
 
   // Current age group
   document.getElementById("ageGroupDisplay").innerText =
-    selectedAthlete.ageGroup;
+    getScottishAthleticsAgeGroup(dobNorm);
 
   // ⭐ NEXT AGE GROUP (1 Oct)
   document.getElementById("nextAgeGroup").innerText =
-    getNextAgeGroup(selectedAthlete.dob);
+    getNextAgeGroup(dobNorm);
 
   // ⭐ MOVEMENT (Stays / Moves Up)
   document.getElementById("ageGroupMovement").innerText =
     getAgeGroupMovement(selectedAthlete);
 
-  // Training days
-  updateTrainingDaysDisplay(selectedAthlete.dob);
+  // ⭐ TRAINING DAYS (ATHLETE PAGE)
+  updateTrainingDaysDisplay(dobNorm);
 
   // PB + competition updates
   updatePBTable();
@@ -685,15 +688,24 @@ function selectAthlete(id) {
 
   // Age on next Oct 1 (training page)
   document.getElementById("trainingAthleteAge").innerText =
-    getAgeOnNextOct1(selectedAthlete.dob);
-
-  updateTrainingDaysDisplay(selectedAthlete.dob);
+    getAgeOnNextOct1(dobNorm);
 
   updateAthleteCompetitionList(selectedAthlete);
 
   // Countdowns
   updateAgeGroupCountdown();
   updateTrainingPageCountdown();
+}
+
+/* =========================================================
+   TRAINING DAYS DISPLAY (ATHLETE PAGE)
+========================================================= */
+function updateTrainingDaysDisplay(dob) {
+  const dobNorm = normaliseDob(dob);
+  const days = getTrainingDaysByAge(dobNorm);
+
+  document.getElementById("athleteTrainingDays").innerText =
+    days.length ? days.join(", ") : "N/A";
 }
 
 /* =========================================================
@@ -1109,6 +1121,10 @@ function renderHomeAthleteList() {
   list.innerHTML = ""; // clear existing
 
   athletes.forEach(athlete => {
+
+    // ⭐ ALWAYS normalise DOB first (critical fix)
+    const dobNorm = normaliseDob(athlete.dob);
+
     const card = document.createElement("div");
     card.className = "athleteCard";
     card.dataset.id = athlete.id;
@@ -1117,7 +1133,7 @@ function renderHomeAthleteList() {
       <h3 class="athleteName">${athlete.name}</h3>
 
       <p>Date of Birth: ${athlete.dob}</p>
-      <p>Age Group: ${getScottishAthleticsAgeGroup(athlete.dob)}</p>
+      <p>Age Group: ${getScottishAthleticsAgeGroup(dobNorm)}</p>
 
       <p>Training Days: <span class="homeTrainingDays"></span></p>
       <p>Age Group Change: <span class="homeAgeGroupCountdown"></span></p>
@@ -1126,19 +1142,19 @@ function renderHomeAthleteList() {
 
     list.appendChild(card);
 
-    // Fill in training days
-    const trainingDays = getTrainingDaysByAge(athlete.dob);
+    // ⭐ TRAINING DAYS (now works)
+    const trainingDays = getTrainingDaysByAge(dobNorm);
     card.querySelector(".homeTrainingDays").innerText =
       trainingDays.length ? trainingDays.join(", ") : "N/A";
 
-    // Fill in countdown
+    // ⭐ AGE GROUP CHANGE COUNTDOWN (now works)
     const countdown = getDaysUntilAgeGroupChange();
     card.querySelector(".homeAgeGroupCountdown").innerText =
       countdown === 0 ? "Changes today!" : `${countdown} days`;
 
-    // Fill in next age group
+    // ⭐ NEXT AGE GROUP (now works)
     card.querySelector(".homeNextAgeGroup").innerText =
-      getNextAgeGroup(athlete.dob);
+      getNextAgeGroup(dobNorm);
   });
 }
 
