@@ -6,13 +6,7 @@ let athletes = [];
 let coaches = [];
 let selectedAthlete = null;
 
-const trainingDaysByAgeGroup = {
-  "U12": ["Mon", "Wed"],
-  "U14": ["Mon", "Wed", "Sat"],
-  "U16": ["Mon", "Wed", "Sat", "Sun"],
-  "U18": ["Mon", "Tue", "Wed", "Sat", "Sun"],
-  "U20": ["Mon", "Tue", "Wed", "Thu", "Sat", "Sun"]
-};
+
 
 /* =========================================================
    UNIVERSAL SAFE DATE CONVERTER
