@@ -137,67 +137,81 @@ document.getElementById("deleteCoachButton").addEventListener("click", () => {
 ========================================================= */
 
 function updateHomePage() {
+  renderHomeAthleteList();   // ⭐ THIS FIXES HOME PAGE
+}
 
-  /* ---------------------------
-     ATHLETE LIST
-  ---------------------------- */
-  const athleteList = document.getElementById("homeAthleteList");
 
-  athleteList.innerHTML = athletes
-    .map(a => `
-      <div class="card home-athlete" data-id="${a.id}">
-        <div class="home-header">${a.name}</div>
-      </div>
-    `)
-    .join("");
+ /* ---------------------------
+   ATHLETE LIST (EXPAND/COLLAPSE)
+---------------------------- */
+const athleteList = document.getElementById("homeAthleteList");
+athleteList.innerHTML = "";   // clear existing
 
-  document.querySelectorAll(".home-athlete").forEach(card => {
-    const header = card.querySelector(".home-header");
+// ⭐ Create collapsed cards (name only)
+athletes.forEach(athlete => {
+  const card = document.createElement("div");
+  card.className = "card home-athlete";
+  card.dataset.id = athlete.id;
 
-    header.onclick = () => {
-      const id = Number(card.dataset.id);
-      const athlete = athletes.find(a => a.id === id);
+  card.innerHTML = `
+    <div class="home-header">${athlete.name}</div>
+  `;
 
-      if (card.classList.contains("expanded")) {
-        collapseCard(card, athlete);
-        return;
-      }
+  athleteList.appendChild(card);
+});
 
-      card.classList.add("expanded");
+// ⭐ Attach expand/collapse behaviour
+document.querySelectorAll(".home-athlete").forEach(card => {
+  const header = card.querySelector(".home-header");
 
-      card.innerHTML = `
-        <div class="home-header">${athlete.name}</div>
+  header.onclick = () => {
+    const id = Number(card.dataset.id);
+    const athlete = athletes.find(a => a.id === id);
 
-        <label>Emergency Contact:
-          <input type="text" id="editEmergency-${athlete.id}" value="${athlete.emergency || ""}">
-        </label>
+    if (card.classList.contains("expanded")) {
+      collapseCard(card, athlete);
+      return;
+    }
 
-        <label>Relationship:
-          <input type="text" id="editRelationship-${athlete.id}" value="${athlete.relationship || ""}">
-        </label>
+    card.classList.add("expanded");
 
-        <label>Date of Birth:
-          <input type="date" id="editDob-${athlete.id}" value="${formatDobForInput(athlete.dob)}">
-        </label>
+    // ⭐ Always normalise DOB for correct age group + training days
+    const dobNorm = normaliseDob(athlete.dob);
 
-        <p><strong>Age Group:</strong> ${athlete.ageGroup || "—"}</p>
+    card.innerHTML = `
+      <div class="home-header">${athlete.name}</div>
 
-        <p><strong>Training Days:</strong> 
-           <span class="homeTrainingDays" data-id="${athlete.id}"></span>
-        </p>
+      <label>Emergency Contact:
+        <input type="text" id="editEmergency-${athlete.id}" value="${athlete.emergency || ""}">
+      </label>
 
-        <p><strong>Age Group Change:</strong>
-           <span class="homeAgeGroupCountdown" data-id="${athlete.id}"></span>
-        </p>
+      <label>Relationship:
+        <input type="text" id="editRelationship-${athlete.id}" value="${athlete.relationship || ""}">
+      </label>
 
-        <button onclick="saveAthleteEdits(${athlete.id})">Save Changes</button>
-        <button onclick="collapseCard(this.closest('.home-athlete'), athletes.find(a => a.id == this.closest('.home-athlete').dataset.id))">Close</button>
-      `;
+      <label>Date of Birth:
+        <input type="date" id="editDob-${athlete.id}" value="${formatDobForInput(athlete.dob)}">
+      </label>
 
-      updateHomeTrainingDays(athlete);
-      updateHomeAgeGroupCountdown(athlete);
-    };
-  });
+      <p><strong>Age Group:</strong> ${getScottishAthleticsAgeGroup(dobNorm)}</p>
+
+      <p><strong>Training Days:</strong>
+        <span class="homeTrainingDays"></span>
+      </p>
+
+      <p><strong>Age Group Change:</strong>
+        <span class="homeAgeGroupCountdown"></span>
+      </p>
+
+      <button onclick="saveAthleteEdits(${athlete.id})">Save Changes</button>
+      <button onclick="collapseCard(card, athlete)">Close</button>
+    `;
+
+    // ⭐ LIVE updates
+    updateHomeTrainingDays(athlete);
+    updateHomeAgeGroupCountdown(athlete);
+  };
+});
 
   /* ---------------------------
      COACH LIST
