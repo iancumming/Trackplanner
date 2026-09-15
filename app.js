@@ -912,19 +912,18 @@ function getAgeGroupMovement(athlete) {
    TRAINING DAYS BASED ON COMPETITION AGE
 ========================================================= */
 function getTrainingDaysByAge(dob) {
-  dob = normaliseDob(dob);
-  const birthYear = parseInt(dob.split("-")[0], 10);
+  const ageGroup = getScottishAthleticsAgeGroup(dob);
 
-  const compYear = getCompetitionYear();
-  const compAge = compYear - birthYear;
-
-  if (compAge >= 11 && compAge <= 13) return ["Mon", "Wed"];                     // U14
-  if (compAge >= 14 && compAge <= 15) return ["Mon", "Wed", "Sat"];              // U16
-  if (compAge >= 16 && compAge <= 17) return ["Mon", "Wed", "Sat", "Sun"];       // U18
-  if (compAge >= 18 && compAge <= 19) return ["Mon", "Tue", "Wed", "Thu", "Sat", "Sun"]; // U20/SEN
+  if (ageGroup === "U12") return ["Mon", "Wed"];
+  if (ageGroup === "U14") return ["Mon", "Wed"];
+  if (ageGroup === "U16") return ["Mon", "Wed", "Sat"];
+  if (ageGroup === "U18") return ["Mon", "Wed", "Sat", "Sun"];
+  if (ageGroup === "U20" || ageGroup === "SEN")
+    return ["Mon", "Tue", "Wed", "Thu", "Sat", "Sun"];
 
   return [];
 }
+
 
 /* =========================================================
    COUNTDOWN TO NEXT 1 OCTOBER
