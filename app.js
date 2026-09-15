@@ -1125,7 +1125,7 @@ function renderHomeAthleteList() {
   athletes.forEach(athlete => {
 
     // ⭐ ALWAYS normalise DOB first (critical fix)
-    const dobNorm = normaliseDob(athlete.dob);
+    const dobNorm = normaliseDob(convertDOBToUKFormat(athlete.dob));
 
     const card = document.createElement("div");
     card.className = "athleteCard";
