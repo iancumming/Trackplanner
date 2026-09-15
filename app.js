@@ -147,7 +147,7 @@ function updateHomePage() {
 const athleteList = document.getElementById("homeAthleteList");
 athleteList.innerHTML = "";   // clear existing
 
-// ⭐ Create collapsed cards (name only)
+// Create collapsed cards
 athletes.forEach(athlete => {
   const card = document.createElement("div");
   card.className = "card home-athlete";
@@ -160,7 +160,7 @@ athletes.forEach(athlete => {
   athleteList.appendChild(card);
 });
 
-// ⭐ Attach expand/collapse behaviour
+// Expand/collapse behaviour
 document.querySelectorAll(".home-athlete").forEach(card => {
   const header = card.querySelector(".home-header");
 
@@ -175,8 +175,8 @@ document.querySelectorAll(".home-athlete").forEach(card => {
 
     card.classList.add("expanded");
 
-    // ⭐ Always normalise DOB for correct age group + training days
-    const dobNorm = normaliseDob(athlete.dob);
+    // ⭐ ALWAYS convert DOB → UK → normalise
+    const dobNorm = normaliseDob(convertDOBToUKFormat(athlete.dob));
 
     card.innerHTML = `
       <div class="home-header">${athlete.name}</div>
@@ -207,7 +207,6 @@ document.querySelectorAll(".home-athlete").forEach(card => {
       <button onclick="collapseCard(card, athlete)">Close</button>
     `;
 
-    // ⭐ LIVE updates
     updateHomeTrainingDays(athlete);
     updateHomeAgeGroupCountdown(athlete);
   };
