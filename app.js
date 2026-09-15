@@ -155,72 +155,82 @@ function updateHomePage() {
     athleteList.appendChild(card);
   });
 
-  /* ---------------------------
+ /* ---------------------------
      EXPAND / COLLAPSE BEHAVIOUR
   ---------------------------- */
-  document.querySelectorAll(".home-athlete").forEach(card => {
-    const header = card.querySelector(".home-header");
+document.querySelectorAll(".home-athlete").forEach(card => {
+  const header = card.querySelector(".home-header");
 
-    header.onclick = () => {
-      const id = Number(card.dataset.id);
-      const athlete = athletes.find(a => a.id === id);
+  header.onclick = () => {
+    const id = Number(card.dataset.id);
+    const athlete = athletes.find(a => a.id === id);
 
-      if (card.classList.contains("expanded")) {
-        collapseCard(card, athlete);
-        return;
-      }
+    // ⭐ FIXED: collapseCard now only needs the card
+    if (card.classList.contains("expanded")) {
+      collapseCard(card);
+      return;
+    }
 
-      card.classList.add("expanded");
+    card.classList.add("expanded");
 
-      const dobUK = convertDOBToUKFormat(athlete.dob);
-      const dobNorm = normaliseDob(dobUK);
+    const dobUK = convertDOBToUKFormat(athlete.dob);
+    const dobNorm = normaliseDob(dobUK);
 
-      card.innerHTML = `
-        <div class="home-header">${athlete.name}</div>
+    card.innerHTML = `
+      <div class="home-header">${athlete.name}</div>
 
-        <label>Emergency Contact:
-          <input type="text" id="editEmergency-${athlete.id}" value="${athlete.emergency || ""}">
-        </label>
+      <label>Emergency Contact:
+        <input type="text" id="editEmergency-${athlete.id}" value="${athlete.emergency || ""}">
+      </label>
 
-        <label>Relationship:
-          <input type="text" id="editRelationship-${athlete.id}" value="${athlete.relationship || ""}">
-        </label>
+      <label>Relationship:
+        <input type="text" id="editRelationship-${athlete.id}" value="${athlete.relationship || ""}">
+      </label>
 
-        <label>Date of Birth:
-          <input type="date" id="editDob-${athlete.id}" value="${formatDobForInput(athlete.dob)}">
-        </label>
+      <label>Date of Birth:
+        <input type="date" id="editDob-${athlete.id}" value="${formatDobForInput(athlete.dob)}">
+      </label>
 
-        <p><strong>Age Group:</strong> ${getScottishAthleticsAgeGroup(dobNorm)}</p>
+      <p><strong>Age Group:</strong> ${getScottishAthleticsAgeGroup(dobNorm)}</p>
 
-        <p><strong>Training Days:</strong>
-          <span class="homeTrainingDays"></span>
-        </p>
+      <p><strong>Training Days:</strong>
+        <span class="homeTrainingDays"></span>
+      </p>
 
-        <p><strong>Age Group Change:</strong>
-          <span class="homeAgeGroupCountdown"></span>
-        </p>
+      <p><strong>Age Group Change:</strong>
+        <span class="homeAgeGroupCountdown"></span>
+      </p>
 
-        <p><strong>Next Age Group:</strong>
-          <span class="homeNextAgeGroup"></span>
-        </p>
+      <p><strong>Next Age Group:</strong>
+        <span class="homeNextAgeGroup"></span>
+      </p>
 
-        <button onclick="saveAthleteEdits(${athlete.id})">Save Changes</button>
-      <button onclick="collapseCard(this.closest('.home-athlete'), athlete)">Close</button>
+      <button onclick="saveAthleteEdits(${athlete.id})">Save Changes</button>
 
-      `;
+      <!-- ⭐ FIXED CLOSE BUTTON -->
+      <button onclick="collapseCard(this.closest('.home-athlete'))">Close</button>
+    `;
 
-      const trainingDays = getTrainingDaysByAge(dobNorm);
-      card.querySelector(".homeTrainingDays").innerText =
-        trainingDays.length ? trainingDays.join(", ") : "N/A";
+    const trainingDays = getTrainingDaysByAge(dobNorm);
+    card.querySelector(".homeTrainingDays").innerText =
+      trainingDays.length ? trainingDays.join(", ") : "N/A";
 
-      const countdown = getDaysUntilAgeGroupChange();
-      card.querySelector(".homeAgeGroupCountdown").innerText =
-        countdown === 0 ? "Changes today!" : `${countdown} days`;
+    const countdown = getDaysUntilAgeGroupChange();
+    card.querySelector(".homeAgeGroupCountdown").innerText =
+      countdown === 0 ? "Changes today!" : `${countdown} days`;
 
-      card.querySelector(".homeNextAgeGroup").innerText =
-        getNextAgeGroup(dobNorm);
-    };
-  });
+    card.querySelector(".homeNextAgeGroup").innerText =
+      getNextAgeGroup(dobNorm);
+  };
+});
+function collapseCard(card) {
+  card.classList.remove("expanded");
+
+  const id = Number(card.dataset.id);
+  const athlete = athletes.find(a => a.id === id);
+
+  card.innerHTML = `<div class="home-header">${athlete.name}</div>`;
+}
 
   /* ---------------------------
      COACH LIST
