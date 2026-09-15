@@ -352,23 +352,25 @@ function loadAthleteList() {
     };
   });
 
-  document.querySelectorAll(".delete-btn").forEach(btn => {
-    btn.onclick = () => {
-      const id = Number(btn.dataset.id);
+document.querySelectorAll(".delete-btn").forEach(btn => {
+  btn.onclick = () => {
+    const id = Number(btn.dataset.id);
 
-      athletes = athletes.filter(a => a.id !== id);
+    athletes = athletes.filter(a => a.id !== id);
 
-      if (selectedAthlete && selectedAthlete.id === id) {
-        selectedAthlete = null;
-      }
+    if (selectedAthlete && selectedAthlete.id === id) {
+      selectedAthlete = null;
+    }
 
-      saveData();
-      updateHomePage();
-      loadAthleteList();
-      updateTrainingDropdown();
-      updatePBTable();
-    };
-  });
+    saveData();
+    updateHomePage();
+    renderHomeAthleteList();   // ⭐ REQUIRED FIX
+    loadAthleteList();
+    updateTrainingDropdown();
+    updatePBTable();
+  };
+});
+
 }
 
 // -------------------------------
@@ -767,24 +769,26 @@ function loadAthleteList() {
     };
   });
 
-  // DELETE ATHLETE
-  document.querySelectorAll(".delete-btn").forEach(btn => {
-    btn.onclick = () => {
-      const id = Number(btn.dataset.id);
+ // DELETE ATHLETE
+document.querySelectorAll(".delete-btn").forEach(btn => {
+  btn.onclick = () => {
+    const id = Number(btn.dataset.id);
 
-      athletes = athletes.filter(a => a.id !== id);
+    athletes = athletes.filter(a => a.id !== id);
 
-      if (selectedAthlete && selectedAthlete.id === id) {
-        selectedAthlete = null;
-      }
+    if (selectedAthlete && selectedAthlete.id === id) {
+      selectedAthlete = null;
+    }
 
-      saveData();
-      updateHomePage();
-      loadAthleteList();
-      updateTrainingDropdown();
-      updatePBTable();
-    };
-  });
+    saveData();
+    updateHomePage();
+    renderHomeAthleteList();   // ⭐ REQUIRED FIX
+    loadAthleteList();
+    updateTrainingDropdown();
+    updatePBTable();
+  };
+});
+
 }
 
 
@@ -1033,6 +1037,7 @@ document.getElementById("saveAthleteButton").onclick = () => {
 
   // ⭐ Update all pages
   updateHomePage();
+  renderHomeAthleteList();   // ⭐ REQUIRED FIX
   loadAthleteList();
   updateTrainingDropdown();
   updatePBTable();
@@ -2291,13 +2296,15 @@ function getScottishAthleticsAgeGroup(dob) {
    INITIAL LOAD
 ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
-  loadData();          // Load athletes + coaches FIRST
-  updateHomePage();    // Build home page
-  loadAthleteList();   // Athlete page
+  loadData();          
+  updateHomePage();    
+  renderHomeAthleteList();   // ⭐ REQUIRED ON PAGE LOAD
+  loadAthleteList();   
   updateTrainingDropdown();
   updatePBTable();
-  showPage("home");    // Show home page
+  showPage("home");    
 });
+
 document.getElementById("calcButton").addEventListener("click", () => {
   console.log("Calculate button clicked");
   calculate5kZones();
