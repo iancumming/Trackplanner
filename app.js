@@ -137,81 +137,80 @@ document.getElementById("deleteCoachButton").addEventListener("click", () => {
 ========================================================= */
 
 function updateHomePage() {
-  renderHomeAthleteList();   // ⭐ THIS FIXES HOME PAGE
-}
 
+  /* ---------------------------
+     ATHLETE LIST (EXPAND/COLLAPSE)
+  ---------------------------- */
+  const athleteList = document.getElementById("homeAthleteList");
+  athleteList.innerHTML = "";   // clear existing
 
-/* ---------------------------
-   ATHLETE LIST (EXPAND/COLLAPSE)
----------------------------- */
-const athleteList = document.getElementById("homeAthleteList");
-athleteList.innerHTML = "";   // clear existing
-
-// ⭐ FIRST: create the collapsed cards
-athletes.forEach(athlete => {
-  const card = document.createElement("div");
-  card.className = "card home-athlete";
-  card.dataset.id = athlete.id;
-
-  card.innerHTML = `
-    <div class="home-header">${athlete.name}</div>
-  `;
-
-  athleteList.appendChild(card);
-});
-
-// ⭐ SECOND: attach expand/collapse behaviour
-document.querySelectorAll(".home-athlete").forEach(card => {
-  const header = card.querySelector(".home-header");
-
-  header.onclick = () => {
-    const id = Number(card.dataset.id);
-    const athlete = athletes.find(a => a.id === id);
-
-    if (card.classList.contains("expanded")) {
-      collapseCard(card, athlete);
-      return;
-    }
-
-    card.classList.add("expanded");
-
-    // ⭐ ALWAYS convert DOB → UK → normalise
-    const dobUK = convertDOBToUKFormat(athlete.dob);
-    const dobNorm = normaliseDob(dobUK);
+  // FIRST: create the collapsed cards
+  athletes.forEach(athlete => {
+    const card = document.createElement("div");
+    card.className = "card home-athlete";
+    card.dataset.id = athlete.id;
 
     card.innerHTML = `
       <div class="home-header">${athlete.name}</div>
-
-      <label>Emergency Contact:
-        <input type="text" id="editEmergency-${athlete.id}" value="${athlete.emergency || ""}">
-      </label>
-
-      <label>Relationship:
-        <input type="text" id="editRelationship-${athlete.id}" value="${athlete.relationship || ""}">
-      </label>
-
-      <label>Date of Birth:
-        <input type="date" id="editDob-${athlete.id}" value="${formatDobForInput(athlete.dob)}">
-      </label>
-
-      <p><strong>Age Group:</strong> ${getScottishAthleticsAgeGroup(dobNorm)}</p>
-
-      <p><strong>Training Days:</strong>
-        <span class="homeTrainingDays"></span>
-      </p>
-
-      <p><strong>Age Group Change:</strong>
-        <span class="homeAgeGroupCountdown"></span>
-      </p>
-
-      <button onclick="saveAthleteEdits(${athlete.id})">Save Changes</button>
-      <button onclick="collapseCard(card, athlete)">Close</button>
     `;
 
-    updateHomeTrainingDays(athlete);
-    updateHomeAgeGroupCountdown(athlete);
-  };
-});
+    athleteList.appendChild(card);
+  });
+
+  // SECOND: attach expand/collapse behaviour
+  document.querySelectorAll(".home-athlete").forEach(card => {
+    const header = card.querySelector(".home-header");
+
+    header.onclick = () => {
+      const id = Number(card.dataset.id);
+      const athlete = athletes.find(a => a.id === id);
+
+      if (card.classList.contains("expanded")) {
+        collapseCard(card, athlete);
+        return;
+      }
+
+      card.classList.add("expanded");
+
+      // ALWAYS convert DOB → UK → normalise
+      const dobUK = convertDOBToUKFormat(athlete.dob);
+      const dobNorm = normaliseDob(dobUK);
+
+      card.innerHTML = `
+        <div class="home-header">${athlete.name}</div>
+
+        <label>Emergency Contact:
+          <input type="text" id="editEmergency-${athlete.id}" value="${athlete.emergency || ""}">
+        </label>
+
+        <label>Relationship:
+          <input type="text" id="editRelationship-${athlete.id}" value="${athlete.relationship || ""}">
+        </label>
+
+        <label>Date of Birth:
+          <input type="date" id="editDob-${athlete.id}" value="${formatDobForInput(athlete.dob)}">
+        </label>
+
+        <p><strong>Age Group:</strong> ${getScottishAthleticsAgeGroup(dobNorm)}</p>
+
+        <p><strong>Training Days:</strong>
+          <span class="homeTrainingDays"></span>
+        </p>
+
+        <p><strong>Age Group Change:</strong>
+          <span class="homeAgeGroupCountdown"></span>
+        </p>
+
+        <button onclick="saveAthleteEdits(${athlete.id})">Save Changes</button>
+        <button onclick="collapseCard(card, athlete)">Close</button>
+      `;
+
+      updateHomeTrainingDays(athlete);
+      updateHomeAgeGroupCountdown(athlete);
+    };
+  });
+
+} // ⭐ THIS closes updateHomePage — correct place
 
   /* ---------------------------
      COACH LIST
