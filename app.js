@@ -205,7 +205,8 @@ function updateHomePage() {
         </p>
 
         <button onclick="saveAthleteEdits(${athlete.id})">Save Changes</button>
-        <button onclick="collapseCard(card, athlete)">Close</button>
+      <button onclick="collapseCard(this.closest('.home-athlete'), athlete)">Close</button>
+
       `;
 
       const trainingDays = getTrainingDaysByAge(dobNorm);
