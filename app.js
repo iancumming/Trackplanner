@@ -131,7 +131,6 @@ document.getElementById("deleteCoachButton").addEventListener("click", () => {
 
   alert("Coach deleted!");
 });
-
 /* =========================================================
    HOME PAGE – ATHLETES + COACHES
 ========================================================= */
@@ -172,7 +171,6 @@ function updateHomePage() {
 
       card.classList.add("expanded");
 
-      // ALWAYS convert DOB → UK → normalise
       const dobUK = convertDOBToUKFormat(athlete.dob);
       const dobNorm = normaliseDob(dobUK);
 
@@ -210,7 +208,13 @@ function updateHomePage() {
     };
   });
 
-} // ⭐ THIS closes updateHomePage — correct place
+  /* ---------------------------
+     COACH LIST
+  ---------------------------- */
+  updateCoachList();   // ⭐ Correct location
+
+}   // ⭐ THIS closes updateHomePage properly
+
 
   /* ---------------------------
      COACH LIST
