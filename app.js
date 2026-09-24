@@ -1344,7 +1344,7 @@ function updateTrainingPage() {
 
 
 /* =========================================================
-   TRAINING CALENDAR
+   TRAINING CALENDAR — FIXED FOR MONTH + DAY STORAGE
 ========================================================= */
 function updateMonthCalendar(a, forcedMonth = null) {
   selectedAthlete = a;
@@ -1353,36 +1353,41 @@ function updateMonthCalendar(a, forcedMonth = null) {
   const grid = document.getElementById("monthGrid");
   const year = new Date().getFullYear();
 
-  // ⭐ Use forced month if provided
+  // Determine selected month
   const month = forcedMonth !== null
     ? forcedMonth
     : Number(document.getElementById("monthSelect").value);
 
   const monthNames = [
-  "January","February","March",
-  "April","May","June",
-  "July","August","September",
-  "October","November","December"
+    "January","February","March",
+    "April","May","June",
+    "July","August","September",
+    "October","November","December"
   ];
-
 
   monthName.innerText = monthNames[month];
   grid.innerHTML = "";
 
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+  // Ensure month exists in athlete data
+  if (!a.sessions) a.sessions = {};
+  if (!a.sessions[month]) a.sessions[month] = {};
+
   for (let day = 1; day <= daysInMonth; day++) {
     const box = document.createElement("div");
     box.classList.add("day-box");
     box.innerText = day;
 
-    if (a.sessions && a.sessions[day]) {
-      const intensity = a.sessions[day].intensity;
+    // Read session for this month + day
+    const session = a.sessions[month][day];
+    if (session) {
+      const intensity = session.intensity;
       box.classList.add(`intensity-${intensity}`);
 
       const textDiv = document.createElement("div");
       textDiv.classList.add("day-text");
-      textDiv.innerText = a.sessions[day].text;
+      textDiv.innerText = session.text;
       box.appendChild(textDiv);
     }
 
@@ -1393,48 +1398,55 @@ function updateMonthCalendar(a, forcedMonth = null) {
   updateIntensitySummary(a);
   updateIntensityPercent(a);
   updateYearIntensityGraph(a);
-  }
+}
 
 
 /* =========================================================
    MONTH SELECT — AUTO UPDATE CALENDAR + GRAPH
 ========================================================= */
-
 document.getElementById("monthSelect").onchange = () => {
   if (selectedAthlete) {
     updateMonthCalendar(selectedAthlete);
     updateYearIntensityGraph(selectedAthlete);
-}
+  }
 };
+
 
 /* =========================================================
    SESSION EDITOR
 ========================================================= */
-
 function openSessionEditor(day) {
   selectedDay = day;
   document.getElementById("modalBackdrop").style.display = "flex";
 
-  const session = selectedAthlete.sessions?.[day] || { intensity: "rest", text: "" };
+  const month = Number(document.getElementById("monthSelect").value);
+
+  const session =
+    selectedAthlete.sessions?.[month]?.[day] ||
+    { intensity: "rest", text: "" };
 
   document.getElementById("modalSession").value = session.text;
   document.getElementById("modalIntensity").value = session.intensity;
 }
 
+
+/* =========================================================
+   SAVE SESSION
+========================================================= */
 document.getElementById("modalSave").onclick = () => {
   const text = document.getElementById("modalSession").value;
   const intensity = document.getElementById("modalIntensity").value;
 
-  if (!selectedAthlete.sessions) selectedAthlete.sessions = {};
-
-  // ⭐ Build a real date string for the YEAR graph
   const year = new Date().getFullYear();
   const month = Number(document.getElementById("monthSelect").value);
+
+  if (!selectedAthlete.sessions) selectedAthlete.sessions = {};
+  if (!selectedAthlete.sessions[month]) selectedAthlete.sessions[month] = {};
+
   const dateString =
     `${year}-${String(month + 1).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
 
-  // ⭐ Save session WITH a real date
-  selectedAthlete.sessions[selectedDay] = {
+  selectedAthlete.sessions[month][selectedDay] = {
     intensity,
     text,
     date: dateString
@@ -1444,22 +1456,32 @@ document.getElementById("modalSave").onclick = () => {
   updateMonthCalendar(selectedAthlete);
 
   document.getElementById("modalBackdrop").style.display = "none";
-  };
+};
 
+
+/* =========================================================
+   CLEAR SESSION
+========================================================= */
 document.getElementById("modalClear").onclick = () => {
-  if (selectedAthlete.sessions) {
-    delete selectedAthlete.sessions[selectedDay];
+  const month = Number(document.getElementById("monthSelect").value);
+
+  if (selectedAthlete.sessions?.[month]) {
+    delete selectedAthlete.sessions[month][selectedDay];
   }
 
   saveData();
   updateMonthCalendar(selectedAthlete);
 
   document.getElementById("modalBackdrop").style.display = "none";
-  };
+};
 
+
+/* =========================================================
+   CANCEL EDITOR
+========================================================= */
 document.getElementById("modalCancel").onclick = () => {
   document.getElementById("modalBackdrop").style.display = "none";
-  };
+};
 
 /* =========================================================
    INTENSITY SUMMARY + PERCENT
