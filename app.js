@@ -132,7 +132,7 @@ document.getElementById("deleteCoachButton").addEventListener("click", () => {
   alert("Coach deleted!");
 });
 /* =========================================================
-   HOME PAGE – ATHLETES + COACHES
+   HOME PAGE – ATHLETES + COACHES (FULLY FIXED)
 ========================================================= */
 
 function updateHomePage() {
@@ -158,7 +158,7 @@ function updateHomePage() {
 
 
 /* =========================================================
-   EXPAND CARD
+   EXPAND CARD (FIXED)
 ========================================================= */
 function expandCard(card, athlete) {
 
@@ -173,6 +173,7 @@ function expandCard(card, athlete) {
   const dobUK = convertDOBToUKFormat(athlete.dob);
   const dobNorm = normaliseDob(dobUK);
 
+  // ⭐ Instead of replacing the whole card, replace ONLY the inside
   card.innerHTML = `
     <div class="home-header">${athlete.name}</div>
 
@@ -202,14 +203,23 @@ function expandCard(card, athlete) {
       <span class="homeNextAgeGroup"></span>
     </p>
 
-    <button onclick="saveAthleteEdits(${athlete.id})">Save Changes</button>
-    <button onclick="collapseCard(this.closest('.home-athlete'))">Close</button>
+    <button class="save-btn">Save Changes</button>
+    <button class="close-btn">Close</button>
   `;
 
-  // ⭐ RE‑ATTACH HEADER CLICK HANDLER
+  // ⭐ Reattach header click
   card.querySelector(".home-header").onclick = () => expandCard(card, athlete);
 
-  // update dynamic fields
+  // ⭐ Attach Save button
+  card.querySelector(".save-btn").onclick = () => {
+    saveAthleteEdits(athlete.id);
+    updateHomePage(); // rebuild list
+  };
+
+  // ⭐ Attach Close button
+  card.querySelector(".close-btn").onclick = () => collapseCard(card);
+
+  // ⭐ Update dynamic fields
   const trainingDays = getTrainingDaysByAge(dobNorm);
   card.querySelector(".homeTrainingDays").innerText =
     trainingDays.length ? trainingDays.join(", ") : "N/A";
@@ -224,7 +234,7 @@ function expandCard(card, athlete) {
 
 
 /* =========================================================
-   COLLAPSE CARD
+   COLLAPSE CARD (FIXED)
 ========================================================= */
 function collapseCard(card) {
   card.classList.remove("expanded");
@@ -234,7 +244,7 @@ function collapseCard(card) {
 
   card.innerHTML = `<div class="home-header">${athlete.name}</div>`;
 
-  // ⭐ RE‑ATTACH HEADER CLICK HANDLER
+  // ⭐ Reattach header click
   card.querySelector(".home-header").onclick = () => expandCard(card, athlete);
 }
 
