@@ -1344,7 +1344,7 @@ function updateTrainingPage() {
 
 
 /* =========================================================
-   TRAINING CALENDAR — FIXED FOR MONTH + DAY STORAGE
+   TRAINING CALENDAR — MONTH + DAY STORAGE + WEEKDAY HEADERS
 ========================================================= */
 function updateMonthCalendar(a, forcedMonth = null) {
   selectedAthlete = a;
@@ -1365,25 +1365,50 @@ function updateMonthCalendar(a, forcedMonth = null) {
     "October","November","December"
   ];
 
+  const dayNames = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+
   monthName.innerText = monthNames[month];
   grid.innerHTML = "";
 
+  // ⭐ Add weekday header row
+  const headerRow = document.createElement("div");
+  headerRow.classList.add("calendar-header-row");
+
+  dayNames.forEach(d => {
+    const h = document.createElement("div");
+    h.classList.add("calendar-header");
+    h.innerText = d;
+    headerRow.appendChild(h);
+  });
+
+  grid.appendChild(headerRow);
+
+  // Determine days in month
   const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  // Determine weekday of the 1st (convert JS Sun=0 → Mon=0)
+  const firstDayIndex = (new Date(year, month, 1).getDay() + 6) % 7;
 
   // Ensure month exists in athlete data
   if (!a.sessions) a.sessions = {};
   if (!a.sessions[month]) a.sessions[month] = {};
 
+  // ⭐ Add blank boxes before day 1
+  for (let i = 0; i < firstDayIndex; i++) {
+    const blank = document.createElement("div");
+    blank.classList.add("day-box", "blank-day");
+    grid.appendChild(blank);
+  }
+
+  // ⭐ Add actual day boxes
   for (let day = 1; day <= daysInMonth; day++) {
     const box = document.createElement("div");
     box.classList.add("day-box");
     box.innerText = day;
 
-    // Read session for this month + day
     const session = a.sessions[month][day];
     if (session) {
-      const intensity = session.intensity;
-      box.classList.add(`intensity-${intensity}`);
+      box.classList.add(`intensity-${session.intensity}`);
 
       const textDiv = document.createElement("div");
       textDiv.classList.add("day-text");
