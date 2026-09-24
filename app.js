@@ -154,15 +154,16 @@ function updateHomePage() {
     card.appendChild(header);
     athleteList.appendChild(card);
   });
+
+  updateCoachList();   // correct location
 }
 
 
 /* =========================================================
-   EXPAND CARD (FIXED)
+   EXPAND ATHLETE CARD
 ========================================================= */
 function expandCard(card, athlete) {
 
-  // collapse if already expanded
   if (card.classList.contains("expanded")) {
     collapseCard(card);
     return;
@@ -173,7 +174,6 @@ function expandCard(card, athlete) {
   const dobUK = convertDOBToUKFormat(athlete.dob);
   const dobNorm = normaliseDob(dobUK);
 
-  // ⭐ Instead of replacing the whole card, replace ONLY the inside
   card.innerHTML = `
     <div class="home-header">${athlete.name}</div>
 
@@ -207,19 +207,19 @@ function expandCard(card, athlete) {
     <button class="close-btn">Close</button>
   `;
 
-  // ⭐ Reattach header click
+  // reattach header click
   card.querySelector(".home-header").onclick = () => expandCard(card, athlete);
 
-  // ⭐ Attach Save button
+  // save button
   card.querySelector(".save-btn").onclick = () => {
     saveAthleteEdits(athlete.id);
-    updateHomePage(); // rebuild list
+    updateHomePage();
   };
 
-  // ⭐ Attach Close button
+  // close button
   card.querySelector(".close-btn").onclick = () => collapseCard(card);
 
-  // ⭐ Update dynamic fields
+  // dynamic fields
   const trainingDays = getTrainingDaysByAge(dobNorm);
   card.querySelector(".homeTrainingDays").innerText =
     trainingDays.length ? trainingDays.join(", ") : "N/A";
@@ -234,7 +234,7 @@ function expandCard(card, athlete) {
 
 
 /* =========================================================
-   COLLAPSE CARD (FIXED)
+   COLLAPSE ATHLETE CARD
 ========================================================= */
 function collapseCard(card) {
   card.classList.remove("expanded");
@@ -243,23 +243,9 @@ function collapseCard(card) {
   const athlete = athletes.find(a => a.id === id);
 
   card.innerHTML = `<div class="home-header">${athlete.name}</div>`;
-
-  // ⭐ Reattach header click
   card.querySelector(".home-header").onclick = () => expandCard(card, athlete);
 }
 
-  /* ---------------------------
-     COACH LIST
-  ---------------------------- */
-  updateCoachList();   // ⭐ Correct location INSIDE updateHomePage
-
-}   // ⭐ THIS closes updateHomePage properly
-
-
-function collapseCard(card, athlete) {
-  card.classList.remove("expanded");
-  card.innerHTML = `<div class="home-header">${athlete.name}</div>`;
-}
 
 /* =========================================================
    HOME PAGE – COACH LIST
@@ -353,6 +339,7 @@ function deleteCoach(index) {
 
   updateHomePage();
 }
+
 
 /* =========================================================
    AUTO‑LOAD HOME PAGE
