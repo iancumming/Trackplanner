@@ -207,19 +207,15 @@ function expandCard(card, athlete) {
     <button class="close-btn">Close</button>
   `;
 
-  // reattach header click
   card.querySelector(".home-header").onclick = () => expandCard(card, athlete);
 
-  // save button
   card.querySelector(".save-btn").onclick = () => {
     saveAthleteEdits(athlete.id);
     updateHomePage();
   };
 
-  // close button
   card.querySelector(".close-btn").onclick = () => collapseCard(card);
 
-  // dynamic fields
   const trainingDays = getTrainingDaysByAge(dobNorm);
   card.querySelector(".homeTrainingDays").innerText =
     trainingDays.length ? trainingDays.join(", ") : "N/A";
