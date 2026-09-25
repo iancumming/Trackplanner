@@ -1392,32 +1392,29 @@ function updateMonthCalendar(a, forcedMonth = null) {
   // Determine weekday of the 1st (convert JS Sun=0 → Mon=0)
   const firstDayIndex = (new Date(year, month, 1).getDay() + 6) % 7;
 
-  // Ensure month exists in athlete data
-  if (!a.sessions) a.sessions = {};
-  if (!a.sessions[month]) a.sessions[month] = {};
+ // Ensure month exists in athlete data
+if (!a.sessions) a.sessions = {};
+if (!a.sessions[month]) a.sessions[month] = {};
 
-  // ⭐ Add blank boxes before day 1
-  for (let i = 0; i < firstDayIndex; i++) {
-    const blank = document.createElement("div");
-    blank.classList.add("day-box", "blank-day");
-    grid.appendChild(blank);
-  }
+// ⭐ Add blank boxes before day 1
+for (let i = 0; i < firstDayIndex; i++) {
+  const blank = document.createElement("div");
+  blank.classList.add("day-box", "blank-day");
+  grid.appendChild(blank);
+}
 
- // ⭐ Add actual day boxes
+// ⭐ Add actual day boxes
 for (let day = 1; day <= daysInMonth; day++) {
   const box = document.createElement("div");
   box.classList.add("day-box");
 
-  // Calculate weekday name
   const weekdayIndex = (firstDayIndex + day - 1) % 7;
   const weekdayName = dayNames[weekdayIndex];
 
-  // Weekday div
   const wd = document.createElement("div");
   wd.classList.add("weekday");
   wd.innerText = weekdayName;
 
-  // Day number div
   const dn = document.createElement("div");
   dn.classList.add("day-number");
   dn.innerText = day;
@@ -1425,7 +1422,6 @@ for (let day = 1; day <= daysInMonth; day++) {
   box.appendChild(wd);
   box.appendChild(dn);
 
-  // Add session text if exists
   const session = a.sessions[month][day];
   if (session) {
     box.classList.add(`intensity-${session.intensity}`);
@@ -1440,7 +1436,6 @@ for (let day = 1; day <= daysInMonth; day++) {
   grid.appendChild(box);
 }
 
-// ⭐ These belong AFTER the loop, INSIDE the function
 updateIntensitySummary(a);
 updateIntensityPercent(a);
 updateYearIntensityGraph(a);
