@@ -1403,14 +1403,43 @@ function updateMonthCalendar(a, forcedMonth = null) {
     grid.appendChild(blank);
   }
 
-  // ⭐ Add actual day boxes
-  for (let day = 1; day <= daysInMonth; day++) {
-    const box = document.createElement("div");
-    box.classList.add("day-box");
-   const weekdayIndex = (firstDayIndex + day - 1) % 7;
-const weekdayName = dayNames[weekdayIndex];
+ // ⭐ Add actual day boxes
+for (let day = 1; day <= daysInMonth; day++) {
+  const box = document.createElement("div");
+  box.classList.add("day-box");
 
-box.innerText = `${weekdayName} ${day}`;
+  // Calculate weekday name
+  const weekdayIndex = (firstDayIndex + day - 1) % 7;
+  const weekdayName = dayNames[weekdayIndex];
+
+  // Weekday div
+  const wd = document.createElement("div");
+  wd.classList.add("weekday");
+  wd.innerText = weekdayName;
+
+  // Day number div
+  const dn = document.createElement("div");
+  dn.classList.add("day-number");
+  dn.innerText = day;
+
+  // Add both to the box
+  box.appendChild(wd);
+  box.appendChild(dn);
+
+  // Add session text if exists
+  const session = a.sessions[month][day];
+  if (session) {
+    box.classList.add(`intensity-${session.intensity}`);
+
+    const textDiv = document.createElement("div");
+    textDiv.classList.add("day-text");
+    textDiv.innerText = session.text;
+    box.appendChild(textDiv);
+  }
+
+  box.onclick = () => openSessionEditor(day);
+  grid.appendChild(box);
+}
 
 
     const session = a.sessions[month][day];
