@@ -1407,7 +1407,11 @@ function updateMonthCalendar(a, forcedMonth = null) {
   for (let day = 1; day <= daysInMonth; day++) {
     const box = document.createElement("div");
     box.classList.add("day-box");
-    box.innerText = day;
+   const weekdayIndex = (firstDayIndex + day - 1) % 7;
+const weekdayName = dayNames[weekdayIndex];
+
+box.innerText = `${weekdayName} ${day}`;
+
 
     const session = a.sessions[month][day];
     if (session) {
