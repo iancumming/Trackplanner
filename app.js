@@ -1697,9 +1697,10 @@ function showPage(id) {
     updateTrainingDropdown();
   }
 
-  if (id === "calculator") {
-    // calculator page loads instantly
-  }
+ if (id === "calculator") {
+    initCalculator();   // ⭐ THIS FIXES THE 5K LOAD ISSUE
+}
+
 }
 
 document.getElementById("navHome").onclick = () => showPage("home");
@@ -2098,25 +2099,6 @@ function updatePaceDropdown() {
   }
 }
 
-/* =========================================================
-   CLEAN EVENT LISTENER — FINAL VERSION
-========================================================= */
-
-document.getElementById("calcEvent").addEventListener("change", () => {
-
-  // 1️⃣ Update dropdown options
-  updatePaceDropdown();
-
-  // 2️⃣ Show/hide correct pace-type blocks
-  filterPaceType();
-
-  // 3️⃣ Update description box
-  updateDescription();
-
-  // 4️⃣ Show correct zone card (5k / 1500 / 800 / 400)
-  showCorrectZones(document.getElementById("calcEvent").value);
-});
-
 
 /* =========================================================
    PAGE LOAD INITIALIZER — FIXES EMPTY PACE DROPDOWN
@@ -2400,6 +2382,43 @@ function getScottishAthleticsAgeGroup(dob) {
   if (ageOnOct1 < 20) return "U20";
   return "Sen";
 }
+/* =========================================================
+   FINAL EVENT LISTENER — PLACE AT BOTTOM OF FILE
+========================================================= */
+
+document.getElementById("calcEvent").addEventListener("change", () => {
+  const event = document.getElementById("calcEvent").value;
+
+  // Force RP as default for 5k
+  if (event === "5k") {
+    document.getElementById("paceType").value = "rp";
+  }
+
+  updatePaceDropdown();
+  filterPaceType();
+  updateDescription();
+  showCorrectZones(event);
+});
+
+
+/* =========================================================
+   PAGE LOAD INITIALIZER — FIXES EMPTY 5K DROPDOWN
+========================================================= */
+
+window.onload = () => {
+  const eventSelect = document.getElementById("calcEvent");
+  const paceSelect  = document.getElementById("paceType");
+
+  // Default for 5k
+  if (eventSelect.value === "5k") {
+    paceSelect.value = "rp";
+  }
+
+  updatePaceDropdown();
+  filterPaceType();
+  updateDescription();
+  showCorrectZones(eventSelect.value);
+};
 
 /* =========================================================
    INITIAL LOAD
@@ -2418,3 +2437,23 @@ document.getElementById("calcButton").addEventListener("click", () => {
   console.log("Calculate button clicked");
   calculate5kZones();
 });
+/* =========================================================
+   RUN CALCULATOR INIT WHEN CALCULATOR PAGE IS SHOWN
+========================================================= */
+
+function initCalculator() {
+  const eventSelect = document.getElementById("calcEvent");
+  const paceSelect  = document.getElementById("paceType");
+
+  if (!eventSelect || !paceSelect) return; // calculator not visible yet
+
+  // Default for 5k
+  if (eventSelect.value === "5k") {
+    paceSelect.value = "rp";
+  }
+
+  updatePaceDropdown();
+  filterPaceType();
+  updateDescription();
+  showCorrectZones(eventSelect.value);
+}
