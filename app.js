@@ -2131,15 +2131,6 @@ window.addEventListener("DOMContentLoaded", () => {
   showCorrectZones(document.getElementById("calcEvent").value);
 });
 
-/* =========================================================
-   EVENT CHANGE — UPDATE DROPDOWN ONLY (NO DESCRIPTION HERE)
-========================================================= */
-
-document.getElementById("calcEvent").addEventListener("change", () => {
-  updatePaceDropdown();
-  filterPaceType();   // show/hide correct blocks
-  // ⭐ DO NOT call updateDescription() here — causes flicker
-});
 
 
 
@@ -2333,14 +2324,7 @@ function filterPaceType() {
 }
 
 
-/* =========================================================
-   EVENT CHANGE — DO NOT FILTER HERE
-========================================================= */
-document.getElementById("calcEvent").addEventListener("change", () => {
-  updatePaceDropdown();
-  // ❌ filterPaceType removed — causes wrong blocks
-  // ❌ updateDescription removed — causes flicker
-});
+
 
 /* =========================================================
    CALCULATE BUTTON — FINAL VERSION
