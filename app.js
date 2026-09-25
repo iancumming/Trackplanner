@@ -2099,10 +2099,32 @@ function updatePaceDropdown() {
 }
 
 /* =========================================================
-   SINGLE CLEAN EVENT LISTENER (REPLACES ALL 3)
+   CLEAN EVENT LISTENER — FINAL VERSION
 ========================================================= */
 
 document.getElementById("calcEvent").addEventListener("change", () => {
+
+  // 1️⃣ Update dropdown options
+  updatePaceDropdown();
+
+  // 2️⃣ Show/hide correct pace-type blocks
+  filterPaceType();
+
+  // 3️⃣ Update description box
+  updateDescription();
+
+  // 4️⃣ Show correct zone card (5k / 1500 / 800 / 400)
+  showCorrectZones(document.getElementById("calcEvent").value);
+});
+
+
+/* =========================================================
+   PAGE LOAD INITIALIZER — FIXES EMPTY PACE DROPDOWN
+========================================================= */
+
+window.addEventListener("DOMContentLoaded", () => {
+
+  // Force everything to load as if event changed once
   updatePaceDropdown();
   filterPaceType();
   updateDescription();
