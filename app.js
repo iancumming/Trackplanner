@@ -1422,7 +1422,6 @@ for (let day = 1; day <= daysInMonth; day++) {
   dn.classList.add("day-number");
   dn.innerText = day;
 
-  // Add both to the box
   box.appendChild(wd);
   box.appendChild(dn);
 
@@ -1441,26 +1440,12 @@ for (let day = 1; day <= daysInMonth; day++) {
   grid.appendChild(box);
 }
 
+// ⭐ These belong AFTER the loop, INSIDE the function
+updateIntensitySummary(a);
+updateIntensityPercent(a);
+updateYearIntensityGraph(a);
 
-    const session = a.sessions[month][day];
-    if (session) {
-      box.classList.add(`intensity-${session.intensity}`);
-
-      const textDiv = document.createElement("div");
-      textDiv.classList.add("day-text");
-      textDiv.innerText = session.text;
-      box.appendChild(textDiv);
-    }
-
-    box.onclick = () => openSessionEditor(day);
-    grid.appendChild(box);
-  }
-
-  updateIntensitySummary(a);
-  updateIntensityPercent(a);
-  updateYearIntensityGraph(a);
-}
-
+}   // closes updateMonthCalendar
 
 /* =========================================================
    MONTH SELECT — AUTO UPDATE CALENDAR + GRAPH
