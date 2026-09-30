@@ -703,51 +703,39 @@ function selectAthlete(id) {
   selectedAthlete = athletes.find(a => a.id === id);
   selectedAthlete.competitionResults ||= [];
 
-  // ⭐ Normalise DOB once
   const dobNorm = normaliseDob(selectedAthlete.dob);
 
-  // Set dropdown
   document.getElementById("athleteSelect").value = id;
-
-  // Name
   document.getElementById("athleteName").value = selectedAthlete.name;
+  document.getElementById("athleteDOB").value = convertDOBToISO(selectedAthlete.dob);
 
-  // DOB → convert to ISO for date picker
-  document.getElementById("athleteDOB").value =
-    convertDOBToISO(selectedAthlete.dob);
-
-  // Current age group
   document.getElementById("ageGroupDisplay").innerText =
     getScottishAthleticsAgeGroup(dobNorm);
 
-  // ⭐ NEXT AGE GROUP (1 Oct)
   document.getElementById("nextAgeGroup").innerText =
     getNextAgeGroup(dobNorm);
 
-  // ⭐ MOVEMENT (Stays / Moves Up)
   document.getElementById("ageGroupMovement").innerText =
     getAgeGroupMovement(selectedAthlete);
 
-  // ⭐ TRAINING DAYS (ATHLETE PAGE)
   updateTrainingDaysDisplay(dobNorm);
 
-  // PB + competition updates
   updatePBTable();
   updateCompetitionYearlyTracker(selectedAthlete);
   updatePBFromCompetitionResults(selectedAthlete);
 
-  // Age on next Oct 1 (training page)
   document.getElementById("trainingAthleteAge").innerText =
     getAgeOnNextOct1(dobNorm);
 
   updateAthleteCompetitionList(selectedAthlete);
 
-  // Countdowns
   updateAgeGroupCountdown();
   updateTrainingPageCountdown();
 
-  // ⭐ FIX HOME PAGE TRAINING DAYS + AGE GROUP CHANGE
   renderHomeAthleteList();
+
+  // ⭐ FIX: show profile card again
+  document.getElementById("athleteProfileCard").style.display = "block";
 }
 
 /* =========================================================
@@ -830,32 +818,36 @@ function loadAthleteList() {
   document.querySelectorAll(".select-btn").forEach(btn => {
     btn.onclick = () => {
       const id = Number(btn.dataset.id);
+
+      // ⭐ FIX: show profile card again
+      document.getElementById("athleteProfileCard").style.display = "block";
+
       selectAthlete(id);
     };
   });
 
- // DELETE ATHLETE
-document.querySelectorAll(".delete-btn").forEach(btn => {
-  btn.onclick = () => {
-    const id = Number(btn.dataset.id);
+  // DELETE ATHLETE
+  document.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.onclick = () => {
+      const id = Number(btn.dataset.id);
 
-    athletes = athletes.filter(a => a.id !== id);
+      athletes = athletes.filter(a => a.id !== id);
 
-    if (selectedAthlete && selectedAthlete.id === id) {
-      selectedAthlete = null;
-    }
+      // Hide profile if deleted athlete was selected
+      if (selectedAthlete && selectedAthlete.id === id) {
+        selectedAthlete = null;
+        document.getElementById("athleteProfileCard").style.display = "none";
+      }
 
-    saveData();
-    updateHomePage();
-    renderHomeAthleteList();   // ⭐ REQUIRED FIX
-    loadAthleteList();
-    updateTrainingDropdown();
-    updatePBTable();
-  };
-});
-
+      saveData();
+      updateHomePage();
+      renderHomeAthleteList();
+      loadAthleteList();
+      updateTrainingDropdown();
+      updatePBTable();
+    };
+  });
 }
-
 
 /* =========================================================
    ATHLETE DROPDOWN SELECTION
