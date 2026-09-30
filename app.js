@@ -705,7 +705,9 @@ function selectAthlete(id) {
 
   const dobNorm = normaliseDob(selectedAthlete.dob);
 
-  document.getElementById("athleteSelect").value = id;
+  // ❌ Removed broken line
+  // document.getElementById("athleteSelect").value = id;
+
   document.getElementById("athleteName").value = selectedAthlete.name;
   document.getElementById("athleteDOB").value = convertDOBToISO(selectedAthlete.dob);
 
@@ -848,14 +850,6 @@ function loadAthleteList() {
     };
   });
 }
-
-/* =========================================================
-   ATHLETE DROPDOWN SELECTION
-========================================================= */
-document.getElementById("athleteSelect").onchange = () => {
-  const id = Number(document.getElementById("athleteSelect").value);
-  selectAthlete(id);
-};
 
 
 
