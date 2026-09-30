@@ -383,33 +383,45 @@ function loadAthleteList() {
      </div>`
   ).join("");
 
+  // SELECT ATHLETE
   document.querySelectorAll(".select-btn").forEach(btn => {
     btn.onclick = () => {
       const id = Number(btn.dataset.id);
+
+      // Show profile card when selecting an athlete
+      document.getElementById("athleteProfileCard").style.display = "block";
+
       selectAthlete(id);
     };
   });
 
-document.querySelectorAll(".delete-btn").forEach(btn => {
-  btn.onclick = () => {
-    const id = Number(btn.dataset.id);
+  // DELETE ATHLETE
+  document.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.onclick = () => {
+      const id = Number(btn.dataset.id);
 
-    athletes = athletes.filter(a => a.id !== id);
+      athletes = athletes.filter(a => a.id !== id);
 
-    if (selectedAthlete && selectedAthlete.id === id) {
-      selectedAthlete = null;
-    }
+      // If deleted athlete was selected → hide profile card
+      if (selectedAthlete && selectedAthlete.id === id) {
+        selectedAthlete = null;
+        document.getElementById("athleteProfileCard").style.display = "none";
+      }
 
-    saveData();
-    updateHomePage();
-    renderHomeAthleteList();   // ⭐ REQUIRED FIX
-    loadAthleteList();
-    updateTrainingDropdown();
-    updatePBTable();
-  };
-});
-
+      saveData();
+      updateHomePage();
+      renderHomeAthleteList();
+      loadAthleteList();
+      updateTrainingDropdown();
+      updatePBTable();
+    };
+  });
 }
+
+// CLOSE BUTTON — hides the profile card
+document.getElementById("closeAthleteButton").onclick = () => {
+  document.getElementById("athleteProfileCard").style.display = "none";
+};
 
 // -------------------------------
 // COMPETITION GRAPH
