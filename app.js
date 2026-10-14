@@ -2203,9 +2203,9 @@ const paceDescriptions = {
   "5k": {
     recovery: "Very easy running that promotes blood flow and helps you bounce back. Typically continuous running for 10–40 minutes at a relaxed, gentle effort.",
     easy: "Comfortable aerobic running that builds endurance. Usually steady continuous runs for 20–60 minutes, smooth and conversational.",
-    tempo: "Continuous running from 5–20 minutes at a controlled effort, about 15–20 seconds slower than 5k per‑km pace. Run just below lactate threshold — smooth, steady, and sustainably hard.",
-    threshold: "Hard aerobic running near lactate threshold. Typical sessions use 800–1600m reps, 3–5 total, with 1:1 recovery to keep the effort controlled but challenging.",
-    vo2: "Fast intervals at your aerobic ceiling — breathing hard, pushing limits. Typical 5k VO₂ sessions use 400–1000m reps, 4–6 total, with 1:2 recovery to maintain quality."
+    tempo: "Comfortably hard,controlled effort that inproves your ability to sustain a faster pace for longer. Typically 15-20sec slower per k than 5k pb time",
+    threshold: "Hard aerobic running near lactate threshold. Typically 10sec faster per k than tempo pace Inproves lactic tolerance.",
+    vo2: "Fast intervals at your aerobic ceiling — breathing hard, pushing limits. ."
   },
 
   /* =========================================================
