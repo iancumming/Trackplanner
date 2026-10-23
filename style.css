@@ -812,7 +812,14 @@ th { background: #111428; }
   border: none !important;
 }
 
+#navLogout {
+  background: #cc0000;
+  color: #fff;
+}
 
+#navLogout:hover {
+  background: #990000;
+}
 
 
 
