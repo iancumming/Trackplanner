@@ -105,7 +105,13 @@
     <input id="user" type="text" placeholder="Email">
     <input id="pass" type="password" placeholder="Password">
 
-    <button onclick="login()">Login</button>
+  <button onclick="login()">Login</button>
+
+<button
+  onclick="createAccount()"
+  style="background:#28a745;">
+  Create Account
+</button>
   </div>
 
   <!-- Firebase SDKs -->
@@ -133,8 +139,9 @@
     const db = firebase.firestore();
   </script>
 
- <!-- Firebase Login Function -->
+<!-- Firebase Login & Create Account Functions -->
 <script>
+
 function login() {
   const email = document.getElementById("user").value.trim();
   const password = document.getElementById("pass").value.trim();
@@ -143,37 +150,71 @@ function login() {
     .then(userCredential => {
       const uid = userCredential.user.uid;
 
-      db.collection("users").doc(uid).get()
-        .then(doc => {
-
-          if (!doc.exists) {
-            alert("No user profile found in Firestore.");
-            return;
-          }
-
-          const user = doc.data();
-
-          localStorage.setItem("loggedIn", "yes");
-          localStorage.setItem("role", user.role);
-          localStorage.setItem("groupId", user.groupId || "");
-          localStorage.setItem("athleteId", user.athleteId || "");
-          localStorage.setItem("userName", user.name || "");
-
-          // TEMPORARY REDIRECT
-          // All users go to TrackPlanner until separate dashboards exist
-          window.location.href = "track.html";
-        })
-        .catch(error => {
-          alert("Firestore Error: " + error.message);
-          console.error(error);
-        });
-
+      return db.collection("users").doc(uid).get();
     })
+
+    .then(doc => {
+
+      if (!doc.exists) {
+        alert("No user profile found in Firestore.");
+        return;
+      }
+
+      const user = doc.data();
+
+      localStorage.setItem("loggedIn", "yes");
+      localStorage.setItem("role", user.role);
+      localStorage.setItem("groupId", user.groupId || "");
+      localStorage.setItem("athleteId", user.athleteId || "");
+      localStorage.setItem("userName", user.name || "");
+
+      window.location.href = "track.html";
+    })
+
     .catch(error => {
       alert("Login failed: " + error.message);
       console.error(error);
     });
 }
+
+
+function createAccount() {
+
+  const email = document.getElementById("user").value.trim();
+  const password = document.getElementById("pass").value.trim();
+
+  if (!email || !password) {
+    alert("Please enter an email and password.");
+    return;
+  }
+
+  auth.createUserWithEmailAndPassword(email, password)
+
+    .then(userCredential => {
+
+      const uid = userCredential.user.uid;
+
+      return db.collection("users")
+        .doc(uid)
+        .set({
+          role: "individual",
+          groupId: "",
+          athleteId: "",
+          name: email
+        });
+
+    })
+
+    .then(() => {
+      alert("Account created successfully. You can now log in.");
+    })
+
+    .catch(error => {
+      alert("Create account failed: " + error.message);
+      console.error(error);
+    });
+}
+
 </script>
 </body>
 </html>
