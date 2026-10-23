@@ -1786,19 +1786,8 @@ window.addEventListener("load", () => {
 </script>
 <script>
 function logout() {
-
-  firebase.auth().signOut()
-    .then(() => {
-
-      localStorage.clear();
-
-      window.location.href = "login.html";
-
-    })
-    .catch(error => {
-      console.error(error);
-    });
-
+  localStorage.clear();
+  window.location.href = "login.html";
 }
 </script>
 
