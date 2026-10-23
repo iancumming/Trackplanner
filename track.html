@@ -41,6 +41,10 @@
   </button>
 
   <button id="navCoach">Coach</button>
+  
+  <button onclick="logout()" class="logout-btn">
+  Logout
+</button>
 </nav>
 
 </header>
@@ -1774,7 +1778,23 @@ window.addEventListener("load", () => {
   document.getElementById("coach").classList.add("active");
 });
 </script>
+<script>
+function logout() {
 
+  firebase.auth().signOut()
+    .then(() => {
+
+      localStorage.clear();
+
+      window.location.href = "login.html";
+
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
+}
+</script>
 
 </body>
 </html>
