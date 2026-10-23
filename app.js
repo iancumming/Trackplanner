@@ -2226,7 +2226,7 @@ const paceDescriptions = {
   },
 
   "800m": {
-    rp: "Your true 800m race rhythm — smooth early, then fully committed. Teaches you how the race feels and how to hold form when the legs tighten.",
+    rp: "Your true 800m race rhythm — start fast and controlled, settle into rhythm, maintain pace through 400-600m, adjust position accordingly at 600m,ready to attack final 120m.",
     se: "Faster than race pace with short recovery. Extends your ability to stay fast under rising lactate. Typical 800m SE sessions use 200–400m reps, 4–6 total, with 1:2 to 1:4 recovery.",
     reps: "Short, fast reps with full recovery. Pure speed development — relaxed mechanics, long stride, sharp acceleration. Typical 800m rep sessions use 100–400m reps, 4–8 total, with full recovery (1:6 or more).",
     int: "Controlled aerobic reps slower than RP. Builds second‑lap strength with smoother rhythm and better oxygen delivery. Typical 800m interval sessions use 200–800m reps, 4–6 total, with 1:2 to 1:3 recovery.",
