@@ -300,6 +300,7 @@ function login() {
       const user = doc.data();
 
 if (
+  !user.admin &&
   user.role !== "individual" &&
   user.approved !== true
 ) {
