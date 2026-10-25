@@ -119,7 +119,7 @@ button {
   </p>
 
 </div>
-
+<!-- Login Box -->
 <div class="login-box">
 
   <h2>TrackPlanner Login</h2>
@@ -128,15 +128,23 @@ button {
 
   <input id="pass" type="password" placeholder="Password">
 
-  <button class="login-btn" onclick="login()">
+  <button onclick="login()">
     Login
   </button>
 
-  <button class="create-btn" onclick="showRegister()">
+  <button
+    onclick="showRegister()"
+    style="background:#28a745;">
+
     Create Account
+
   </button>
 
-  <div id="registerPanel">
+  <!-- Hidden Registration Panel -->
+
+  <div
+    id="registerPanel"
+    style="display:none; margin-top:20px;">
 
     <h3>Create Account</h3>
 
@@ -163,27 +171,59 @@ button {
 
     </select>
 
-    <div id="clubFields">
+    <div id="clubFields" style="display:none;">
 
       <input
         id="clubName"
         type="text"
         placeholder="Club Name">
 
-      <input
-        id="groupName"
-        type="text"
-        placeholder="Training Group">
+      <select id="groupName">
+
+        <option value="">
+          Select Training Group
+        </option>
+
+        <option value="Endurance">
+          Endurance
+        </option>
+
+        <option value="Sprints">
+          Sprints
+        </option>
+
+        <option value="Jumps">
+          Jumps
+        </option>
+
+        <option value="Throws">
+          Throws
+        </option>
+
+        <option value="Combined Events">
+          Combined Events
+        </option>
+
+        <option value="Junior Development">
+          Junior Development
+        </option>
+
+      </select>
 
     </div>
 
-    <button class="create-btn" onclick="createAccount()">
+    <button
+      onclick="createAccount()"
+      style="background:#28a745;">
+
       Complete Registration
+
     </button>
 
   </div>
 
 </div>
+
 
 <!-- Firebase -->
 
