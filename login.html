@@ -1,162 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrackPlanner Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrackPlanner Login</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
+<style>
 
-    .header {
-      padding: 40px 20px;
-    }
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
 
-    .tp-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #222;
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      height: 36px;
-      margin-bottom: 20px;
-    }
+.header {
+  padding: 40px 20px;
+}
 
-    .tp-badge img {
-      width: 24px;
-      height: auto;
-    }
+.tp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #222;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
 
-    .intro {
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: 0 auto 30px;
-      line-height: 1.6;
-    }
+.tp-badge img {
+  width: 24px;
+}
 
-    .login-box {
-      background: #222;
-      padding: 30px;
-      width: 300px;
-      margin: 20px auto 60px;
-      border-radius: 10px;
-    }
+.intro {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  line-height: 1.6;
+}
 
-    input {
-      width: 90%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: none;
-      font-size: 1rem;
-    }
+.login-box {
+  background: #222;
+  padding: 30px;
+  width: 340px;
+  margin: 20px auto;
+  border-radius: 10px;
+}
 
-    button {
-      background: #007bff;
-      color: #fff;
-      padding: 12px 20px;
-      border-radius: 8px;
-      border: none;
-      font-size: 1.1rem;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 10px;
-    }
+input,
+select {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+}
 
-    button:hover {
-      background: #005fcc;
-    }
-  </style>
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login-btn {
+  background: #007bff;
+  color: white;
+}
+
+.login-btn:hover {
+  background: #005fcc;
+}
+
+.create-btn {
+  background: #28a745;
+  color: white;
+}
+
+.create-btn:hover {
+  background: #218838;
+}
+
+#registerPanel {
+  display: none;
+  margin-top: 20px;
+  border-top: 1px solid #444;
+  padding-top: 20px;
+}
+
+#clubFields {
+  display: none;
+}
+
+</style>
 </head>
 
 <body>
 
-  <!-- TrackPlanner Header + Intro -->
-  <div class="header">
+<div class="header">
 
-    <div class="tp-badge">
-      <img src="icons/tp.png" alt="TrackPlanner Logo">
-      <span>TrackPlanner</span>
+  <div class="tp-badge">
+    <img src="icons/tp.png" alt="TrackPlanner Logo">
+    <span>TrackPlanner</span>
+  </div>
+
+  <p class="intro">
+    Welcome to TrackPlanner.<br>
+    A powerful, easy-to-use training planner for athletes and coaches to track and improve performance.<br>
+    Log in to continue.
+  </p>
+
+</div>
+
+<div class="login-box">
+
+  <h2>TrackPlanner Login</h2>
+
+  <input id="user" type="email" placeholder="Email">
+
+  <input id="pass" type="password" placeholder="Password">
+
+  <button class="login-btn" onclick="login()">
+    Login
+  </button>
+
+  <button class="create-btn" onclick="showRegister()">
+    Create Account
+  </button>
+
+  <div id="registerPanel">
+
+    <h3>Create Account</h3>
+
+    <input
+      id="regName"
+      type="text"
+      placeholder="Full Name">
+
+    <select
+      id="accountType"
+      onchange="toggleClubFields()">
+
+      <option value="individual">
+        Individual Athlete
+      </option>
+
+      <option value="athlete">
+        Club Athlete
+      </option>
+
+      <option value="coach">
+        Coach
+      </option>
+
+    </select>
+
+    <div id="clubFields">
+
+      <input
+        id="clubName"
+        type="text"
+        placeholder="Club Name">
+
+      <input
+        id="groupName"
+        type="text"
+        placeholder="Training Group">
+
     </div>
 
-    <p class="intro">
-      Welcome to TrackPlanner.<br>
-      A powerful, easy‑to‑use training planner for athletes and coaches to track and improve performance.<br>
-      Log in to continue.
-    </p>
+    <button class="create-btn" onclick="createAccount()">
+      Complete Registration
+    </button>
 
   </div>
 
-  <!-- Login Box -->
-  <div class="login-box">
-    <h2>TrackPlanner Login</h2>
+</div>
 
-    <input id="user" type="text" placeholder="Email">
-    <input id="pass" type="password" placeholder="Password">
+<!-- Firebase -->
 
-  <button onclick="login()">Login</button>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-<button
-  onclick="createAccount()"
-  style="background:#28a745;">
-  Create Account
-</button>
-  </div>
-
-  <!-- Firebase SDKs -->
-
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js?v=123"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js?v=123"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js?v=123"></script>
-
-
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBCPLlr0tG2AWBrGTqkYrNwBZF0kKWMdBI",
-      authDomain: "trackplanner-e192a.firebaseapp.com",
-      projectId: "trackplanner-e192a",
-      storageBucket: "trackplanner-e192a.firebasestorage.app",
-      messagingSenderId: "23099407585",
-      appId: "1:23099407585:web:399eb0053173ad646ccba0",
-      measurementId: "G-SVSPE20ZGL"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-  </script>
-
-<!-- Firebase Login & Create Account Functions -->
 <script>
 
+const firebaseConfig = {
+  apiKey: "AIzaSyBCPLlr0tG2AWBrGTqkYrNwBZF0kKWMdBI",
+  authDomain: "trackplanner-e192a.firebaseapp.com",
+  projectId: "trackplanner-e192a",
+  storageBucket: "trackplanner-e192a.firebasestorage.app",
+  messagingSenderId: "23099407585",
+  appId: "1:23099407585:web:399eb0053173ad646ccba0",
+  measurementId: "G-SVSPE20ZGL"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+function showRegister() {
+
+  const panel =
+    document.getElementById("registerPanel");
+
+  panel.style.display =
+    panel.style.display === "block"
+      ? "none"
+      : "block";
+}
+
+function toggleClubFields() {
+
+  const accountType =
+    document.getElementById("accountType").value;
+
+  document.getElementById("clubFields").style.display =
+    accountType === "individual"
+      ? "none"
+      : "block";
+}
+
 function login() {
-  const email = document.getElementById("user").value.trim();
-  const password = document.getElementById("pass").value.trim();
+
+  const email =
+    document.getElementById("user").value.trim();
+
+  const password =
+    document.getElementById("pass").value.trim();
 
   auth.signInWithEmailAndPassword(email, password)
+
     .then(userCredential => {
+
       const uid = userCredential.user.uid;
 
-      return db.collection("users").doc(uid).get();
+      return db.collection("users")
+        .doc(uid)
+        .get();
+
     })
 
     .then(doc => {
 
       if (!doc.exists) {
-        alert("No user profile found in Firestore.");
+        alert("No user profile found.");
         return;
       }
 
@@ -164,27 +261,42 @@ function login() {
 
       localStorage.setItem("loggedIn", "yes");
       localStorage.setItem("role", user.role);
-      localStorage.setItem("groupId", user.groupId || "");
-      localStorage.setItem("athleteId", user.athleteId || "");
+      localStorage.setItem("club", user.club || "");
+      localStorage.setItem("group", user.group || "");
       localStorage.setItem("userName", user.name || "");
 
       window.location.href = "track.html";
+
     })
 
     .catch(error => {
       alert("Login failed: " + error.message);
-      console.error(error);
     });
-}
 
+}
 
 function createAccount() {
 
-  const email = document.getElementById("user").value.trim();
-  const password = document.getElementById("pass").value.trim();
+  const name =
+    document.getElementById("regName").value.trim();
 
-  if (!email || !password) {
-    alert("Please enter an email and password.");
+  const email =
+    document.getElementById("user").value.trim();
+
+  const password =
+    document.getElementById("pass").value.trim();
+
+  const accountType =
+    document.getElementById("accountType").value;
+
+  const club =
+    document.getElementById("clubName").value.trim();
+
+  const group =
+    document.getElementById("groupName").value.trim();
+
+  if (!name || !email || !password) {
+    alert("Please complete all required fields.");
     return;
   }
 
@@ -197,24 +309,54 @@ function createAccount() {
       return db.collection("users")
         .doc(uid)
         .set({
-          role: "individual",
-          groupId: "",
-          athleteId: "",
-          name: email
+
+          name: name,
+          email: email,
+
+          role: accountType,
+
+          club: club,
+
+          group: group,
+
+          approved:
+            accountType === "individual",
+
+          created:
+            new Date().toISOString()
+
         });
 
     })
 
     .then(() => {
-      alert("Account created successfully. You can now log in.");
+
+      if (accountType === "individual") {
+
+        alert(
+          "Account created successfully."
+        );
+
+      } else {
+
+        alert(
+          "Registration submitted. Awaiting coach approval."
+        );
+
+      }
+
     })
 
     .catch(error => {
-      alert("Create account failed: " + error.message);
-      console.error(error);
+      alert(
+        "Create account failed: " +
+        error.message
+      );
     });
+
 }
 
 </script>
+
 </body>
 </html>
