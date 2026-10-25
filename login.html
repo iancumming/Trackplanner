@@ -299,13 +299,21 @@ function login() {
 
       const user = doc.data();
 
-      localStorage.setItem("loggedIn", "yes");
-      localStorage.setItem("role", user.role);
-      localStorage.setItem("club", user.club || "");
-      localStorage.setItem("group", user.group || "");
-      localStorage.setItem("userName", user.name || "");
+if (
+  user.role !== "individual" &&
+  user.approved !== true
+) {
+  alert("Awaiting coach approval.");
+  return;
+}
 
-      window.location.href = "track.html";
+localStorage.setItem("loggedIn", "yes");
+localStorage.setItem("role", user.role);
+localStorage.setItem("club", user.club || "");
+localStorage.setItem("group", user.group || "");
+localStorage.setItem("userName", user.name || "");
+
+window.location.href = "track.html";
 
     })
 
