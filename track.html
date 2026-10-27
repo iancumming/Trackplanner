@@ -39,9 +39,13 @@
       Po10 Rankings
     </button>
 
-    <button id="navCoach">Coach</button>
+   <button id="navCoach">Coach</button>
 
-  <button id="navLogout" onclick="logout()">
+<button id="navPending">
+  Pending Athletes
+</button>
+
+<button id="navLogout" onclick="logout()">
   Logout
 </button>
 
@@ -61,7 +65,17 @@
   <div id="homeCoachList"></div>
 </section>
 
+<section id="pendingAthletes" class="page">
 
+  <h2>Pending Athletes</h2>
+
+  <div id="pendingAthletesList">
+
+    No pending athlete requests.
+
+  </div>
+
+</section>
 
 <!-- ATHLETE PAGE -->
 <section id="athlete" class="page">
@@ -1784,7 +1798,37 @@ function logout() {
   window.location.href = "login.html";
 }
 </script>
+<script>
 
+// only coaches see the button
+
+if (localStorage.getItem("role") !== "coach") {
+
+  document.getElementById(
+    "navPending"
+  ).style.display = "none";
+
+}
+
+// open Pending Athletes page
+
+document
+  .getElementById("navPending")
+  .addEventListener("click", () => {
+
+    document
+      .querySelectorAll(".page")
+      .forEach(page =>
+        page.classList.remove("active")
+      );
+
+    document
+      .getElementById("pendingAthletes")
+      .classList.add("active");
+
+});
+
+</script>
 </body>
 </html>
 
