@@ -1913,15 +1913,20 @@ function loadPendingAthletes() {
   const coachClub = localStorage.getItem("club");
   const coachGroup = localStorage.getItem("group");
 
+  console.log("Coach Club:", coachClub);
+  console.log("Coach Group:", coachGroup);
+
   db.collection("users")
     .where("role", "==", "athlete")
     .where("approved", "==", false)
     .get()
 
-    .then(snapshot => {
+   .then(snapshot => {
 
-      const list =
-        document.getElementById("pendingAthletesList");
+  console.log("Records Found:", snapshot.size);
+
+  const list =
+    document.getElementById("pendingAthletesList");
 
       list.innerHTML = "";
 
@@ -1929,7 +1934,9 @@ function loadPendingAthletes() {
 
       snapshot.forEach(doc => {
 
-        const athlete = doc.data();
+      const athlete = doc.data();
+
+console.log("Athlete Record:", athlete);
 
         if (
           athlete.club === coachClub &&
