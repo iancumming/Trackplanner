@@ -47,7 +47,13 @@ button:hover { background: #ff6b6b; }
 
 .navbar nav button { background: #1b1f33; margin-left: 10px; }
 .navbar nav button:hover { background: #2a2f4d; }
+#navPending {
+  background: #1b1f33;
+}
 
+#navPending:hover {
+  background: #2a2f4d;
+}
 /* PAGE SYSTEM */
 .page { display: none; padding: 20px; }
 .page.active { display: block; }
