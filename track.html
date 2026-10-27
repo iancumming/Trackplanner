@@ -1826,6 +1826,44 @@ function logout() {
   window.location.href = "login.html";
 }
 </script>
+<!-- Firebase -->
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script>
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBCPLlr0tG2AWBrGTqkYrNwBZF0kKWMdBI",
+  authDomain: "trackplanner-e192a.firebaseapp.com",
+  projectId: "trackplanner-e192a",
+  storageBucket: "trackplanner-e192a.firebasestorage.app",
+  messagingSenderId: "23099407585",
+  appId: "1:23099407585:web:399eb0053173ad646ccba0"
+};
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+const db = firebase.firestore();
+
+</script>
+
+<!-- Pending Athletes Script -->
+
+<script>
+
+/* your loadPendingAthletes()
+   and approveAthlete()
+   code goes here */
+
+</script>
+
+</body>
+</html>
+  
 <script>
 
 // only coaches see the button
