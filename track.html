@@ -71,7 +71,7 @@
 
   <div id="pendingAthletesList">
 
-    No pending athlete requests.
+    Loading requests...
 
   </div>
 
@@ -1853,6 +1853,125 @@ document
     document
       .getElementById("pendingAthletes")
       .classList.add("active");
+
+});
+
+</script>
+<script>
+
+// Only coaches see Pending Athletes
+
+if (localStorage.getItem("role") !== "coach") {
+
+  document.getElementById("navPending").style.display = "none";
+
+}
+
+// Load pending athletes
+
+function loadPendingAthletes() {
+
+  const coachClub = localStorage.getItem("club");
+  const coachGroup = localStorage.getItem("group");
+
+  db.collection("users")
+    .where("role", "==", "athlete")
+    .where("approved", "==", false)
+    .get()
+
+    .then(snapshot => {
+
+      const list =
+        document.getElementById("pendingAthletesList");
+
+      list.innerHTML = "";
+
+      let found = false;
+
+      snapshot.forEach(doc => {
+
+        const athlete = doc.data();
+
+        if (
+          athlete.club === coachClub &&
+          athlete.group === coachGroup
+        ) {
+
+          found = true;
+
+          list.innerHTML += `
+            <div class="card">
+
+              <h3>${athlete.name}</h3>
+
+              <p>
+                Club: ${athlete.club}
+              </p>
+
+              <p>
+                Group: ${athlete.group}
+              </p>
+
+              <button
+                onclick="approveAthlete('${doc.id}')">
+
+                Approve
+
+              </button>
+
+            </div>
+          `;
+
+        }
+
+      });
+
+      if (!found) {
+        list.innerHTML =
+          "<p>No pending athlete requests.</p>";
+      }
+
+    });
+
+}
+
+// Approve athlete
+
+function approveAthlete(uid) {
+
+  db.collection("users")
+    .doc(uid)
+    .update({
+      approved: true
+    })
+
+    .then(() => {
+
+      alert("Athlete approved.");
+
+      loadPendingAthletes();
+
+    });
+
+}
+
+// Open Pending Athletes page
+
+document
+  .getElementById("navPending")
+  .addEventListener("click", () => {
+
+    document
+      .querySelectorAll(".page")
+      .forEach(page =>
+        page.classList.remove("active")
+      );
+
+    document
+      .getElementById("pendingAthletes")
+      .classList.add("active");
+
+    loadPendingAthletes();
 
 });
 
