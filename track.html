@@ -76,7 +76,35 @@
   </div>
 
 </section>
+<script>
 
+// Hide Pending Athletes button for non-coaches
+
+if (localStorage.getItem("role") !== "coach") {
+
+  document.getElementById("navPending").style.display = "none";
+
+}
+
+// Open Pending Athletes page
+
+document
+  .getElementById("navPending")
+  .addEventListener("click", () => {
+
+    document
+      .querySelectorAll(".page")
+      .forEach(page =>
+        page.classList.remove("active")
+      );
+
+    document
+      .getElementById("pendingAthletes")
+      .classList.add("active");
+
+});
+
+</script>
 <!-- ATHLETE PAGE -->
 <section id="athlete" class="page">
   <h1>Athlete</h1>
