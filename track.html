@@ -2004,7 +2004,6 @@ function approveAthlete(uid) {
     });
 
 }
-
 // Open Pending Athletes page
 
 document
@@ -2025,8 +2024,68 @@ document
 
 });
 
+// Load approved athletes onto Home page
+
+function loadCoachAthletes() {
+
+  const coachClub =
+    localStorage.getItem("club");
+
+  const coachGroup =
+    localStorage.getItem("group");
+
+  const list =
+    document.getElementById("homeAthleteList");
+
+  list.innerHTML = "";
+
+  db.collection("users")
+    .where("role", "==", "athlete")
+    .where("approved", "==", true)
+    .get()
+
+    .then(snapshot => {
+
+      snapshot.forEach(doc => {
+
+        const athlete = doc.data();
+
+        if (
+          athlete.club &&
+          athlete.group &&
+          coachClub &&
+          coachGroup &&
+          athlete.club.toLowerCase() === coachClub.toLowerCase() &&
+          athlete.group.toLowerCase() === coachGroup.toLowerCase()
+        ) {
+
+          list.innerHTML += `
+            <div class="card">
+
+              <h3>${athlete.name}</h3>
+
+              <p>${athlete.club}</p>
+
+              <p>${athlete.group}</p>
+
+            </div>
+          `;
+
+        }
+
+      });
+
+    });
+
+}
+
+window.onload = function () {
+
+  loadCoachAthletes();
+
+};
+
 </script>
+
 </body>
 </html>
-
-
