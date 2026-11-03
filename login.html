@@ -120,31 +120,48 @@ button {
 
 </div>
 <!-- Login Box -->
+
 <div class="login-box">
 
-  <h2>TrackPlanner Login</h2>
+  <h2>TrackPlanner</h2>
 
-  <input id="user" type="email" placeholder="Email">
-
-  <input id="pass" type="password" placeholder="Password">
-
-  <button onclick="login()">
+  <button class="login-btn" onclick="showLogin()">
     Login
   </button>
 
-  <button
-    onclick="showRegister()"
-    style="background:#28a745;">
-
+  <button class="create-btn" onclick="showRegister()">
     Create Account
-
   </button>
 
-  <!-- Hidden Registration Panel -->
+  <!-- LOGIN PANEL -->
 
-  <div
-    id="registerPanel"
-    style="display:none; margin-top:20px;">
+  <div id="loginPanel" style="display:none;">
+
+    <h3>Login</h3>
+
+    <input
+      id="loginEmail"
+      type="email"
+      placeholder="Email">
+
+    <input
+      id="loginPassword"
+      type="password"
+      placeholder="Password">
+
+    <button
+      class="login-btn"
+      onclick="login()">
+
+      Login
+
+    </button>
+
+  </div>
+
+  <!-- CREATE ACCOUNT PANEL -->
+
+  <div id="registerPanel" style="display:none;">
 
     <h3>Create Account</h3>
 
@@ -152,6 +169,16 @@ button {
       id="regName"
       type="text"
       placeholder="Full Name">
+
+    <input
+      id="regEmail"
+      type="email"
+      placeholder="Email">
+
+    <input
+      id="regPassword"
+      type="password"
+      placeholder="Create Password">
 
     <select
       id="accountType"
@@ -203,7 +230,6 @@ button {
         <option value="Combined Events">
           Combined Events
         </option>
-
         <option value="Junior Development">
           Junior Development
         </option>
@@ -213,18 +239,16 @@ button {
     </div>
 
     <button
-      onclick="createAccount()"
-      style="background:#28a745;">
+      class="create-btn"
+      onclick="createAccount()">
 
-      Complete Registration
+      Create Account
 
     </button>
 
   </div>
 
 </div>
-
-
 <!-- Firebase -->
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -273,10 +297,10 @@ function toggleClubFields() {
 function login() {
 
   const email =
-    document.getElementById("user").value.trim();
+    document.getElementById("loginEmail").value.trim();
 
   const password =
-    document.getElementById("pass").value.trim();
+    document.getElementById("loginPassword").value.trim();
 
   auth.signInWithEmailAndPassword(email, password)
 
@@ -299,22 +323,22 @@ function login() {
 
       const user = doc.data();
 
-if (
-  !user.admin &&
-  user.role !== "individual" &&
-  user.approved !== true
-) {
-  alert("Awaiting coach approval.");
-  return;
-}
+      if (
+        !user.admin &&
+        user.role !== "individual" &&
+        user.approved !== true
+      ) {
+        alert("Awaiting coach approval.");
+        return;
+      }
 
-localStorage.setItem("loggedIn", "yes");
-localStorage.setItem("role", user.role);
-localStorage.setItem("club", user.club || "");
-localStorage.setItem("group", user.group || "");
-localStorage.setItem("userName", user.name || "");
+      localStorage.setItem("loggedIn", "yes");
+      localStorage.setItem("role", user.role);
+      localStorage.setItem("club", user.club || "");
+      localStorage.setItem("group", user.group || "");
+      localStorage.setItem("userName", user.name || "");
 
-window.location.href = "track.html";
+      window.location.href = "track.html";
 
     })
 
@@ -323,17 +347,16 @@ window.location.href = "track.html";
     });
 
 }
-
 function createAccount() {
 
   const name =
     document.getElementById("regName").value.trim();
 
   const email =
-    document.getElementById("user").value.trim();
+    document.getElementById("regEmail").value.trim();
 
   const password =
-    document.getElementById("pass").value.trim();
+    document.getElementById("regPassword").value.trim();
 
   const accountType =
     document.getElementById("accountType").value;
@@ -342,13 +365,15 @@ function createAccount() {
     document.getElementById("clubName").value.trim();
 
   const group =
-     document.getElementById("groupName").value;
+    document.getElementById("groupName").value;
 
   if (!name || !email || !password) {
     alert("Please complete all required fields.");
     return;
   }
 
+  // rest of function...
+}
   auth.createUserWithEmailAndPassword(email, password)
 
     .then(userCredential => {
