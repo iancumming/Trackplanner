@@ -272,15 +272,24 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+function showLogin() {
+
+  document.getElementById("registerPanel").style.display =
+    "none";
+
+  document.getElementById("loginPanel").style.display =
+    "block";
+
+}
+
 function showRegister() {
 
-  const panel =
-    document.getElementById("registerPanel");
+  document.getElementById("loginPanel").style.display =
+    "none";
 
-  panel.style.display =
-    panel.style.display === "block"
-      ? "none"
-      : "block";
+  document.getElementById("registerPanel").style.display =
+    "block";
+
 }
 
 function toggleClubFields() {
@@ -292,6 +301,7 @@ function toggleClubFields() {
     accountType === "individual"
       ? "none"
       : "block";
+
 }
 
 function login() {
@@ -343,10 +353,16 @@ function login() {
     })
 
     .catch(error => {
-      alert("Login failed: " + error.message);
+
+      alert(
+        "Login failed: " +
+        error.message
+      );
+
     });
 
 }
+
 function createAccount() {
 
   const name =
@@ -368,10 +384,11 @@ function createAccount() {
     document.getElementById("groupName").value;
 
   if (!name || !email || !password) {
+
     alert("Please complete all required fields.");
     return;
-  }
 
+  }
 
   auth.createUserWithEmailAndPassword(email, password)
 
@@ -421,10 +438,12 @@ function createAccount() {
     })
 
     .catch(error => {
+
       alert(
         "Create account failed: " +
         error.message
       );
+
     });
 
 }
