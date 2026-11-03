@@ -1938,10 +1938,14 @@ function loadPendingAthletes() {
 
 console.log("Athlete Record:", athlete);
 
-        if (
-          athlete.club === coachClub &&
-          athlete.group === coachGroup
-        ) {
+     if (
+  athlete.club &&
+  athlete.group &&
+  coachClub &&
+  coachGroup &&
+  athlete.club.toLowerCase() === coachClub.toLowerCase() &&
+  athlete.group.toLowerCase() === coachGroup.toLowerCase()
+) {
 
           found = true;
 
