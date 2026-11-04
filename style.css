@@ -827,7 +827,23 @@ th { background: #111428; }
   background: #990000;
 }
 
+#homeAthleteList .card {
 
+  background: #1b1f33;
+
+  padding: 20px;
+
+  margin-bottom: 20px;
+
+  border-radius: 10px;
+
+  border-left: 5px solid #4caf50;
+
+  color: #fff;
+
+  display: block;
+
+}
 
 
 
