@@ -1851,33 +1851,16 @@ const db = firebase.firestore();
 
 console.log("Firebase loaded successfully");
 
-</script>
-
-<!-- Pending Athletes Script -->
-
-<script>
-/* your loadPendingAthletes()
-   and approveAthlete()
-   code goes here */
-
-</script>
-
-</body>
-</html>
-  
-<script>
-
-// only coaches see the button
+/* Hide Pending Athletes button for non-coaches */
 
 if (localStorage.getItem("role") !== "coach") {
 
-  document.getElementById(
-    "navPending"
-  ).style.display = "none";
+  document.getElementById("navPending").style.display =
+    "none";
 
 }
 
-// open Pending Athletes page
+/* Pending Athletes Navigation */
 
 document
   .getElementById("navPending")
@@ -1893,59 +1876,46 @@ document
       .getElementById("pendingAthletes")
       .classList.add("active");
 
+    loadPendingAthletes();
+
 });
 
-</script>
-<script>
-
-// Only coaches see Pending Athletes
-
-if (localStorage.getItem("role") !== "coach") {
-
-  document.getElementById("navPending").style.display = "none";
-
-}
-
-// Load pending athletes
+/* Load Pending Athletes */
 
 function loadPendingAthletes() {
 
-  const coachClub = localStorage.getItem("club");
-  const coachGroup = localStorage.getItem("group");
+  const coachClub =
+    localStorage.getItem("club");
 
-  console.log("Coach Club:", coachClub);
-  console.log("Coach Group:", coachGroup);
+  const coachGroup =
+    localStorage.getItem("group");
+
+  const list =
+    document.getElementById("pendingAthletesList");
+
+  list.innerHTML = "";
 
   db.collection("users")
     .where("role", "==", "athlete")
     .where("approved", "==", false)
     .get()
 
-   .then(snapshot => {
-
-  console.log("Records Found:", snapshot.size);
-
-  const list =
-    document.getElementById("pendingAthletesList");
-
-      list.innerHTML = "";
+    .then(snapshot => {
 
       let found = false;
 
       snapshot.forEach(doc => {
 
-      const athlete = doc.data();
+        const athlete = doc.data();
 
-console.log("Athlete Record:", athlete);
-
-     if (
-  athlete.club &&
-  athlete.group &&
-  coachClub &&
-  coachGroup &&
-  athlete.club.toLowerCase() === coachClub.toLowerCase() &&
-  athlete.group.toLowerCase() === coachGroup.toLowerCase()
-) {
+        if (
+          athlete.club &&
+          athlete.group &&
+          coachClub &&
+          coachGroup &&
+          athlete.club.toLowerCase() === coachClub.toLowerCase() &&
+          athlete.group.toLowerCase() === coachGroup.toLowerCase()
+        ) {
 
           found = true;
 
@@ -1977,15 +1947,17 @@ console.log("Athlete Record:", athlete);
       });
 
       if (!found) {
+
         list.innerHTML =
           "<p>No pending athlete requests.</p>";
+
       }
 
     });
 
 }
 
-// Approve athlete
+/* Approve Athlete */
 
 function approveAthlete(uid) {
 
@@ -1995,41 +1967,21 @@ function approveAthlete(uid) {
       approved: true
     })
 
- .then(() => {
+    .then(() => {
 
-  alert("Athlete approved.");
+      alert("Athlete approved.");
 
-  loadPendingAthletes();
+      loadPendingAthletes();
 
-  loadCoachAthletes();
+      loadCoachAthletes();
 
-}); 
+    });
+
 }
-// Open Pending Athletes page
 
-document
-  .getElementById("navPending")
-  .addEventListener("click", () => {
-
-    document
-      .querySelectorAll(".page")
-      .forEach(page =>
-        page.classList.remove("active")
-      );
-
-    document
-      .getElementById("pendingAthletes")
-      .classList.add("active");
-
-    loadPendingAthletes();
-
-});
-
-// Load approved athletes onto Home page
+/* Load Approved Athletes to Home Page */
 
 function loadCoachAthletes() {
-
-  console.log("Loading Coach Athletes");
 
   const coachClub =
     localStorage.getItem("club");
@@ -2037,25 +1989,15 @@ function loadCoachAthletes() {
   const coachGroup =
     localStorage.getItem("group");
 
-  console.log("Home Club:", coachClub);
-  console.log("Home Group:", coachGroup);
-
   const list =
     document.getElementById("homeAthleteList");
 
   list.innerHTML = "";
 
   db.collection("users")
-    .where("role", "==", "athlete")
-    .where("approved", "==", true)
     .get()
 
     .then(snapshot => {
-
-      console.log(
-        "Approved Athletes Found:",
-        snapshot.size
-      );
 
       let found = false;
 
@@ -2063,31 +2005,25 @@ function loadCoachAthletes() {
 
         const athlete = doc.data();
 
-        console.log(
-          "Approved Athlete:",
-          athlete.name,
-          athlete.club,
-          athlete.group,
-          athlete.approved
-        );
-
         if (
+
+          athlete.role === "athlete" &&
+          athlete.approved === true &&
+
           athlete.club &&
           athlete.group &&
           coachClub &&
           coachGroup &&
+
           athlete.club.toLowerCase() ===
             coachClub.toLowerCase() &&
+
           athlete.group.toLowerCase() ===
             coachGroup.toLowerCase()
+
         ) {
 
           found = true;
-
-          console.log(
-            "MATCH FOUND:",
-            athlete.name
-          );
 
           list.innerHTML += `
             <div class="card">
@@ -2116,24 +2052,14 @@ function loadCoachAthletes() {
 
       }
 
-    })
-
-    .catch(error => {
-
-      console.error(
-        "Home Athlete Error:",
-        error
-      );
-
     });
 
 }
 
-window.onload = function() {
+/* Load Home Page Athletes */
 
-  loadCoachAthletes();
+loadCoachAthletes();
 
-};
 </script>
 
 </body>
