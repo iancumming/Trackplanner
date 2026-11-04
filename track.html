@@ -1995,14 +1995,15 @@ function approveAthlete(uid) {
       approved: true
     })
 
-    .then(() => {
+ .then(() => {
 
-      alert("Athlete approved.");
+  alert("Athlete approved.");
 
-      loadPendingAthletes();
+  loadPendingAthletes();
 
-    });
+  loadCoachAthletes();
 
+}); 
 }
 // Open Pending Athletes page
 
@@ -2028,11 +2029,16 @@ document
 
 function loadCoachAthletes() {
 
+  console.log("Loading Coach Athletes");
+
   const coachClub =
     localStorage.getItem("club");
 
   const coachGroup =
     localStorage.getItem("group");
+
+  console.log("Home Club:", coachClub);
+  console.log("Home Group:", coachGroup);
 
   const list =
     document.getElementById("homeAthleteList");
@@ -2046,27 +2052,55 @@ function loadCoachAthletes() {
 
     .then(snapshot => {
 
+      console.log(
+        "Approved Athletes Found:",
+        snapshot.size
+      );
+
+      let found = false;
+
       snapshot.forEach(doc => {
 
         const athlete = doc.data();
+
+        console.log(
+          "Approved Athlete:",
+          athlete.name,
+          athlete.club,
+          athlete.group,
+          athlete.approved
+        );
 
         if (
           athlete.club &&
           athlete.group &&
           coachClub &&
           coachGroup &&
-          athlete.club.toLowerCase() === coachClub.toLowerCase() &&
-          athlete.group.toLowerCase() === coachGroup.toLowerCase()
+          athlete.club.toLowerCase() ===
+            coachClub.toLowerCase() &&
+          athlete.group.toLowerCase() ===
+            coachGroup.toLowerCase()
         ) {
+
+          found = true;
+
+          console.log(
+            "MATCH FOUND:",
+            athlete.name
+          );
 
           list.innerHTML += `
             <div class="card">
 
               <h3>${athlete.name}</h3>
 
-              <p>${athlete.club}</p>
+              <p>
+                Club: ${athlete.club}
+              </p>
 
-              <p>${athlete.group}</p>
+              <p>
+                Group: ${athlete.group}
+              </p>
 
             </div>
           `;
@@ -2075,16 +2109,31 @@ function loadCoachAthletes() {
 
       });
 
+      if (!found) {
+
+        list.innerHTML =
+          "<p>No approved athletes found.</p>";
+
+      }
+
+    })
+
+    .catch(error => {
+
+      console.error(
+        "Home Athlete Error:",
+        error
+      );
+
     });
 
 }
 
-window.onload = function () {
+window.onload = function() {
 
   loadCoachAthletes();
 
 };
-
 </script>
 
 </body>
