@@ -1833,8 +1833,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <script>
 window.addEventListener("load", () => {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-  document.getElementById("coach").classList.add("active");
+
+  document.querySelectorAll(".page")
+    .forEach(p => p.classList.remove("active"));
+
+  document.getElementById("coach")
+    .classList.add("active");
+
+  loadCoachAthletes();
+
 });
 </script>
 <script>
