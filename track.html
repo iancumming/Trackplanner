@@ -1942,29 +1942,28 @@ function loadPendingAthletes() {
         ) {
 
           found = true;
+list.innerHTML += `
+  <div class="card">
 
-          list.innerHTML += `
-            <div class="card">
+    <h3>${athlete.name}</h3>
 
-              <h3>${athlete.name}</h3>
+    <p>
+      Club: ${athlete.club}
+    </p>
 
-              <p>
-                Club: ${athlete.club}
-              </p>
+    <p>
+      Group: ${athlete.group}
+    </p>
 
-              <p>
-                Group: ${athlete.group}
-              </p>
+    <button
+      onclick="approveAthlete('${doc.id}')">
 
-              <button
-                onclick="approveAthlete('${doc.id}')">
+      Approve
 
-                Approve
+    </button>
 
-              </button>
-
-            </div>
-          `;
+  </div>
+`;
 
         }
 
@@ -2102,21 +2101,24 @@ function loadCoachAthletes() {
 
           found = true;
 
-          list.innerHTML += `
-            <div class="card">
+        list.innerHTML += `
+  <div
+    class="card athlete-card"
+    data-name="${athlete.name}"
+  >
 
-              <h3>${athlete.name}</h3>
+    <h3>${athlete.name}</h3>
 
-              <p>
-                Club: ${athlete.club}
-              </p>
+    <p>
+      Club: ${athlete.club}
+    </p>
 
-              <p>
-                Group: ${athlete.group}
-              </p>
+    <p>
+      Group: ${athlete.group}
+    </p>
 
-            </div>
-          `;
+  </div>
+`;
 
         }
 
@@ -2128,7 +2130,33 @@ function loadCoachAthletes() {
           "<p>No approved athletes found.</p>";
 
       }
+document
+  .querySelectorAll(".athlete-card")
+  .forEach(card => {
 
+    card.addEventListener("click", () => {
+
+      document
+        .querySelectorAll(".page")
+        .forEach(page =>
+          page.classList.remove("active")
+        );
+
+      document
+        .getElementById("athlete")
+        .classList.add("active");
+
+      document
+        .getElementById("athleteProfileCard")
+        .style.display = "block";
+
+      document
+        .getElementById("athleteName")
+        .value = card.dataset.name;
+
+    });
+
+  });
     });
 
 }
