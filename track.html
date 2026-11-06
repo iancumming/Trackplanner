@@ -2002,50 +2002,56 @@ db.collection("users")
   .doc(uid)
   .get()
 
-  .then(doc => {
+.then(doc => {
 
-    const athlete = doc.data();
+  const athlete = doc.data();
 
-    const exists = athletes.find(a =>
-      a.name.toLowerCase() ===
-      athlete.name.toLowerCase()
-    );
+  console.log("FOUND APPROVED ATHLETE:", athlete);
 
-    if (!exists) {
+  console.log("BEFORE PUSH:", athletes);
 
-      athletes.push({
+  const exists = athletes.find(a =>
+    a.name.toLowerCase() ===
+    athlete.name.toLowerCase()
+  );
 
-        id: Date.now(),
+  if (!exists) {
 
-        name: athlete.name,
+    athletes.push({
 
-        dob: "",
+      id: Date.now(),
 
-        ageGroup: "",
+      name: athlete.name,
 
-        emergency: "",
+      dob: "",
 
-        relationship: "",
+      ageGroup: "",
 
-        sessions: {},
+      emergency: "",
 
-        pbs: [],
+      relationship: "",
 
-        competitionResults: []
+      sessions: {},
 
-      });
+      pbs: [],
 
-      saveData();
+      competitionResults: []
 
-      updateHomePage();
+    });
 
-      loadAthleteList();
+    console.log("AFTER PUSH:", athletes);
 
-      updateTrainingDropdown();
+    saveData();
 
-    }
+    loadAthleteList();
 
-  });
+    updateTrainingDropdown();
+
+    updateHomePage();
+
+  }
+
+});
     });
 
 }
