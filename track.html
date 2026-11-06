@@ -1998,7 +1998,54 @@ function approveAthlete(uid) {
       loadPendingAthletes();
 
       loadCoachAthletes();
+db.collection("users")
+  .doc(uid)
+  .get()
 
+  .then(doc => {
+
+    const athlete = doc.data();
+
+    const exists = athletes.find(a =>
+      a.name.toLowerCase() ===
+      athlete.name.toLowerCase()
+    );
+
+    if (!exists) {
+
+      athletes.push({
+
+        id: Date.now(),
+
+        name: athlete.name,
+
+        dob: "",
+
+        ageGroup: "",
+
+        emergency: "",
+
+        relationship: "",
+
+        sessions: {},
+
+        pbs: [],
+
+        competitionResults: []
+
+      });
+
+      saveData();
+
+      updateHomePage();
+
+      loadAthleteList();
+
+      updateTrainingDropdown();
+
+    }
+
+  });
     });
 
 }
