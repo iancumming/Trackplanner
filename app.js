@@ -213,7 +213,7 @@ function expandCard(card, athlete) {
   // save button
   card.querySelector(".save-btn").onclick = () => {
     saveAthleteEdits(athlete.id);
-    updateHomePage();
+  
   };
 
   // close button
