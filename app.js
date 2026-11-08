@@ -1043,14 +1043,16 @@ function saveNewPB() {
   updatePBTable();
 }
 
-
-
 /* =========================================================
    SAVE ATHLETE (NEW ATHLETE) — FINAL 2026 SA VERSION
 ========================================================= */
 document.getElementById("saveAthleteButton").onclick = () => {
-  const name = document.getElementById("athleteName").value.trim();
-  const rawDob = document.getElementById("athleteDOB").value.trim(); // YYYY-MM-DD
+
+  const name =
+    document.getElementById("athleteName").value.trim();
+
+  const rawDob =
+    document.getElementById("athleteDOB").value.trim();
 
   if (!name) {
     alert("Enter a name");
@@ -1062,70 +1064,93 @@ document.getElementById("saveAthleteButton").onclick = () => {
     return;
   }
 
-  // ⭐ Convert YYYY-MM-DD → DD/MM/YYYY for storage + SA rules
-  const dob = convertDOBToUKFormat(rawDob);
+  // Convert YYYY-MM-DD → DD/MM/YYYY
+  const dob =
+    convertDOBToUKFormat(rawDob);
 
-  // ⭐ Scottish Athletics age group (YEAR-OF-BIRTH system)
-  const ageGroup = getScottishAthleticsAgeGroup(dob);
+  // Scottish Athletics age group
+  const ageGroup =
+    getScottishAthleticsAgeGroup(dob);
 
   const athlete = {
+
     id: Date.now(),
+
     name,
-    dob,               // stored in UK format
+
+    dob,
+
     ageGroup,
+
     emergency: "",
+
     relationship: "",
+
     sessions: {},
+
     pbs: [],
+
     competitionResults: []
+
   };
 
   athletes.push(athlete);
+
   selectedAthlete = athlete;
 
   saveData();
 
-  // ⭐ Update all pages
-  updateHomePage();
-  renderHomeAthleteList();   // ⭐ REQUIRED FIX
+  // Refresh athlete/training sections ONLY
   loadAthleteList();
   updateTrainingDropdown();
   updatePBTable();
 
-  // ⭐ Reset form
-  document.getElementById("athleteSelect").value = athlete.id;
+  // Reset form
   document.getElementById("athleteName").value = "";
   document.getElementById("athleteDOB").value = "";
   document.getElementById("ageGroupDisplay").innerText = "";
+
+  alert("Athlete profile saved.");
+
 };
 
+
+
 /* =========================================================
-   SAVE ATHLETE EDITS (HOME PAGE) — FINAL 2026 SA VERSION
+   SAVE ATHLETE EDITS (HOME PAGE)
 ========================================================= */
+
 function saveAthleteEdits(id) {
-  const athlete = athletes.find(a => a.id === id);
+
+  const athlete =
+    athletes.find(a => a.id === id);
+
   if (!athlete) return;
 
-  // Basic fields
-  athlete.emergency = document.getElementById(`editEmergency-${id}`).value;
-  athlete.relationship = document.getElementById(`editRelationship-${id}`).value;
+  athlete.emergency =
+    document.getElementById(`editEmergency-${id}`).value;
 
-  // Raw DOB from input (always YYYY-MM-DD)
-  const rawDob = document.getElementById(`editDob-${id}`).value;
+  athlete.relationship =
+    document.getElementById(`editRelationship-${id}`).value;
 
-  // ⭐ Convert YYYY-MM-DD → DD/MM/YYYY for storage + SA rules
-  athlete.dob = convertDOBToUKFormat(rawDob);
+  const rawDob =
+    document.getElementById(`editDob-${id}`).value;
 
-  // ⭐ Recalculate age group using YEAR-OF-BIRTH system
-  athlete.ageGroup = getScottishAthleticsAgeGroup(athlete.dob);
+  athlete.dob =
+    convertDOBToUKFormat(rawDob);
 
-  // Save + refresh UI
+  athlete.ageGroup =
+    getScottishAthleticsAgeGroup(athlete.dob);
+
   saveData();
-  updateHomePage();
-  renderHomeAthleteList();   // ⭐ THIS LINE FIXES YOUR HOME PAGE
+
+  // Refresh athlete/training sections ONLY
   loadAthleteList();
   updateTrainingDropdown();
   updatePBTable();
+
+  alert("Athlete updated.");
+
 }
 
 /* =========================================================
