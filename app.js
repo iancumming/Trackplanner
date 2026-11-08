@@ -2458,8 +2458,7 @@ window.onload = () => {
 ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
   loadData();          
-  updateHomePage();    
-  renderHomeAthleteList();   // ⭐ REQUIRED ON PAGE LOAD
+ 
   loadAthleteList();   
   updateTrainingDropdown();
   updatePBTable();
