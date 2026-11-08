@@ -1713,9 +1713,9 @@ function showPage(id) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 
-  if (id === "home") {
-    updateHomePage();   // ONLY THIS
-  }
+ if (id === "home") {
+  loadCoachAthletes();
+}
 
   if (id === "coach") {
     // nothing special yet
