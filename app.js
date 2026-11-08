@@ -733,7 +733,7 @@ function selectAthlete(id) {
   updateAgeGroupCountdown();
   updateTrainingPageCountdown();
 
-  renderHomeAthleteList();
+ 
 
   // ⭐ FIX: show profile card again
   document.getElementById("athleteProfileCard").style.display = "block";
