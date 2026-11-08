@@ -1177,6 +1177,8 @@ deleteProfileBtn.onclick = () => {
    RENDER HOME ATHLETE LIST — SHOW TRAINING DAYS + AGE GROUP CHANGE
 ========================================================= */
 function renderHomeAthleteList() {
+  return;
+}
   const list = document.getElementById("homeAthleteList");
   list.innerHTML = ""; // clear existing
 
