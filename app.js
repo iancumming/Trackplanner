@@ -409,8 +409,7 @@ function loadAthleteList() {
       }
 
       saveData();
-      updateHomePage();
-      renderHomeAthleteList();
+      
       loadAthleteList();
       updateTrainingDropdown();
       updatePBTable();
@@ -842,8 +841,7 @@ function loadAthleteList() {
       }
 
       saveData();
-      updateHomePage();
-      renderHomeAthleteList();
+   
       loadAthleteList();
       updateTrainingDropdown();
       updatePBTable();
@@ -1168,8 +1166,7 @@ deleteProfileBtn.onclick = () => {
   selectedAthlete = null;
 
   saveData();
-  updateHomePage();
-  renderHomeAthleteList();   // ⭐ REQUIRED FIX
+
   loadAthleteList();
   updateTrainingDropdown();
   updatePBTable();
