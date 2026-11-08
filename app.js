@@ -1174,52 +1174,11 @@ deleteProfileBtn.onclick = () => {
 
 
 /* =========================================================
-   RENDER HOME ATHLETE LIST — SHOW TRAINING DAYS + AGE GROUP CHANGE
+   RENDER HOME ATHLETE LIST
 ========================================================= */
 function renderHomeAthleteList() {
   return;
 }
-  const list = document.getElementById("homeAthleteList");
-  list.innerHTML = ""; // clear existing
-
-  athletes.forEach(athlete => {
-
-    // ⭐ ALWAYS normalise DOB first (critical fix)
-    const dobNorm = normaliseDob(convertDOBToUKFormat(athlete.dob));
-
-    const card = document.createElement("div");
-    card.className = "athleteCard";
-    card.dataset.id = athlete.id;
-
-    card.innerHTML = `
-      <h3 class="athleteName">${athlete.name}</h3>
-
-      <p>Date of Birth: ${athlete.dob}</p>
-      <p>Age Group: ${getScottishAthleticsAgeGroup(dobNorm)}</p>
-
-      <p>Training Days: <span class="homeTrainingDays"></span></p>
-      <p>Age Group Change: <span class="homeAgeGroupCountdown"></span></p>
-      <p>Next Age Group: <span class="homeNextAgeGroup"></span></p>
-    `;
-
-    list.appendChild(card);
-
-    // ⭐ TRAINING DAYS (now works)
-    const trainingDays = getTrainingDaysByAge(dobNorm);
-    card.querySelector(".homeTrainingDays").innerText =
-      trainingDays.length ? trainingDays.join(", ") : "N/A";
-
-    // ⭐ AGE GROUP CHANGE COUNTDOWN (now works)
-    const countdown = getDaysUntilAgeGroupChange();
-    card.querySelector(".homeAgeGroupCountdown").innerText =
-      countdown === 0 ? "Changes today!" : `${countdown} days`;
-
-    // ⭐ NEXT AGE GROUP (now works)
-    card.querySelector(".homeNextAgeGroup").innerText =
-      getNextAgeGroup(dobNorm);
-  });
-}
-
 /* =========================================================
    PB SYSTEM (MODAL)
 ========================================================= */
