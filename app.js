@@ -1177,7 +1177,7 @@ deleteProfileBtn.onclick = () => {
    RENDER HOME ATHLETE LIST
 ========================================================= */
 function renderHomeAthleteList() {
-  return;
+  // Disabled - Athlete List now uses loadCoachAthletes()
 }
 /* =========================================================
    PB SYSTEM (MODAL)
