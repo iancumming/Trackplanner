@@ -87,23 +87,7 @@ if (localStorage.getItem("role") !== "coach") {
 }
 
 // Open Pending Athletes page
-document
-  .getElementById("navHome")
-  .addEventListener("click", () => {
 
-    document
-      .querySelectorAll(".page")
-      .forEach(page =>
-        page.classList.remove("active")
-      );
-
-    document
-      .getElementById("home")
-      .classList.add("active");
-
-    loadCoachAthletes();
-
-});
 
 document
   .getElementById("navPending")
