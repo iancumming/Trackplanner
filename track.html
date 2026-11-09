@@ -1979,7 +1979,6 @@ list.innerHTML += `
     });
 
 }
-
 /* Approve Athlete */
 
 function approveAthlete(uid) {
@@ -1997,63 +1996,19 @@ function approveAthlete(uid) {
       loadPendingAthletes();
 
       loadCoachAthletes();
-db.collection("users")
-  .doc(uid)
-  .get()
 
-.then(doc => {
+    })
 
-  const athlete = doc.data();
+    .catch(error => {
 
-  console.log("FOUND APPROVED ATHLETE:", athlete);
+      console.error(error);
 
-  console.log("BEFORE PUSH:", athletes);
+      alert("Error approving athlete.");
 
-  const exists = athletes.find(a =>
-    a.name.toLowerCase() ===
-    athlete.name.toLowerCase()
-  );
-
-  if (!exists) {
-
-    athletes.push({
-
-      id: Date.now(),
-
-      name: athlete.name,
-
-      dob: "",
-
-      ageGroup: "",
-
-      emergency: "",
-
-      relationship: "",
-
-      sessions: {},
-
-      pbs: [],
-
-      competitionResults: []
-
-    });
-
-    console.log("AFTER PUSH:", athletes);
-
-    saveData();
-
-    loadAthleteList();
-
-    updateTrainingDropdown();
-
-    updateHomePage();
-
-  }
-
-});
     });
 
 }
+
 
 /* Load Approved Athletes to Home Page */
 
