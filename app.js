@@ -132,30 +132,16 @@ document.getElementById("deleteCoachButton").addEventListener("click", () => {
   alert("Coach deleted!");
 });
 /* =========================================================
-   HOME PAGE – ATHLETES + COACHES (FULLY FIXED)
+   HOME PAGE – ATHLETES + COACHES
 ========================================================= */
 
 function updateHomePage() {
 
-  const athleteList = document.getElementById("homeAthleteList");
-  athleteList.innerHTML = "";
+  // Home athlete list is now handled by:
+  // loadCoachAthletes()
 
-  athletes.forEach(athlete => {
-    const card = document.createElement("div");
-    card.className = "card home-athlete";
-    card.dataset.id = athlete.id;
+  updateCoachList();
 
-    const header = document.createElement("div");
-    header.className = "home-header";
-    header.innerText = athlete.name;
-
-    header.onclick = () => expandCard(card, athlete);
-
-    card.appendChild(header);
-    athleteList.appendChild(card);
-  });
-
-  updateCoachList();   // correct location
 }
 
 
