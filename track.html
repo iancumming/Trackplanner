@@ -1998,12 +1998,12 @@ function approveAthlete(uid) {
     });
 
 }
-
-
 /* Load Approved Athletes to Home Page */
 
 function loadCoachAthletes() {
-console.count("loadCoachAthletes");
+
+  console.count("loadCoachAthletes");
+
   const coachClub =
     localStorage.getItem("club");
 
@@ -2013,7 +2013,8 @@ console.count("loadCoachAthletes");
   const list =
     document.getElementById("homeAthleteList");
 
-  list.innerHTML = "";
+  // Fully clear list
+  list.replaceChildren();
 
   db.collection("users")
     .get()
@@ -2022,48 +2023,78 @@ console.count("loadCoachAthletes");
 
       let found = false;
 
+      const addedAthletes = new Set();
+
       snapshot.forEach(doc => {
 
         const athlete = doc.data();
 
         if (
-
           athlete.role === "athlete" &&
           athlete.approved === true &&
-
           athlete.club &&
           athlete.group &&
           coachClub &&
           coachGroup &&
-
           athlete.club.toLowerCase() ===
             coachClub.toLowerCase() &&
-
           athlete.group.toLowerCase() ===
             coachGroup.toLowerCase()
-
         ) {
+
+          // Stop duplicates
+          if (addedAthletes.has(athlete.name)) {
+            return;
+          }
+
+          addedAthletes.add(athlete.name);
 
           found = true;
 
-        list.innerHTML += `
-  <div
-    class="card athlete-card"
-    data-name="${athlete.name}"
-  >
+          const card =
+            document.createElement("div");
 
-    <h3>${athlete.name}</h3>
+          card.className =
+            "card athlete-card";
 
-    <p>
-      Club: ${athlete.club}
-    </p>
+          card.dataset.name =
+            athlete.name;
 
-    <p>
-      Group: ${athlete.group}
-    </p>
+          card.innerHTML = `
+            <h3>${athlete.name}</h3>
 
-  </div>
-`;
+            <p>
+              Club: ${athlete.club}
+            </p>
+
+            <p>
+              Group: ${athlete.group}
+            </p>
+          `;
+
+          card.addEventListener("click", () => {
+
+            document
+              .querySelectorAll(".page")
+              .forEach(page =>
+                page.classList.remove("active")
+              );
+
+            document
+              .getElementById("athlete")
+              .classList.add("active");
+
+            document
+              .getElementById("athleteProfileCard")
+              .style.display = "block";
+
+            document
+              .getElementById("athleteName")
+              .value = athlete.name;
+
+          });
+
+          list.appendChild(card);
 
         }
 
@@ -2075,36 +2106,20 @@ console.count("loadCoachAthletes");
           "<p>No approved athletes found.</p>";
 
       }
-document
-  .querySelectorAll(".athlete-card")
-  .forEach(card => {
 
-    card.addEventListener("click", () => {
+    })
 
-      document
-        .querySelectorAll(".page")
-        .forEach(page =>
-          page.classList.remove("active")
-        );
+    .catch(error => {
 
-      document
-        .getElementById("athlete")
-        .classList.add("active");
+      console.error(
+        "Error loading athletes:",
+        error
+      );
 
-      document
-        .getElementById("athleteProfileCard")
-        .style.display = "block";
-
-      document
-        .getElementById("athleteName")
-        .value = card.dataset.name;
-
-    });
-
-  });
     });
 
 }
+
 
 
 </script>
