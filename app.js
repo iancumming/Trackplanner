@@ -1999,13 +1999,34 @@ document.getElementById("paceType").addEventListener("change", filterPaceType);
 ========================================================= */
 
 const paceOptions = {
-  "5k": [
+
+  "100m": [
     { value: "rp", label: "Race Pace" },
-    { value: "recovery", label: "Recovery Pace" },
-    { value: "easy", label: "Easy Pace" },
-    { value: "tempo", label: "Tempo Pace" },
-    { value: "threshold", label: "Threshold Pace" },
-    { value: "vo2", label: "VO₂ Max Pace" }
+    { value: "acc", label: "Acceleration" },
+    { value: "mv", label: "Maximum Velocity" },
+    { value: "se", label: "Speed Endurance" }
+  ],
+
+  "200m": [
+    { value: "rp", label: "Race Pace" },
+    { value: "acc", label: "Acceleration" },
+    { value: "se", label: "Speed Endurance" },
+    { value: "lt", label: "Lactate Tolerance" }
+  ],
+
+  "400m": [
+    { value: "rp", label: "Race Pace" },
+    { value: "alactic", label: "Short Speed Alactic" },
+    { value: "se", label: "Speed Endurance" },
+    { value: "vo2", label: "VO₂ Max" }
+  ],
+
+  "800m": [
+    { value: "rp", label: "Race Pace" },
+    { value: "se", label: "Speed Endurance" },
+    { value: "reps", label: "Reps" },
+    { value: "int", label: "Intervals" },
+    { value: "vo2", label: "VO₂ Max" }
   ],
 
   "1500m": [
@@ -2017,22 +2038,56 @@ const paceOptions = {
     { value: "vo2", label: "VO₂ Max" }
   ],
 
-  "800m": [
+  "mile": [
     { value: "rp", label: "Race Pace" },
     { value: "se", label: "Speed Endurance" },
-    { value: "reps", label: "Reps (Speed Power)" },
-    { value: "int", label: "Intervals (Aerobic Support)" },
+    { value: "as", label: "Aerobic Support" },
+    { value: "reps", label: "Reps" },
+    { value: "int", label: "Intervals" },
     { value: "vo2", label: "VO₂ Max" }
   ],
 
-  "400m": [
-    { value: "rp", label: "Race Pace" },
-    { value: "alactic", label: "Short Speed Alactic" },
-    { value: "se", label: "Speed Endurance" },
+  "3000m": [
+    { value: "recovery", label: "Recovery" },
+    { value: "easy", label: "Easy" },
+    { value: "tempo", label: "Tempo" },
+    { value: "threshold", label: "Threshold" },
     { value: "vo2", label: "VO₂ Max" }
+  ],
+
+  "5k": [
+    { value: "rp", label: "Race Pace" },
+    { value: "recovery", label: "Recovery" },
+    { value: "easy", label: "Easy" },
+    { value: "tempo", label: "Tempo" },
+    { value: "threshold", label: "Threshold" },
+    { value: "vo2", label: "VO₂ Max" }
+  ],
+
+  "10k": [
+    { value: "recovery", label: "Recovery" },
+    { value: "easy", label: "Easy" },
+    { value: "tempo", label: "Tempo" },
+    { value: "threshold", label: "Threshold" },
+    { value: "vo2", label: "VO₂ Max" }
+  ],
+
+  "half": [
+    { value: "recovery", label: "Recovery" },
+    { value: "easy", label: "Easy" },
+    { value: "steady", label: "Steady" },
+    { value: "tempo", label: "Tempo" },
+    { value: "threshold", label: "Threshold" }
+  ],
+
+  "marathon": [
+    { value: "recovery", label: "Recovery" },
+    { value: "easy", label: "Easy" },
+    { value: "steady", label: "Steady" },
+    { value: "mp", label: "Marathon Pace" },
+    { value: "threshold", label: "Threshold" }
   ]
 };
-
 /* =========================================================
    UPDATE DROPDOWN WHEN EVENT CHANGES
 ========================================================= */
