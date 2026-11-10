@@ -2177,48 +2177,103 @@ document.getElementById("calcEvent").addEventListener("change", () => {
    SHOW CORRECT EVENT ZONES (5K / 1500 / 800 / 400)
 ========================================================= */
 
+/* =========================================================
+   SHOW CORRECT EVENT ZONES
+========================================================= */
+
 function showCorrectZones(event) {
 
-  // Hide all zone containers
-  document.getElementById("zones-5k").style.display = "none";
-  document.getElementById("zones-1500").style.display = "none";
-  document.getElementById("zones-800").style.display = "none";
-  document.getElementById("zones-400").style.display = "none";
+  // Hide all event containers
 
-  // ⭐ Hide 5K splits ONLY when NOT 5K
-  const splitsCard = document.getElementById("splits-5k").closest(".card");
-  if (event !== "5k") {
-    splitsCard.style.display = "none";
+  const containers = [
+
+    "zones-100",
+    "zones-200",
+    "zones-400",
+    "zones-800",
+    "zones-1500",
+    "zones-mile",
+    "zones-3000",
+    "zones-5k",
+    "zones-10k",
+    "zones-half",
+    "zones-marathon"
+
+  ];
+
+  containers.forEach(id => {
+
+    const el = document.getElementById(id);
+
+    if (el) {
+      el.style.display = "none";
+    }
+
+  });
+
+  /* =========================================================
+     SPLITS CARDS
+  ========================================================= */
+
+  const splits5k =
+    document.getElementById("splits-5k");
+
+  if (splits5k) {
+
+    const card =
+      splits5k.closest(".card");
+
+    card.style.display =
+      event === "5k"
+        ? "block"
+        : "none";
+
   }
 
-  // ⭐ Show correct zone container + splits if 5K
-  if (event === "5k") {
+  /* =========================================================
+     EVENT → CONTAINER MAP
+  ========================================================= */
 
-    document.getElementById("zones-5k").style.display = "block";
+  const eventMap = {
 
-    splitsCard.style.display = "block";
+    "100m": "zones-100",
 
-    // Force card open so splits are visible
-    const content = splitsCard.querySelector(".card-content");
-    const arrow = splitsCard.querySelector(".arrow");
+    "200m": "zones-200",
 
-    content.style.display = "block";
-    arrow.textContent = "▼";
+    "400m": "zones-400",
+
+    "800m": "zones-800",
+
+    "1500m": "zones-1500",
+
+    "mile": "zones-mile",
+
+    "3000m": "zones-3000",
+
+    "5k": "zones-5k",
+
+    "10k": "zones-10k",
+
+    "half": "zones-half",
+
+    "marathon": "zones-marathon"
+
+  };
+
+  const containerId =
+    eventMap[event];
+
+  if (!containerId) return;
+
+  const container =
+    document.getElementById(containerId);
+
+  if (container) {
+    container.style.display =
+      "block";
   }
 
-  if (event === "1500m") {
-    document.getElementById("zones-1500").style.display = "block";
-  }
-
-  if (event === "800m") {
-    document.getElementById("zones-800").style.display = "block";
-  }
-
-  if (event === "400m") {
-    document.getElementById("zones-400").style.display = "block";
-  }
 }
-
 /* =========================================================
    DYNAMIC ZONE DESCRIPTIONS
 ========================================================= */
