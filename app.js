@@ -2624,19 +2624,42 @@ window.onload = () => {
 /* =========================================================
    INITIAL LOAD
 ========================================================= */
+
 document.addEventListener("DOMContentLoaded", () => {
-  loadData();          
- 
-  loadAthleteList();   
+
+  loadData();
+
+  loadAthleteList();
+
   updateTrainingDropdown();
+
   updatePBTable();
-  showPage("home");    
+
+  showPage("home");
+
 });
 
-document.getElementById("calcButton").addEventListener("click", () => {
-  console.log("Calculate button clicked");
-  calculate5kZones();
-});
+/* =========================================================
+   CALCULATOR INIT
+========================================================= */
+
+if (document.getElementById("calcButton")) {
+
+  document
+    .getElementById("calcButton")
+    .addEventListener("click", () => {
+
+      const event =
+        document.getElementById("calcEvent").value;
+
+      const pb =
+        document.getElementById("calcPB").value.trim();
+
+      calculatePaces(event, pb);
+
+    });
+
+}
 /* =========================================================
    RUN CALCULATOR INIT WHEN CALCULATOR PAGE IS SHOWN
 ========================================================= */
