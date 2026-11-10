@@ -2044,17 +2044,39 @@ function loadCoachAthletes() {
           card.dataset.name =
             athlete.name;
 
-          card.innerHTML = `
-            <h3>${athlete.name}</h3>
+      card.innerHTML = `
+  <h3>${athlete.name}</h3>
 
-            <p>
-              Club: ${athlete.club}
-            </p>
+  <p>
+    <strong>Club:</strong> ${athlete.club}
+  </p>
 
-            <p>
-              Group: ${athlete.group}
-            </p>
-          `;
+  <p>
+    <strong>Group:</strong> ${athlete.group}
+  </p>
+
+  <hr>
+
+  <p>
+    <strong>Emergency Contact:</strong>
+    ${athlete.emergencyName || "Not Provided"}
+  </p>
+
+  <p>
+    <strong>Phone:</strong>
+    ${athlete.emergencyPhone || "Not Provided"}
+  </p>
+
+  <p>
+    <strong>Relationship:</strong>
+    ${athlete.emergencyRelationship || "Not Provided"}
+  </p>
+
+  <p>
+    <strong>Medical Information:</strong>
+    ${athlete.medicalInfo || "None Recorded"}
+  </p>
+`;
 
           card.addEventListener("click", () => {
 
