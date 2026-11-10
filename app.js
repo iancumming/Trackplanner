@@ -2137,46 +2137,35 @@ const paceOptions = {
 ========================================================= */
 
 function updatePaceDropdown() {
-  const event = document.getElementById("calcEvent").value;
-  const paceSelect = document.getElementById("paceType");
 
-  paceSelect.innerHTML = "";
+  const event =
+    document.getElementById("calcEvent").value;
 
-  if (event === "5k") {
-    paceSelect.innerHTML = `
-      <option value="">Select pace type…</option>
-      <option value="rp">Race Pace</option>
-      <option value="recovery">Recovery</option>
-      <option value="easy">Easy</option>
-      <option value="tempo">Tempo</option>
-      <option value="threshold">Threshold</option>
-      <option value="vo2">VO₂ Max</option>
-    `;
-  }
+  const paceSelect =
+    document.getElementById("paceType");
 
-  else if (event === "400m") {
-    paceSelect.innerHTML = `
-      <option value="">Select pace type…</option>
-      <option value="rp">Race Pace</option>
-      <option value="alactic">Short Speed (Alactic)</option>
-      <option value="se">Speed Endurance</option>
-      <option value="vo2">VO₂ Max</option>
-    `;
-  }
+  paceSelect.innerHTML =
+    '<option value="">Select pace type…</option>';
 
-  else {
-    // Shared dropdown for 1500m + 800m
-    paceSelect.innerHTML = `
-      <option value="">Select pace type…</option>
-      <option value="rp">Race Pace</option>
-      <option value="se">Speed Endurance</option>
-      <option value="as">Aerobic Support</option>
-      <option value="reps">Reps</option>
-      <option value="int">Intervals</option>
-      <option value="vo2">VO₂ Max</option>
-    `;
-  }
+  if (!paceOptions[event]) return;
+
+  paceOptions[event].forEach(option => {
+
+    const opt =
+      document.createElement("option");
+
+    opt.value =
+      option.value;
+
+    opt.textContent =
+      option.label;
+
+    paceSelect.appendChild(opt);
+
+  });
+
 }
+  
 
 
 /* =========================================================
