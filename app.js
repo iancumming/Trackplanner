@@ -2401,14 +2401,49 @@ function filterPaceType() {
   const event = document.getElementById("calcEvent").value;
 
   // Map event → correct container IDs
-  const containers = {
-    "5k": ["zones-5k", "splits-5k"],
-    "1500m": ["zones-1500"],
-    "800m": ["zones-800"],
-    "400m": ["zones-400"]
-  };
+const containers = {
 
-  const activeContainers = containers[event];
+  "100m": ["zones-100"],
+
+  "200m": ["zones-200"],
+
+  "400m": ["zones-400"],
+
+  "800m": ["zones-800"],
+
+  "1500m": ["zones-1500"],
+
+  "mile": ["zones-mile"],
+
+  "3000m": ["zones-3000"],
+
+  "5k": ["zones-5k", "splits-5k"],
+
+  "10k": ["zones-10k"],
+
+  "half": ["zones-half"],
+
+  "marathon": ["zones-marathon"]
+
+};
+ const activeContainers =
+  containers[event];
+
+if (!activeContainers) return;
+
+activeContainers.forEach(id => {
+
+  document
+    .querySelectorAll(
+      `#${id} .zone-block`
+    )
+    .forEach(z => {
+
+      z.style.display = "none";
+
+    });
+
+});
 
   // Hide all blocks ONLY inside active event containers
   activeContainers.forEach(id => {
