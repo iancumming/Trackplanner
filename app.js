@@ -1792,7 +1792,51 @@ function calculatePaces(event, pb) {
       if (field) field.innerText = toTime(split);
     });
   }
+/* =========================================================
+      MILE CALCULATOR
+========================================================= */
 
+if (event === "mile") {
+
+  const rp_per_m = totalSeconds / 1609;
+
+  const write = (id, time) => {
+    const el = document.getElementById(id);
+    if (el) el.innerText = toTime(time);
+  };
+
+  write("mile_rp_400", rp_per_m * 400);
+  write("mile_rp_800", rp_per_m * 800);
+  write("mile_rp_1200", rp_per_m * 1200);
+  write("mile_rp_1609", totalSeconds);
+
+  write("mile_se_200", rp_per_m * 200 - 1);
+  write("mile_se_300", rp_per_m * 300 - 2);
+  write("mile_se_400", rp_per_m * 400 - 3);
+  write("mile_se_600", rp_per_m * 600 - 4);
+
+  write("mile_as_600", rp_per_m * 600 + 3);
+  write("mile_as_800", rp_per_m * 800 + 5);
+  write("mile_as_1000", rp_per_m * 1000 + 8);
+  write("mile_as_1200", rp_per_m * 1200 + 10);
+  write("mile_as_1600", rp_per_m * 1600 + 12);
+
+  write("mile_reps_100", rp_per_m * 100 - 1);
+  write("mile_reps_200", rp_per_m * 200 - 2);
+  write("mile_reps_300", rp_per_m * 300 - 3);
+  write("mile_reps_400", rp_per_m * 400 - 4);
+
+  write("mile_int_400", rp_per_m * 400 + 2);
+  write("mile_int_600", rp_per_m * 600 + 4);
+  write("mile_int_800", rp_per_m * 800 + 6);
+  write("mile_int_1000", rp_per_m * 1000 + 8);
+
+  write("mile_vo2_400", rp_per_m * 400);
+  write("mile_vo2_600", rp_per_m * 600);
+  write("mile_vo2_800", rp_per_m * 800);
+  write("mile_vo2_1000", rp_per_m * 1000);
+
+}
   /* =========================================================
         1500m CALCULATOR
   ========================================================== */
