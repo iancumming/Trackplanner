@@ -473,6 +473,18 @@ function createAccount() {
   const group =
     document.getElementById("groupName").value;
 
+  const emergencyName =
+    document.getElementById("emergencyName")?.value.trim() || "";
+
+  const emergencyPhone =
+    document.getElementById("emergencyPhone")?.value.trim() || "";
+
+  const emergencyRelationship =
+    document.getElementById("emergencyRelationship")?.value || "";
+
+  const medicalInfo =
+    document.getElementById("medicalInfo")?.value || "";
+
   if (!name || !email || !password) {
 
     alert("Please complete all required fields.");
@@ -480,17 +492,45 @@ function createAccount() {
 
   }
 
-  auth.createUserWithEmailAndPassword(email, password)
+  // Club Athletes Only
+  if (accountType === "athlete") {
+
+    if (
+      !club ||
+      !group ||
+      !emergencyName ||
+      !emergencyPhone ||
+      !emergencyRelationship ||
+      !medicalInfo
+    ) {
+
+      alert(
+        "Please complete all club athlete details."
+      );
+
+      return;
+    }
+
+  }
+
+  auth
+    .createUserWithEmailAndPassword(
+      email,
+      password
+    )
 
     .then(userCredential => {
 
-      const uid = userCredential.user.uid;
+      const uid =
+        userCredential.user.uid;
 
-      return db.collection("users")
+      return db
+        .collection("users")
         .doc(uid)
         .set({
 
           name: name,
+
           email: email,
 
           role: accountType,
@@ -501,6 +541,26 @@ function createAccount() {
 
           approved:
             accountType === "individual",
+
+          emergencyName:
+            accountType === "athlete"
+              ? emergencyName
+              : "",
+
+          emergencyPhone:
+            accountType === "athlete"
+              ? emergencyPhone
+              : "",
+
+          emergencyRelationship:
+            accountType === "athlete"
+              ? emergencyRelationship
+              : "",
+
+          medicalInfo:
+            accountType === "athlete"
+              ? medicalInfo
+              : "",
 
           created:
             new Date().toISOString()
@@ -525,6 +585,8 @@ function createAccount() {
 
       }
 
+      location.reload();
+
     })
 
     .catch(error => {
@@ -537,7 +599,6 @@ function createAccount() {
     });
 
 }
-
 </script>
 
 </body>
