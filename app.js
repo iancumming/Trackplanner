@@ -2315,43 +2315,58 @@ const paceDescriptions = {
   "5k": {
     recovery: "Very easy running that promotes blood flow and helps you bounce back. Typically continuous running for 10–40 minutes at a relaxed, gentle effort.",
     easy: "Comfortable aerobic running that builds endurance. Usually steady continuous runs for 20–60 minutes, smooth and conversational.",
-    tempo: "Comfortably hard,controlled effort that inproves your ability to sustain a faster pace for longer. Typically 15-20sec slower per k than 5k pb time",
+    tempo: "Comfortably hard,controlled effort that inproves your ability to sustain a faster pace for longer.",
     threshold: "Hard aerobic running near lactate threshold. Typically 10sec faster per k than tempo pace Inproves lactic tolerance.",
     vo2: "Fast intervals at your aerobic ceiling — breathing hard, pushing limits. ."
   },
+"mile": {
+
+  rp: "Race pace rhythm for the Mile. Controlled opening lap, settle into pace through the middle section and gradually build towards the final 400m.",
+
+  se: "Speed Endurance develops the ability to maintain mile pace under fatigue. Faster than race pace but repeatable. Typical repetitions range from 200m–600m.",
+
+  as: "Aerobic Support develops strength and endurance around race pace. Typical repetitions range from 600m–1600m with controlled recoveries.",
+
+  reps: "Short, fast repetitions focused on speed, efficiency and running mechanics. Typical repetitions range from 100m–400m with generous recovery.",
+
+  int: "Intervals improve aerobic capacity and ability to sustain a high pace. Typical repetitions range from 400m–1000m.",
+
+  vo2: "VO₂ Max training at maximum aerobic intensity. Hard but controlled running designed to improve oxygen uptake and race performance."
+
+},
 
   /* =========================================================
         UPDATED 1500m DESCRIPTIONS — MATCH NEW SPLITS
   ========================================================= */
   "1500m": {
-    rp: "Race‑pace rhythm for 1500m. Smooth early, controlled through the middle, and lifting over the final 300m. Typical reps: 300–1200m with 1:3 recovery.",
+    rp: "Race‑pace rhythm for 1500m. Smooth early, controlled through the middle, and lifting over the final 300m.",
 
-    se: "Speed Endurance develops the ability to hold form under rising fatigue. Faster than race pace but repeatable. Distances: 150–600m with 1:1–1:2 recovery.",
+    se: "Speed Endurance develops the ability to hold form under rising fatigue. Faster than race pace but repeatable.",
 
-    as: "Aerobic Support builds strength for the middle laps and supports late‑race rhythm. Controlled, smooth running. Distances: 400–1600m with 1:1–1:2 recovery.",
+    as: "Aerobic Support builds strength for the middle laps and supports late‑race rhythm. Controlled, smooth running.",
 
-    reps: "Short, fast repetitions for speed and mechanics. Relaxed but quick, full posture and stride control. Distances: 100–500m with 1:2–1:3 recovery.",
+    reps: "Short, fast repetitions for speed and mechanics. Relaxed but quick, full posture and stride control.",
 
-    int: "Intervals provide controlled aerobic support slightly slower than RP. Helps maintain rhythm and efficiency. Distances: 400–1000m with 1:1–1:2 recovery.",
+    int: "Intervals provide controlled aerobic support slightly slower than RP. Helps maintain rhythm and efficiency.",
 
-    vo2: "VO₂ Max work at your aerobic ceiling. Hard but sustainable rhythm. Distances: 400–1200m with 1:1 recovery."
+    vo2: "VO₂ Max work at your aerobic ceiling. Hard but sustainable rhythm."
   },
 
   "800m": {
     rp: "Your true 800m race rhythm — start fast and controlled, settle into rhythm, maintain pace through 400-600m, adjust position accordingly at 600m,ready to attack final 120m.",
-    se: "Faster than race pace with short recovery. Extends your ability to stay fast under rising lactate. Typical 800m SE sessions use 200–400m reps, 4–6 total, with 1:2 to 1:4 recovery.",
-    reps: "Short, fast reps with full recovery. Pure speed development — relaxed mechanics, long stride, sharp acceleration. Typical 800m rep sessions use 100–400m reps, 4–8 total, with full recovery (1:6 or more).",
-    int: "Controlled aerobic reps slower than RP. Builds second‑lap strength with smoother rhythm and better oxygen delivery. Typical 800m interval sessions use 200–800m reps, 4–6 total, with 1:2 to 1:3 recovery.",
-    vo2: "VO₂ Max work boosts your top‑end aerobic engine. Fast enough to push oxygen uptake, but controlled so you can finish the whole session strong. Typical 800m VO₂ sessions use 400–800m reps, 4–6 total, with 1:3 to 1:4 recovery."
+    se: "Faster than race pace with short recovery. Extends your ability to stay fast under rising lactate.",
+    reps: "Short, fast reps with full recovery. Pure speed development — relaxed mechanics, long stride, sharp acceleration.",
+    int: "Controlled aerobic reps slower than RP. Builds second‑lap strength with smoother rhythm and better oxygen delivery.",
+    vo2: "VO₂ Max work boosts your top‑end aerobic engine. Fast enough to push oxygen uptake, but controlled so you can finish the whole session strong."
   },
 
   "400m": {
     rp: "A controlled sprint: smooth first 50–60m, fast relaxed running to 200m, hold rhythm through the third 100m, finish with posture and arm drive as fatigue rises. Reps: 100–300m, Recovery: 1:5+.",
-    alactic: "Pure speed and acceleration — sharp, snappy, and relaxed. Focus on tall posture and crisp mechanics without fatigue. Reps: 30–150m, Recovery: 1:8+.",
-    se: "Fast running under rising fatigue. Teaches you to hold form and rhythm when the legs tighten. Reps: 150–400m, Recovery: 1:2.",
-    lactic: "High‑intensity running that builds the ability to handle heavy lactate. Maintain posture and arm drive as the burn increases. Reps: 100–300m, Recovery: 1:3–1:5.",
-    int: "Smooth, fast aerobic support work. Controlled rhythm running that strengthens late‑race pace. Reps: 200–600m, Recovery: 1:2–1:3.",
-    vo2: "Fast, sustained running at your aerobic ceiling. Helps sprinters stay strong and efficient under fatigue. Reps: 300–800m, Recovery: 1:2–1:3."
+    alactic: "Pure speed and acceleration — sharp, snappy, and relaxed. Focus on tall posture and crisp mechanics without fatigue.",
+    se: "Fast running under rising fatigue. Teaches you to hold form and rhythm when the legs tighten.",
+    lactic: "High‑intensity running that builds the ability to handle heavy lactate. Maintain posture and arm drive as the burn increases.",
+    int: "Smooth, fast aerobic support work. Controlled rhythm running that strengthens late‑race pace.",
+    vo2: "Fast, sustained running at your aerobic ceiling. Helps sprinters stay strong and efficient under fatigue."
   }
 };
 
