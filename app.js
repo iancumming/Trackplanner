@@ -2375,24 +2375,46 @@ const paceDescriptions = {
 ========================================================= */
 
 function updateDescription() {
-  const event = document.getElementById("calcEvent").value;
-  const pace = document.getElementById("paceType").value;
-  const box = document.getElementById("paceDescription");
 
-  if (!event || !pace || !paceDescriptions[event][pace]) {
+  const event =
+    document.getElementById("calcEvent").value;
+
+  const pace =
+    document.getElementById("paceType").value;
+
+  const box =
+    document.getElementById("paceDescription");
+
+  // Safety checks
+
+  if (
+    !event ||
+    !pace ||
+    !paceDescriptions[event] ||
+    !paceDescriptions[event][pace]
+  ) {
+
     box.style.display = "none";
     box.innerText = "";
+
     return;
+
   }
 
-  box.innerText = paceDescriptions[event][pace];
+  box.innerText =
+    paceDescriptions[event][pace];
+
   box.style.display = "block";
+
 }
 
-document.getElementById("paceType").addEventListener("change", updateDescription);
-document.getElementById("calcEvent").addEventListener("change", updateDescription);
+document
+  .getElementById("paceType")
+  .addEventListener("change", updateDescription);
 
-
+document
+  .getElementById("calcEvent")
+  .addEventListener("change", updateDescription);
 /* =========================================================
    SHOW ONLY RP ON CALCULATE
 ========================================================= */
