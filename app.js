@@ -2397,73 +2397,79 @@ function showRacePaceOnly() {
 ========================================================= */
 
 function filterPaceType() {
-  const selected = document.getElementById("paceType").value;
-  const event = document.getElementById("calcEvent").value;
 
-  // Map event → correct container IDs
-const containers = {
+  const selected =
+    document.getElementById("paceType").value;
 
-  "100m": ["zones-100"],
+  const event =
+    document.getElementById("calcEvent").value;
 
-  "200m": ["zones-200"],
+  const containers = {
 
-  "400m": ["zones-400"],
+    "100m": ["zones-100"],
 
-  "800m": ["zones-800"],
+    "200m": ["zones-200"],
 
-  "1500m": ["zones-1500"],
+    "400m": ["zones-400"],
 
-  "mile": ["zones-mile"],
+    "800m": ["zones-800"],
 
-  "3000m": ["zones-3000"],
+    "1500m": ["zones-1500"],
 
-  "5k": ["zones-5k", "splits-5k"],
+    "mile": ["zones-mile"],
 
-  "10k": ["zones-10k"],
+    "3000m": ["zones-3000"],
 
-  "half": ["zones-half"],
+    "5k": ["zones-5k", "splits-5k"],
 
-  "marathon": ["zones-marathon"]
+    "10k": ["zones-10k"],
 
-};
- const activeContainers =
-  containers[event];
+    "half": ["zones-half"],
 
-if (!activeContainers) return;
+    "marathon": ["zones-marathon"]
 
-activeContainers.forEach(id => {
+  };
 
-  document
-    .querySelectorAll(
-      `#${id} .zone-block`
-    )
-    .forEach(z => {
+  const activeContainers =
+    containers[event];
 
-      z.style.display = "none";
+  if (!activeContainers) return;
 
-    });
+  // Hide everything first
 
-});
-
-  // Hide all blocks ONLY inside active event containers
   activeContainers.forEach(id => {
-    document.querySelectorAll(`#${id} .zone-block`).forEach(z => {
-      z.style.display = "none";
-    });
+
+    document
+      .querySelectorAll(`#${id} .zone-block`)
+      .forEach(z => {
+
+        z.style.display = "none";
+
+      });
+
   });
 
-  // Show only blocks matching selected pace type
+  // Show selected pace type
+
   if (selected) {
+
     activeContainers.forEach(id => {
-      document.querySelectorAll(`#${id} .zone-block[data-pace="${selected}"]`)
+
+      document
+        .querySelectorAll(
+          `#${id} .zone-block[data-pace="${selected}"]`
+        )
         .forEach(z => {
+
           z.style.display = "block";
+
         });
+
     });
+
   }
+
 }
-
-
 
 
 /* =========================================================
