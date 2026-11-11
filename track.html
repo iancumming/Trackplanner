@@ -2021,7 +2021,11 @@ function approveAthlete(uid) {
 
 function loadCoachAthletes() {
 
- 
+  const role =
+    localStorage.getItem("role");
+
+  const currentUid =
+    localStorage.getItem("uid");
 
   const coachClub =
     localStorage.getItem("club");
@@ -2032,7 +2036,6 @@ function loadCoachAthletes() {
   const list =
     document.getElementById("homeAthleteList");
 
-  // Fully clear list
   list.replaceChildren();
 
   db.collection("users")
@@ -2042,77 +2045,119 @@ function loadCoachAthletes() {
 
       let found = false;
 
-      const addedAthletes = new Set();
+      const addedAthletes =
+        new Set();
 
       snapshot.forEach(doc => {
 
-        const athlete = doc.data();
+        const athlete =
+          doc.data();
 
-        if (
-          athlete.role === "athlete" &&
-          athlete.approved === true &&
-          athlete.club &&
-          athlete.group &&
-          coachClub &&
-          coachGroup &&
-          athlete.club.toLowerCase() ===
-            coachClub.toLowerCase() &&
-          athlete.group.toLowerCase() ===
-            coachGroup.toLowerCase()
-        ) {
+        let showAthlete =
+          false;
 
-          // Stop duplicates
-          if (addedAthletes.has(athlete.name)) {
-            return;
-          }
+        // Coach sees all athletes in club/group
 
-          addedAthletes.add(athlete.name);
+        if (role === "coach") {
 
-          found = true;
+          showAthlete =
 
-          const card =
-            document.createElement("div");
+            athlete.role === "athlete" &&
+            athlete.approved === true &&
+            athlete.club &&
+            athlete.group &&
+            coachClub &&
+            coachGroup &&
+            athlete.club.toLowerCase() ===
+              coachClub.toLowerCase() &&
+            athlete.group.toLowerCase() ===
+              coachGroup.toLowerCase();
 
-          card.className =
-            "card athlete-card";
+        }
 
-          card.dataset.name =
-            athlete.name;
+        // Club athlete or individual athlete only sees self
 
+        else {
+
+          showAthlete =
+            doc.id === currentUid;
+
+        }
+
+        if (!showAthlete) {
+          return;
+        }
+
+        if (addedAthletes.has(doc.id)) {
+          return;
+        }
+
+        addedAthletes.add(doc.id);
+
+        found = true;
+
+        const card =
+          document.createElement("div");
+
+        card.className =
+          "card athlete-card";
+
+        card.dataset.name =
+          athlete.name;
       card.innerHTML = `
-  <h3>${athlete.name}</h3>
+if (role === "coach") {
 
-  <p>
-    <strong>Club:</strong> ${athlete.club}
-  </p>
+  card.innerHTML = `
+    <h3>${athlete.name}</h3>
 
-  <p>
-    <strong>Group:</strong> ${athlete.group}
-  </p>
+    <p>
+      <strong>Club:</strong> ${athlete.club}
+    </p>
 
-  <hr>
+    <p>
+      <strong>Group:</strong> ${athlete.group}
+    </p>
 
-  <p>
-    <strong>Emergency Contact:</strong>
-    ${athlete.emergencyName || "Not Provided"}
-  </p>
+    <hr>
 
-  <p>
-    <strong>Phone:</strong>
-    ${athlete.emergencyPhone || "Not Provided"}
-  </p>
+    <p>
+      <strong>Emergency Contact:</strong>
+      ${athlete.emergencyName || "Not Provided"}
+    </p>
 
-  <p>
-    <strong>Relationship:</strong>
-    ${athlete.emergencyRelationship || "Not Provided"}
-  </p>
+    <p>
+      <strong>Phone:</strong>
+      ${athlete.emergencyPhone || "Not Provided"}
+    </p>
 
-  <p>
-    <strong>Medical Information:</strong>
-    ${athlete.medicalInfo || "None Recorded"}
-  </p>
-`;
+    <p>
+      <strong>Relationship:</strong>
+      ${athlete.emergencyRelationship || "Not Provided"}
+    </p>
 
+    <p>
+      <strong>Medical Information:</strong>
+      ${athlete.medicalInfo || "None Recorded"}
+    </p>
+  `;
+
+} else {
+
+  card.innerHTML = `
+    <h3>${athlete.name}</h3>
+
+    <p>
+      <strong>Club:</strong>
+      ${athlete.club || "Individual Athlete"}
+    </p>
+
+    <p>
+      <strong>Group:</strong>
+      ${athlete.group || "-"}
+    </p>
+  `;
+
+}
           card.addEventListener("click", () => {
 
             document
