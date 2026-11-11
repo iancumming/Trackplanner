@@ -432,11 +432,19 @@ function login() {
         return;
       }
 
-      localStorage.setItem("loggedIn", "yes");
-      localStorage.setItem("role", user.role);
-      localStorage.setItem("club", user.club || "");
-      localStorage.setItem("group", user.group || "");
-      localStorage.setItem("userName", user.name || "");
+     localStorage.setItem("loggedIn", "yes");
+
+localStorage.setItem("uid", doc.id);
+
+localStorage.setItem("role", user.role);
+
+localStorage.setItem("club", user.club || "");
+
+localStorage.setItem("group", user.group || "");
+
+localStorage.setItem("userName", user.name || "");
+
+localStorage.setItem("userEmail", user.email || "");
 
       window.location.href = "track.html";
 
