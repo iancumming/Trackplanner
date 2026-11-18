@@ -2132,13 +2132,24 @@ function loadCoachAthletes() {
 
         /* Individual & Club Athlete view */
 
-        else {
+     else {
 
-          showAthlete =
-            doc.id === currentUid;
+  console.log(
+    "Doc ID:",
+    doc.id,
+    "Current UID:",
+    currentUid
+  );
 
-        }
+  showAthlete =
+    doc.id === currentUid;
 
+  console.log(
+    "Show Athlete:",
+    showAthlete
+  );
+
+}
         if (!showAthlete) return;
 
         found = true;
