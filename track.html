@@ -2156,13 +2156,28 @@ if (role === "coach") {
     <h3>${athlete.name}</h3>
 
     <p>
+      <strong>Email:</strong>
+      ${athlete.email || ""}
+    </p>
+
+    <p>
       <strong>Club:</strong>
       ${athlete.club || "Individual Athlete"}
     </p>
 
     <p>
-      <strong>Group:</strong>
-      ${athlete.group || "-"}
+      <strong>Emergency Contact:</strong>
+      ${athlete.emergencyName || "Not Provided"}
+    </p>
+
+    <p>
+      <strong>Phone:</strong>
+      ${athlete.emergencyPhone || "Not Provided"}
+    </p>
+
+    <p>
+      <strong>Medical Information:</strong>
+      ${athlete.medicalInfo || "None Recorded"}
     </p>
   `;
 
