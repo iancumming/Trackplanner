@@ -78,32 +78,41 @@
 </section>
 <script>
 
-// Hide Pending Athletes button for non-coaches
+// Hide coach-only items from non-coaches
 
-if (localStorage.getItem("role") !== "coach") {
+const role = localStorage.getItem("role");
 
-  document.getElementById("navPending").style.display = "none";
+if (role !== "coach") {
+
+  const navCoach = document.getElementById("navCoach");
+  const navPending = document.getElementById("navPending");
+  const coachPage = document.getElementById("coach");
+
+  if (navCoach) navCoach.style.display = "none";
+  if (navPending) navPending.style.display = "none";
+  if (coachPage) coachPage.style.display = "none";
 
 }
 
 // Open Pending Athletes page
 
+const pendingButton = document.getElementById("navPending");
 
-document
-  .getElementById("navPending")
-  .addEventListener("click", () => {
+if (pendingButton) {
+
+  pendingButton.addEventListener("click", () => {
 
     document
       .querySelectorAll(".page")
-      .forEach(page =>
-        page.classList.remove("active")
-      );
+      .forEach(page => page.classList.remove("active"));
 
     document
       .getElementById("pendingAthletes")
       .classList.add("active");
 
-});
+  });
+
+}
 
 </script>
 <!-- ATHLETE PAGE -->
