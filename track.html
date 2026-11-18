@@ -78,9 +78,12 @@
 </section>
 <script>
 
-// Hide coach-only items from non-coaches
+// User info
 
 const role = localStorage.getItem("role");
+const currentUid = localStorage.getItem("uid");
+
+// Hide coach-only items from non-coaches
 
 if (role !== "coach") {
 
