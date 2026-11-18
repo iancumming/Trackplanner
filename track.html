@@ -1921,7 +1921,9 @@ document
     loadPendingAthletes();
 
 });
-
+const role = localStorage.getItem("role");
+const currentUid = localStorage.getItem("uid");
+const isCoach = role === "coach";
 /* Load Pending Athletes */
 
 function loadPendingAthletes() {
