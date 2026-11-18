@@ -2105,6 +2105,11 @@ function loadCoachAthletes() {
       snapshot.forEach(doc => {
 
         const athlete = doc.data();
+       console.log(
+  "Doc ID:", doc.id,
+  "Current UID:", currentUid,
+  "Role:", role
+); 
 
         let showAthlete = false;
 
