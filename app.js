@@ -823,7 +823,7 @@ function loadAthleteList() {
   // SELECT ATHLETE
   document.querySelectorAll(".select-btn").forEach(btn => {
     btn.onclick = () => {
-      const id = Number(btn.dataset.id);
+   const id = btn.dataset.id;
 
       // ⭐ FIX: show profile card again
       document.getElementById("athleteProfileCard").style.display = "block";
