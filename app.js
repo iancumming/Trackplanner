@@ -1533,12 +1533,71 @@ function updateIntensitySummary(a) {
 }
 
 /* =========================================================
+   INTENSITY PERCENTAGES
+========================================================= */
+
+function updateIntensityPercent(a) {
+
+  let rest = 0;
+  let low = 0;
+  let med = 0;
+  let high = 0;
+  let competition = 0;
+
+  if (a.sessions) {
+
+    for (const month in a.sessions) {
+
+      for (const day in a.sessions[month]) {
+
+        const intensity =
+          a.sessions[month][day].intensity;
+
+        if (intensity === "rest") rest++;
+        if (intensity === "low") low++;
+        if (intensity === "med") med++;
+        if (intensity === "high") high++;
+        if (intensity === "competition") competition++;
+
+      }
+
+    }
+
+  }
+
+  const total =
+    rest + low + med + high + competition;
+
+  const pct = count =>
+    total === 0
+      ? "0%"
+      : Math.round((count / total) * 100) + "%";
+
+  if (document.getElementById("pctRest"))
+    document.getElementById("pctRest").innerText = pct(rest);
+
+  if (document.getElementById("pctLow"))
+    document.getElementById("pctLow").innerText = pct(low);
+
+  if (document.getElementById("pctMed"))
+    document.getElementById("pctMed").innerText = pct(med);
+
+  if (document.getElementById("pctHigh"))
+    document.getElementById("pctHigh").innerText = pct(high);
+
+  if (document.getElementById("pctCompetition"))
+    document.getElementById("pctCompetition").innerText = pct(competition);
+
+}
+
+/* =========================================================
    YEARLY INTENSITY LINES GRAPH
 ========================================================= */
 
 let yearIntensityChart = null;
 
 function updateYearIntensityGraph(a) {
+
   if (!a.sessions) return;
 
   const monthlyData = {
@@ -1549,82 +1608,110 @@ function updateYearIntensityGraph(a) {
     competition: Array(12).fill(0)
   };
 
-  // ✔ Correct loop for your data structure (object with numeric keys)
-  for (const day in a.sessions) {
+  // Loop through months
+  for (const month in a.sessions) {
 
-    const session = a.sessions[day];
-    if (!session || !session.date) continue;
+    // Loop through days
+    for (const day in a.sessions[month]) {
 
-    const d = new Date(session.date);
-    const monthIndex = d.getMonth(); // 0–11
+      const session =
+        a.sessions[month][day];
 
-    monthlyData[session.intensity][monthIndex]++;
+      if (!session || !session.date) continue;
+
+      const d = new Date(session.date);
+      const monthIndex = d.getMonth();
+
+      if (monthlyData[session.intensity]) {
+        monthlyData[session.intensity][monthIndex]++;
+      }
+
+    }
+
   }
 
-  if (yearIntensityChart) yearIntensityChart.destroy();
+  if (yearIntensityChart) {
+    yearIntensityChart.destroy();
+  }
 
-  const ctx = document.getElementById("yearIntensityChart").getContext("2d");
+  const ctx =
+    document
+      .getElementById("yearIntensityChart")
+      .getContext("2d");
 
   yearIntensityChart = new Chart(ctx, {
+
     type: "line",
+
     data: {
+
       labels: [
         "Jan","Feb","Mar",
         "Apr","May","Jun",
         "Jul","Aug","Sep",
         "Oct","Nov","Dec"
       ],
+
       datasets: [
+
         {
           label: "Rest",
           data: monthlyData.rest,
           borderColor: "#d9d9d9",
-          backgroundColor: "transparent",
           tension: 0.3
         },
+
         {
           label: "Low",
           data: monthlyData.low,
           borderColor: "#b3e6b3",
-          backgroundColor: "transparent",
           tension: 0.3
         },
+
         {
           label: "Medium",
           data: monthlyData.med,
           borderColor: "#ffe680",
-          backgroundColor: "transparent",
           tension: 0.3
         },
+
         {
           label: "High",
           data: monthlyData.high,
           borderColor: "#ff9999",
-          backgroundColor: "transparent",
           tension: 0.3
         },
+
         {
           label: "Competition",
           data: monthlyData.competition,
           borderColor: "#80b3ff",
-          backgroundColor: "transparent",
           tension: 0.3
         }
+
       ]
+
     },
+
     options: {
+
       responsive: true,
+
       scales: {
         y: {
           beginAtZero: true,
-          title: { display: true, text: "Sessions per Month" }
+          title: {
+            display: true,
+            text: "Sessions per Month"
+          }
         }
       }
+
     }
+
   });
+
 }
-
-
 /* =========================================================
    COACH PAGE
 ========================================================= */
