@@ -685,9 +685,22 @@ function convertDOBToUKFormat(raw) {
    SELECT ATHLETE
 ========================================================= */
 function selectAthlete(id) {
-  selectedAthlete = athletes.find(a => a.id === id);
-  selectedAthlete.competitionResults ||= [];
 
+  selectedAthlete =
+    athletes.find(a => a.id === id);
+
+  if (!selectedAthlete) {
+
+    console.error(
+      "Athlete not found:",
+      id
+    );
+
+    return;
+
+  }
+
+  selectedAthlete.competitionResults ||= [];
   const dobNorm = normaliseDob(selectedAthlete.dob);
 
   // ❌ Removed broken line
