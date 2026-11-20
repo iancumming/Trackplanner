@@ -1496,18 +1496,32 @@ document.getElementById("modalCancel").onclick = () => {
 ========================================================= */
 
 function updateIntensitySummary(a) {
-  let rest = 0, low = 0, med = 0, high = 0, competition = 0;
+
+  let rest = 0;
+  let low = 0;
+  let med = 0;
+  let high = 0;
+  let competition = 0;
 
   if (a.sessions) {
-    for (let day in a.sessions) {
-      const intensity = a.sessions[day].intensity;
 
-      if (intensity === "rest") rest++;
-      if (intensity === "low") low++;
-      if (intensity === "med") med++;
-      if (intensity === "high") high++;
-      if (intensity === "competition") competition++;
+    for (const month in a.sessions) {
+
+      for (const day in a.sessions[month]) {
+
+        const intensity =
+          a.sessions[month][day].intensity;
+
+        if (intensity === "rest") rest++;
+        if (intensity === "low") low++;
+        if (intensity === "med") med++;
+        if (intensity === "high") high++;
+        if (intensity === "competition") competition++;
+
+      }
+
     }
+
   }
 
   document.getElementById("sumRest").innerText = rest;
@@ -1515,33 +1529,7 @@ function updateIntensitySummary(a) {
   document.getElementById("sumMed").innerText = med;
   document.getElementById("sumHigh").innerText = high;
   document.getElementById("sumCompetition").innerText = competition;
-}
 
-function updateIntensityPercent(a) {
-  let rest = 0, low = 0, med = 0, high = 0, competition = 0;
-
-  if (a.sessions) {
-    for (let day in a.sessions) {
-      const intensity = a.sessions[day].intensity;
-
-      if (intensity === "rest") rest++;
-      if (intensity === "low") low++;
-      if (intensity === "med") med++;
-      if (intensity === "high") high++;
-      if (intensity === "competition") competition++;
-    }
-  }
-
-  const total = rest + low + med + high + competition;
-
-  const pct = count =>
-    total === 0 ? "0%" : Math.round((count / total) * 100) + "%";
-
-  document.getElementById("pctRest").innerText = pct(rest);
-  document.getElementById("pctLow").innerText = pct(low);
-  document.getElementById("pctMed").innerText = pct(med);
-  document.getElementById("pctHigh").innerText = pct(high);
-  document.getElementById("pctCompetition").innerText = pct(competition);
 }
 
 /* =========================================================
