@@ -2093,6 +2093,9 @@ function loadCoachAthletes() {
 
   list.innerHTML = "";
 
+  // Populate training/profile array
+  athletes = [];
+
   db.collection("users")
     .get()
 
@@ -2103,11 +2106,18 @@ function loadCoachAthletes() {
       snapshot.forEach(doc => {
 
         const athlete = doc.data();
-       console.log(
-  "Doc ID:", doc.id,
-  "Current UID:", currentUid,
-  "Role:", role
-); 
+
+        // Store athlete for Profile + Training pages
+        athletes.push({
+          id: doc.id,
+          ...athlete
+        });
+
+        console.log(
+          "Doc ID:", doc.id,
+          "Current UID:", currentUid,
+          "Role:", role
+        );
 
         let showAthlete = false;
 
@@ -2128,26 +2138,15 @@ function loadCoachAthletes() {
 
         }
 
-        /* Individual & Club Athlete view */
+        /* Athlete view */
 
-     else {
+        else {
 
-  console.log(
-    "Doc ID:",
-    doc.id,
-    "Current UID:",
-    currentUid
-  );
+          showAthlete =
+            doc.id === currentUid;
 
-  showAthlete =
-    doc.id === currentUid;
+        }
 
-  console.log(
-    "Show Athlete:",
-    showAthlete
-  );
-
-}
         if (!showAthlete) return;
 
         found = true;
@@ -2160,8 +2159,6 @@ function loadCoachAthletes() {
 
         card.dataset.name =
           athlete.name;
-
-        /* Coach Card */
 
         if (role === "coach") {
 
@@ -2179,11 +2176,7 @@ function loadCoachAthletes() {
             </p>
           `;
 
-        }
-
-        /* Athlete Card */
-
-        else {
+        } else {
 
           card.innerHTML = `
             <h3>${athlete.name}</h3>
@@ -2236,6 +2229,11 @@ function loadCoachAthletes() {
         list.appendChild(card);
 
       });
+
+      // Refresh Training dropdown
+      updateTrainingDropdown();
+
+      console.log("Athletes Array:", athletes);
 
       if (!found) {
 
