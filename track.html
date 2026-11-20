@@ -2103,65 +2103,67 @@ function loadCoachAthletes() {
 
       let found = false;
 
-      snapshot.forEach(doc => {
+snapshot.forEach(doc => {
 
-        const athlete = doc.data();
+  const athlete = doc.data();
 
-        // Store athlete for Profile + Training pages
-     if (showAthlete) {
+  console.log(
+    "Doc ID:", doc.id,
+    "Current UID:", currentUid,
+    "Role:", role
+  );
 
+  let showAthlete = false;
+
+  /* Coach view */
+
+  if (role === "coach") {
+
+    showAthlete =
+
+      athlete.role === "athlete" &&
+      athlete.approved === true &&
+      athlete.club &&
+      athlete.group &&
+      coachClub &&
+      coachGroup &&
+      athlete.club.toLowerCase() === coachClub.toLowerCase() &&
+      athlete.group.toLowerCase() === coachGroup.toLowerCase();
+
+  }
+
+  /* Club Athlete / Individual Athlete */
+
+  else {
+
+    showAthlete =
+      doc.id === currentUid;
+
+  }
+
+  if (!showAthlete) {
+    return;
+  }
+
+  // Store ONLY visible athletes
   athletes.push({
     id: doc.id,
     ...athlete
   });
 
-}
-        console.log(
-          "Doc ID:", doc.id,
-          "Current UID:", currentUid,
-          "Role:", role
-        );
+  found = true;
 
-        let showAthlete = false;
+  const card =
+    document.createElement("div");
 
-        /* Coach view */
+  card.className =
+    "card athlete-card";
 
-        if (role === "coach") {
+  card.dataset.id =
+    doc.id;
 
-          showAthlete =
-
-            athlete.role === "athlete" &&
-            athlete.approved === true &&
-            athlete.club &&
-            athlete.group &&
-            coachClub &&
-            coachGroup &&
-            athlete.club.toLowerCase() === coachClub.toLowerCase() &&
-            athlete.group.toLowerCase() === coachGroup.toLowerCase();
-
-        }
-
-        /* Athlete view */
-
-        else {
-
-          showAthlete =
-            doc.id === currentUid;
-
-        }
-
-        if (!showAthlete) return;
-
-        found = true;
-
-        const card =
-          document.createElement("div");
-
-        card.className =
-          "card athlete-card";
-
-        card.dataset.name =
-          athlete.name;
+  card.dataset.name =
+    athlete.name;
 
         if (role === "coach") {
 
