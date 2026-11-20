@@ -372,7 +372,7 @@ function loadAthleteList() {
   // SELECT ATHLETE
   document.querySelectorAll(".select-btn").forEach(btn => {
     btn.onclick = () => {
-      const id = Number(btn.dataset.id);
+     const id = btn.dataset.id;
 
       // Show profile card when selecting an athlete
       document.getElementById("athleteProfileCard").style.display = "block";
@@ -384,7 +384,7 @@ function loadAthleteList() {
   // DELETE ATHLETE
   document.querySelectorAll(".delete-btn").forEach(btn => {
     btn.onclick = () => {
-      const id = Number(btn.dataset.id);
+    const id = btn.dataset.id;
 
       athletes = athletes.filter(a => a.id !== id);
 
