@@ -370,17 +370,17 @@ function loadAthleteList() {
   ).join("");
 
   // SELECT ATHLETE
-  document.querySelectorAll(".select-btn").forEach(btn => {
-    btn.onclick = () => {
-     const id = btn.dataset.id;
+ document.querySelectorAll(".select-btn").forEach(btn => {
+  btn.onclick = () => {
 
-      // Show profile card when selecting an athlete
-      document.getElementById("athleteProfileCard").style.display = "block";
+    const id = btn.dataset.id;
 
-      selectAthlete(id);
-    };
-  });
+    document.getElementById("athleteProfileCard").style.display = "block";
 
+    selectAthlete(id);
+
+  };
+});
   // DELETE ATHLETE
   document.querySelectorAll(".delete-btn").forEach(btn => {
     btn.onclick = () => {
