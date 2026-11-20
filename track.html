@@ -2108,11 +2108,14 @@ function loadCoachAthletes() {
         const athlete = doc.data();
 
         // Store athlete for Profile + Training pages
-        athletes.push({
-          id: doc.id,
-          ...athlete
-        });
+     if (showAthlete) {
 
+  athletes.push({
+    id: doc.id,
+    ...athlete
+  });
+
+}
         console.log(
           "Doc ID:", doc.id,
           "Current UID:", currentUid,
