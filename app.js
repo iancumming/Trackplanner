@@ -1792,7 +1792,7 @@ function showPage(id) {
   }
 
   if (id === "athlete") {
-    loadAthleteList();
+    loadCoachAthletes();
     updatePBTable();
   }
 
