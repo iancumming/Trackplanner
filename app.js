@@ -2790,7 +2790,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadData();
 
-  loadAthleteList();
+ loadCoachAthletes();
 
   updateTrainingDropdown();
 
