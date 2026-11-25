@@ -843,7 +843,7 @@ function updateTrainingPageDays(dob) {
    ATHLETE LIST
 ========================================================= */
 
-function loadAthleteList() {
+function loadAthleteListB() {
 
   const list =
     document.getElementById("athleteList");
