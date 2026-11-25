@@ -684,13 +684,17 @@ function convertDOBToUKFormat(raw) {
 /* =========================================================
    SELECT ATHLETE
 ========================================================= */
+
 function selectAthlete(id) {
 
   console.log("Selected ID:", id);
+
   console.log("Athletes:", athletes);
 
   selectedAthlete =
-    athletes.find(a => a.id === id);
+    athletes.find(a =>
+      String(a.id) === String(id)
+    );
 
   console.log(
     "Found Athlete:",
@@ -706,14 +710,20 @@ function selectAthlete(id) {
   }
 
   selectedAthlete.competitionResults ||= [];
+  selectedAthlete.sessions ||= {};
 
-  const dobNorm = normaliseDob(selectedAthlete.dob);
+  const dobNorm =
+    normaliseDob(
+      selectedAthlete.dob || ""
+    );
 
-  // ❌ Removed broken line
-  // document.getElementById("athleteSelect").value = id;
+  document.getElementById("athleteName").value =
+    selectedAthlete.name || "";
 
-  document.getElementById("athleteName").value = selectedAthlete.name;
-  document.getElementById("athleteDOB").value = convertDOBToISO(selectedAthlete.dob);
+  document.getElementById("athleteDOB").value =
+    convertDOBToISO(
+      selectedAthlete.dob || ""
+    );
 
   document.getElementById("ageGroupDisplay").innerText =
     getScottishAthleticsAgeGroup(dobNorm);
@@ -727,21 +737,40 @@ function selectAthlete(id) {
   updateTrainingDaysDisplay(dobNorm);
 
   updatePBTable();
-  updateCompetitionYearlyTracker(selectedAthlete);
-  updatePBFromCompetitionResults(selectedAthlete);
+
+  updatePBFromCompetitionResults(
+    selectedAthlete
+  );
+
+  updateCompetitionYearlyTracker(
+    selectedAthlete
+  );
 
   document.getElementById("trainingAthleteAge").innerText =
     getAgeOnNextOct1(dobNorm);
 
-  updateAthleteCompetitionList(selectedAthlete);
+  updateAthleteCompetitionList(
+    selectedAthlete
+  );
 
   updateAgeGroupCountdown();
   updateTrainingPageCountdown();
 
- 
+  // Sync Training dropdown
+  const athleteSelect =
+    document.getElementById("athleteSelect");
 
-  // ⭐ FIX: show profile card again
-  document.getElementById("athleteProfileCard").style.display = "block";
+  if (athleteSelect) {
+
+    athleteSelect.value =
+      selectedAthlete.id;
+
+  }
+
+  // Show profile card
+  document.getElementById("athleteProfileCard").style.display =
+    "block";
+
 }
 
 /* =========================================================
