@@ -358,7 +358,7 @@ populateYearSelector();
    ATHLETE PAGE
 ========================================================= */
 
-function loadAthleteList() {
+function loadAthleteListA() {
   const list = document.getElementById("athleteList");
 
   list.innerHTML = athletes.map(a =>
