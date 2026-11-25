@@ -1147,33 +1147,31 @@ document.getElementById("saveAthleteButton").onclick = () => {
   const ageGroup =
     getScottishAthleticsAgeGroup(dob);
 
-  const athlete = {
+db.collection("users")
+  .doc(selectedAthlete.id)
+  .update({
 
-    id: Date.now(),
+    name: name,
 
-    name,
+    dob: dob,
 
-    dob,
+    ageGroup: ageGroup
 
-    ageGroup,
+  })
 
-    emergency: "",
+  .then(() => {
 
-    relationship: "",
+    loadCoachAthletes();
 
-    sessions: {},
+  })
 
-    pbs: [],
+  .catch(error => {
 
-    competitionResults: []
+    console.error(error);
 
-  };
+    alert("Error saving athlete profile.");
 
-  athletes.push(athlete);
-
-  selectedAthlete = athlete;
-
-  saveData();
+  });
 
   // Refresh athlete/training sections ONLY
   loadAthleteList();
