@@ -359,48 +359,47 @@ populateYearSelector();
 ========================================================= */
 
 function loadAthleteListA() {
-  const list = document.getElementById("athleteList");
 
-  list.innerHTML = athletes.map(a =>
-    `<div class="athlete-item" data-id="${a.id}">
-       <span class="athlete-name">${a.name}</span>
-       <button class="select-btn" data-id="${a.id}">Select</button>
-       <button class="delete-btn" data-id="${a.id}">🗑️</button>
-     </div>`
-  ).join("");
+  const list =
+    document.getElementById("athleteList");
+
+  if (!list) return;
+
+  list.innerHTML = athletes.map(a => `
+
+    <div class="athlete-item" data-id="${a.id}">
+
+      <span class="athlete-name">
+        ${a.name}
+      </span>
+
+      <button
+        class="select-btn"
+        data-id="${a.id}">
+        Select
+      </button>
+
+    </div>
+
+  `).join("");
 
   // SELECT ATHLETE
- document.querySelectorAll(".select-btn").forEach(btn => {
-  btn.onclick = () => {
 
-    const id = btn.dataset.id;
+  document.querySelectorAll(".select-btn").forEach(btn => {
 
-    document.getElementById("athleteProfileCard").style.display = "block";
-
-    selectAthlete(id);
-
-  };
-});
-  // DELETE ATHLETE
-  document.querySelectorAll(".delete-btn").forEach(btn => {
     btn.onclick = () => {
-    const id = btn.dataset.id;
 
-      athletes = athletes.filter(a => a.id !== id);
+      const id = btn.dataset.id;
 
-      // If deleted athlete was selected → hide profile card
-      if (selectedAthlete && selectedAthlete.id === id) {
-        selectedAthlete = null;
-        document.getElementById("athleteProfileCard").style.display = "none";
-      }
+      document.getElementById("athleteProfileCard").style.display =
+        "block";
 
-      saveData();
-      
-      loadAthleteList();
-      updateTrainingDropdown();
-      updatePBTable();
+      selectAthlete(id);
+
     };
+
   });
+
 }
 
 // CLOSE BUTTON — hides the profile card
