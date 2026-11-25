@@ -864,12 +864,6 @@ function loadAthleteListB() {
         Select
       </button>
 
-      <button
-        class="delete-btn"
-        data-id="${a.id}">
-        🗑️
-      </button>
-
     </div>
 
   `).join("");
@@ -886,42 +880,6 @@ function loadAthleteListB() {
         "block";
 
       selectAthlete(id);
-
-    };
-
-  });
-
-  /* DELETE ATHLETE */
-
-  document.querySelectorAll(".delete-btn").forEach(btn => {
-
-    btn.onclick = () => {
-
-      const id = btn.dataset.id;
-
-      athletes = athletes.filter(
-        a => a.id !== id
-      );
-
-      if (
-        selectedAthlete &&
-        selectedAthlete.id === id
-      ) {
-
-        selectedAthlete = null;
-
-        document.getElementById("athleteProfileCard").style.display =
-          "none";
-
-      }
-
-      saveData();
-
-      loadAthleteList();
-
-      updateTrainingDropdown();
-
-      updatePBTable();
 
     };
 
