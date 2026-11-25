@@ -2214,31 +2214,20 @@ snapshot.forEach(doc => {
 
         }
 
-        card.addEventListener("click", () => {
+      card.addEventListener("click", () => {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
 
-          document
-            .querySelectorAll(".page")
-            .forEach(page =>
-              page.classList.remove("active")
-            );
+  document.getElementById("athlete").classList.add("active");
+  document.getElementById("athleteProfileCard").style.display = "block";
 
-          document
-            .getElementById("athlete")
-            .classList.add("active");
+  selectAthlete(doc.id);
+});
 
-          document
-            .getElementById("athleteProfileCard")
-            .style.display = "block";
+list.appendChild(card);
 
-          document
-            .getElementById("athleteName")
-            .value = athlete.name || "";
-
-        });
-
-        list.appendChild(card);
-
-      });
+});
 
       // Refresh Training dropdown
       updateTrainingDropdown();
