@@ -2703,17 +2703,12 @@ window.onload = () => {
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
-
   loadData();
-
- loadCoachAthletes();
-
   updateTrainingDropdown();
-
   updatePBTable();
 
+  // showPage("home") loads the Firestore athlete list itself.
   showPage("home");
-
 });
 
 /* =========================================================
