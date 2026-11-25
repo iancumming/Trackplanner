@@ -838,53 +838,7 @@ function updateTrainingPageDays(dob) {
 
 
 
-/* =========================================================
-   ATHLETE LIST
-========================================================= */
 
-function loadAthleteListB() {
-
-  const list =
-    document.getElementById("athleteList");
-
-  if (!list) return;
-
-  list.innerHTML = athletes.map(a => `
-
-    <div class="athlete-item" data-id="${a.id}">
-
-      <span class="athlete-name">
-        ${a.name}
-      </span>
-
-      <button
-        class="select-btn"
-        data-id="${a.id}">
-        Select
-      </button>
-
-    </div>
-
-  `).join("");
-
-  /* SELECT ATHLETE */
-
-  document.querySelectorAll(".select-btn").forEach(btn => {
-
-    btn.onclick = () => {
-
-      const id = btn.dataset.id;
-
-      document.getElementById("athleteProfileCard").style.display =
-        "block";
-
-      selectAthlete(id);
-
-    };
-
-  });
-
-}
 /* =========================================================
    DOB FORMAT HELPERS
 ========================================================= */
