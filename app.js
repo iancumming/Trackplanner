@@ -960,6 +960,27 @@ function getNextOct1Date() {
   return today < thisOct1 ? thisOct1 : new Date(year + 1, 9, 1);
 }
 
+function getAgeOnNextOct1(dob) {
+  const normalizedDob = normaliseDob(dob || "");
+  const match = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(normalizedDob);
+
+  if (!match) return "—";
+
+  const birthYear = Number(match[1]);
+  const birthMonth = Number(match[2]);
+  const birthDay = Number(match[3]);
+
+  const nextOct1 = getNextOct1Date();
+  let age = nextOct1.getFullYear() - birthYear;
+
+  // A birthday after 1 October hasn't happened yet on that date.
+  if (birthMonth > 10 || (birthMonth === 10 && birthDay > 1)) {
+    age--;
+  }
+
+  return age;
+}
+
 function getDaysUntilAgeGroupChange() {
   const today = new Date();
   const nextOct1 = getNextOct1Date();
