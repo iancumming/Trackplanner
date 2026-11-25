@@ -1173,10 +1173,7 @@ db.collection("users")
 
   });
 
-  // Refresh athlete/training sections ONLY
-  loadAthleteList();
-  updateTrainingDropdown();
-  updatePBTable();
+  
 
   // Reset form
   document.getElementById("athleteName").value = "";
