@@ -1076,9 +1076,18 @@ function saveNewPB() {
 }
 
 /* =========================================================
-   SAVE ATHLETE (NEW ATHLETE) — FINAL 2026 SA VERSION
+   SAVE ATHLETE PROFILE
 ========================================================= */
+
 document.getElementById("saveAthleteButton").onclick = () => {
+
+  if (!selectedAthlete) {
+
+    alert("Select an athlete first.");
+
+    return;
+
+  }
 
   const name =
     document.getElementById("athleteName").value.trim();
@@ -1087,60 +1096,56 @@ document.getElementById("saveAthleteButton").onclick = () => {
     document.getElementById("athleteDOB").value.trim();
 
   if (!name) {
+
     alert("Enter a name");
+
     return;
+
   }
 
   if (!rawDob) {
+
     alert("Enter date of birth");
+
     return;
+
   }
 
-  // Convert YYYY-MM-DD → DD/MM/YYYY
   const dob =
     convertDOBToUKFormat(rawDob);
 
-  // Scottish Athletics age group
   const ageGroup =
     getScottishAthleticsAgeGroup(dob);
 
-db.collection("users")
-  .doc(selectedAthlete.id)
-  .update({
+  db.collection("users")
+    .doc(selectedAthlete.id)
+    .update({
 
-    name: name,
+      name: name,
 
-    dob: dob,
+      dob: dob,
 
-    ageGroup: ageGroup
+      ageGroup: ageGroup
 
-  })
+    })
 
-  .then(() => {
+    .then(() => {
 
-    loadCoachAthletes();
+      alert("Athlete profile saved.");
 
-  })
+      loadCoachAthletes();
 
-  .catch(error => {
+    })
 
-    console.error(error);
+    .catch(error => {
 
-    alert("Error saving athlete profile.");
+      console.error(error);
 
-  });
+      alert("Error saving athlete profile.");
 
-  
-
-  // Reset form
-  document.getElementById("athleteName").value = "";
-  document.getElementById("athleteDOB").value = "";
-  document.getElementById("ageGroupDisplay").innerText = "";
-
-  alert("Athlete profile saved.");
+    });
 
 };
-
 
 
 /* =========================================================
