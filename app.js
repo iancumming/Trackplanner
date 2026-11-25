@@ -1177,7 +1177,7 @@ function saveAthleteEdits(id) {
   saveData();
 
   // Refresh athlete/training sections ONLY
-  loadAthleteList();
+ loadCoachAthletes();
   updateTrainingDropdown();
   updatePBTable();
 
@@ -1201,7 +1201,7 @@ deleteProfileBtn.onclick = () => {
 
   saveData();
 
-  loadAthleteList();
+loadCoachAthletes();
   updateTrainingDropdown();
   updatePBTable();
 };
