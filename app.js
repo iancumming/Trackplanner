@@ -2626,40 +2626,7 @@ document.getElementById("calcEvent").addEventListener("change", () => {
 
 
 
-function getScottishAthleticsAgeGroup(dob) {
-  if (!dob) return "—";
 
-  // Convert DD/MM/YYYY → YYYY-MM-DD
-  if (dob.includes("/")) {
-    const [day, month, year] = dob.split("/");
-    dob = `${year}-${month}-${day}`;
-  }
-
-  const birthDate = new Date(dob);
-  if (isNaN(birthDate)) return "—";
-
-  const today = new Date();
-
-  // Determine the competition year:
-  // If today is BEFORE 1 Oct → compYear = current year
-  // If today is ON/AFTER 1 Oct → compYear = next year
-  let compYear = today.getFullYear();
-  const oct1 = new Date(compYear, 9, 1); // 1 Oct
-
-  if (today >= oct1) {
-    compYear += 1;
-  }
-
-  // Age on 1 October of the competition year
-  const ageOnOct1 = compYear - birthDate.getFullYear();
-
-  if (ageOnOct1 < 12) return "U12";
-  if (ageOnOct1 < 14) return "U14";
-  if (ageOnOct1 < 16) return "U16";
-  if (ageOnOct1 < 18) return "U18";
-  if (ageOnOct1 < 20) return "U20";
-  return "Sen";
-}
 /* =========================================================
    FINAL EVENT LISTENER — PLACE AT BOTTOM OF FILE
 ========================================================= */
