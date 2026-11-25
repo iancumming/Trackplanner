@@ -809,53 +809,92 @@ function updateTrainingPageDays(dob) {
 /* =========================================================
    ATHLETE LIST
 ========================================================= */
+
 function loadAthleteList() {
-  const list = document.getElementById("athleteList");
 
-  list.innerHTML = athletes.map(a =>
-    `<div class="athlete-item" data-id="${a.id}">
-       <span class="athlete-name">${a.name}</span>
-       <button class="select-btn" data-id="${a.id}">Select</button>
-       <button class="delete-btn" data-id="${a.id}">🗑️</button>
-     </div>`
-  ).join("");
+  const list =
+    document.getElementById("athleteList");
 
-  // SELECT ATHLETE
+  if (!list) return;
+
+  list.innerHTML = athletes.map(a => `
+
+    <div class="athlete-item" data-id="${a.id}">
+
+      <span class="athlete-name">
+        ${a.name}
+      </span>
+
+      <button
+        class="select-btn"
+        data-id="${a.id}">
+        Select
+      </button>
+
+      <button
+        class="delete-btn"
+        data-id="${a.id}">
+        🗑️
+      </button>
+
+    </div>
+
+  `).join("");
+
+  /* SELECT ATHLETE */
+
   document.querySelectorAll(".select-btn").forEach(btn => {
-    btn.onclick = () => {
-   const id = btn.dataset.id;
 
-      // ⭐ FIX: show profile card again
-      document.getElementById("athleteProfileCard").style.display = "block";
+    btn.onclick = () => {
+
+      const id = btn.dataset.id;
+
+      document.getElementById("athleteProfileCard").style.display =
+        "block";
 
       selectAthlete(id);
+
     };
+
   });
 
-  // DELETE ATHLETE
+  /* DELETE ATHLETE */
+
   document.querySelectorAll(".delete-btn").forEach(btn => {
+
     btn.onclick = () => {
-      const id = Number(btn.dataset.id);
 
-      athletes = athletes.filter(a => a.id !== id);
+      const id = btn.dataset.id;
 
-      // Hide profile if deleted athlete was selected
-      if (selectedAthlete && selectedAthlete.id === id) {
+      athletes = athletes.filter(
+        a => a.id !== id
+      );
+
+      if (
+        selectedAthlete &&
+        selectedAthlete.id === id
+      ) {
+
         selectedAthlete = null;
-        document.getElementById("athleteProfileCard").style.display = "none";
+
+        document.getElementById("athleteProfileCard").style.display =
+          "none";
+
       }
 
       saveData();
-   
+
       loadAthleteList();
+
       updateTrainingDropdown();
+
       updatePBTable();
+
     };
+
   });
+
 }
-
-
-
 /* =========================================================
    DOB FORMAT HELPERS
 ========================================================= */
