@@ -1993,6 +1993,11 @@ function loadPendingAthletes() {
       snapshot.forEach(doc => {
 
         const athlete = doc.data();
+        console.log(
+  "Pending Athlete:",
+  doc.id,
+  athlete.name
+);
 
         if (
           athlete.club &&
