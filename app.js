@@ -700,6 +700,10 @@ function selectAthlete(id) {
     "Found Athlete:",
     selectedAthlete
   );
+   console.log(
+  "DOB:",
+  selectedAthlete.dob
+);
 
   if (!selectedAthlete) {
 
