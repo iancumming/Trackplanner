@@ -2229,8 +2229,12 @@ list.appendChild(card);
 
 });
 
-      // Refresh Training dropdown
-      updateTrainingDropdown();
+ // Refresh the training dropdown and profile athlete list
+updateTrainingDropdown();
+
+if (typeof loadAthleteListA === "function") {
+  loadAthleteListA();
+}
 
       console.log("Athletes Array:", athletes);
 
